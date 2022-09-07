@@ -1,5 +1,3 @@
-const Products = require('./models/products');
-
 const express = require('express');
 
 const adminRoutes = require('./routes/admin');
