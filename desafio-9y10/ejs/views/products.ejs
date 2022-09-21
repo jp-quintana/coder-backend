@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./includes/head.ejs') %>
+  </head>
+  <body>
+    <header><%- include('./includes/nav.ejs') %></header>
+    <main>
+      <h1 class="page-title">Productos</h1>
+      <% if (products.length > 0) {%>
+
+      <table class="productos">
+        <tr>
+          <th>Titulo</th>
+          <th>Precio</th>
+          <th>Thumbnail URL</th>
+        </tr>
+        <% products.forEach(product => { %>
+        <tr>
+          <td><%= product.title %></td>
+          <td><%= product.price %></td>
+          <td><%= product.thumbnail %></td>
+        </tr>
+        <% }) %>
+      </table>
+      <% } else {%>
+      <p>No se agregaron productos todavia!</p>
+      <% }%>
+    </main>
+  </body>
+</html>

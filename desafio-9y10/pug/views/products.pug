@@ -1,0 +1,18 @@
+extends layouts/main-layout.pug
+
+block content
+  main
+    h1.page-title Productos
+    if products.length > 0
+      table.productos
+        tr
+          th Titulo
+          th Precio
+          th Thumbnail URL
+        each product in products
+          tr
+            td #{product.title}
+            td #{product.price}
+            td #{product.thumbnail}
+    else
+      p No se agregaron productos todavia!
