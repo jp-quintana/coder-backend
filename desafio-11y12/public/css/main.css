@@ -117,6 +117,7 @@ main {
 
 .page-title {
   margin-bottom: 5rem;
+  text-align: center;
 }
 
 .card-title {
@@ -160,22 +161,90 @@ main {
   margin-top: 3rem;
 }
 
-.productos {
+.products {
   margin: 0 auto;
   border-collapse: collapse;
   border: 1px solid black;
   min-width: 60rem;
 }
 
-.productos tr {
+.products tr {
   display: grid;
   grid-template-columns: 20% 20% 60%;
 }
 
-.productos th {
+.products th {
   text-align: left;
   border: 1px solid black;
 }
-.productos td {
+
+.products td {
   border: 1px solid black;
+}
+
+.no-products {
+  text-align: center;
+}
+
+.chat-container {
+  max-width: 100rem;
+  border: 0;
+  border-radius: 5px;
+  background: #fff;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.chat-header {
+  background: var(--heading-color);
+  color: #fff;
+  padding: 1.5rem;
+}
+
+.chat-main {
+  padding: 2rem;
+}
+
+.chat-messages {
+  max-height: 50rem;
+  overflow-y: scroll;
+  padding: 5rem;
+}
+
+.chat-messages .message {
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 5px;
+  background: #f4f4f4;
+  overflow-wrap: break-word;
+}
+
+.chat-messages .message .meta {
+  font-size: 1.5rem;
+  font-weight: bold;
+  opacity: 0.7;
+  margin-bottom: 0.7rem;
+}
+
+.chat-form-container {
+  padding: 2rem 3rem;
+}
+
+.chat-form-container label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.chat-form-container form {
+  display: grid;
+  grid-template-columns: 2fr 4fr 1fr;
+  gap: 1rem;
+}
+
+.chat-form-container input {
+  font-size: 1.6rem;
+  padding: 0.5rem;
+  height: 4rem;
+  flex: 1;
 }

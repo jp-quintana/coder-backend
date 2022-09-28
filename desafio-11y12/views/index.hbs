@@ -5,46 +5,52 @@
     <form class='form' id='form'>
       <div>
         <label for='title'>Titulo: </label>
-        <input type='text' name='title' id='title' required/>
+        <input type='text' name='title' id='title' required />
       </div>
       <div>
         <label for='price'>Precio: </label>
-        <input type='number' name='price' id='price' required/>
+        <input type='number' name='price' id='price' required />
       </div>
       <div>
         <label for='thumbnail'>Thumbnail URL: </label>
-        <input type='text' name='thumbnail' id='thumbnail' required/>
+        <input type='text' name='thumbnail' id='thumbnail' required />
       </div>
       <button type='submit'>Agregar producto</button>
     </form>
   </div>
 
-  <div class='card'>
+  <div class='card' id='productCard'>
     <h2 class='card-title'>Productos</h2>
-    {{!-- {{#if hasProducts}} --}}
 
-    <table class='productos' id="table">
-      {{!-- <tr>
-        <th>Titulo</th>
-        <th>Precio</th>
-        <th>Thumbnail URL</th>
-      </tr> --}}
-      {{!-- {{#each products}} --}}
-      {{!-- <tr>
-            <td>{{this.title}}</td>
-            <td>{{this.price}}</td>
-            <td>{{this.thumbnail}}</td>
-          </tr> --}}
-      {{!-- {{/each}} --}}
-    </table>
-    {{!-- {{else}} --}}
-    {{! <p>No se agregaron productos todavia!</p> }}
-    {{!-- {{/if}} --}}
+    <table class='products' id='table'></table>
+    <p class='no-products' id='noProducts'>No se agregaron productos todavia!!!</p>
+
   </div>
 
   <div class='card'>
     <h2 class='card-title'>Mensajes</h2>
 
+    <div class='chat-container'>
+      <div class='chat-header'></div>
+      <div class='chat-main'>
+        <div class='chat-messages' id='chatMessages'></div>
+      </div>
+      <div class='chat-form-container'>
+        <form id='chatForm'>
+          <label><span>Email: </span>
+            <input type='email' name='email' id='email' required />
+          </label>
+          <input
+            id='messageInput'
+            type='text'
+            placeholder='Ingresar mensaje'
+            required
+            autocomplete='off'
+          />
+          <button class='btn'>Enviar</button>
+        </form>
+      </div>
+    </div>
   </div>
 
 </main>

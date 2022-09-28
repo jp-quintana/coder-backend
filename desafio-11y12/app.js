@@ -4,6 +4,7 @@ const express = require('express');
 const { Server } = require('socket.io');
 
 const Product = require('./models/product');
+const Message = require('./models/message');
 
 const expressHbs = require('express-handlebars');
 
@@ -39,13 +40,18 @@ io.on('connection', (socket) => {
   });
 
   socket.on('addProduct', async (productToAdd) => {
-    console.log('working', productToAdd);
     const product = new Product(productToAdd);
     await product.save();
     const products = await Product.getAll();
     io.emit('populateProducts', products);
   });
+
   // Messages
+  socket.on('messageSent', (payload) => {
+    const message = new Message(payload);
+    message.save();
+    io.emit('message', payload);
+  });
 });
 
 const PORT = 8080 || process.env.PORT;
