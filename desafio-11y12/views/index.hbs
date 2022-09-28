@@ -2,18 +2,18 @@
   <h1 class='page-title'>Inicio</h1>
   <div class='card'>
     <h2 class='card-title'>Agregar un producto nuevo</h2>
-    <form class='form' action='/productos' method='POST'>
+    <form class='form' id='form'>
       <div>
         <label for='title'>Titulo: </label>
-        <input type='text' name='title' id='title' />
+        <input type='text' name='title' id='title' required/>
       </div>
       <div>
         <label for='price'>Precio: </label>
-        <input type='number' name='price' id='price' />
+        <input type='number' name='price' id='price' required/>
       </div>
       <div>
         <label for='thumbnail'>Thumbnail URL: </label>
-        <input type='text' name='thumbnail' id='thumbnail' />
+        <input type='text' name='thumbnail' id='thumbnail' required/>
       </div>
       <button type='submit'>Agregar producto</button>
     </form>
@@ -23,12 +23,12 @@
     <h2 class='card-title'>Productos</h2>
     {{!-- {{#if hasProducts}} --}}
 
-    <table class='productos'>
-      <tr>
+    <table class='productos' id="table">
+      {{!-- <tr>
         <th>Titulo</th>
         <th>Precio</th>
         <th>Thumbnail URL</th>
-      </tr>
+      </tr> --}}
       {{!-- {{#each products}} --}}
       {{!-- <tr>
             <td>{{this.title}}</td>

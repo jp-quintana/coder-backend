@@ -10,6 +10,7 @@ const expressHbs = require('express-handlebars');
 const bodyParser = require('body-parser');
 
 const adminRoutes = require('./routes/admin');
+const { emit } = require('process');
 
 const app = express();
 const server = http.createServer(app);
@@ -32,6 +33,18 @@ app.use(adminRoutes);
 
 io.on('connection', (socket) => {
   // Products
+  socket.on('userConnect', async () => {
+    const products = await Product.getAll();
+    socket.emit('populateProducts', products);
+  });
+
+  socket.on('addProduct', async (productToAdd) => {
+    console.log('working', productToAdd);
+    const product = new Product(productToAdd);
+    await product.save();
+    const products = await Product.getAll();
+    io.emit('populateProducts', products);
+  });
   // Messages
 });
 
