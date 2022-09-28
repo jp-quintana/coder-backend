@@ -1,0 +1,50 @@
+<main>
+  <h1 class='page-title'>Inicio</h1>
+  <div class='card'>
+    <h2 class='card-title'>Agregar un producto nuevo</h2>
+    <form class='form' action='/productos' method='POST'>
+      <div>
+        <label for='title'>Titulo: </label>
+        <input type='text' name='title' id='title' />
+      </div>
+      <div>
+        <label for='price'>Precio: </label>
+        <input type='number' name='price' id='price' />
+      </div>
+      <div>
+        <label for='thumbnail'>Thumbnail URL: </label>
+        <input type='text' name='thumbnail' id='thumbnail' />
+      </div>
+      <button type='submit'>Agregar producto</button>
+    </form>
+  </div>
+
+  <div class='card'>
+    <h2 class='card-title'>Productos</h2>
+    {{!-- {{#if hasProducts}} --}}
+
+    <table class='productos'>
+      <tr>
+        <th>Titulo</th>
+        <th>Precio</th>
+        <th>Thumbnail URL</th>
+      </tr>
+      {{!-- {{#each products}} --}}
+      {{!-- <tr>
+            <td>{{this.title}}</td>
+            <td>{{this.price}}</td>
+            <td>{{this.thumbnail}}</td>
+          </tr> --}}
+      {{!-- {{/each}} --}}
+    </table>
+    {{!-- {{else}} --}}
+    {{! <p>No se agregaron productos todavia!</p> }}
+    {{!-- {{/if}} --}}
+  </div>
+
+  <div class='card'>
+    <h2 class='card-title'>Mensajes</h2>
+
+  </div>
+
+</main>
