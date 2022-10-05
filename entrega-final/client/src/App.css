@@ -76,17 +76,17 @@ select {
 
 :root {
   --heading-color: #444;
-  --text-color: #999;
-  --primary-color: #8d69f1;
-  --highlight-color: #d13267;
-  --bg-color: #f4f4f4;
+  --text-color: white;
+  --primary-color: #242582;
+  --highlight-color: #F64C72;
+  --bg-color: #2F2FA2;
 }
 
 body {
   font-family: 'Poppins', sans-serif;
   margin: 0;
   background: var(--bg-color);
-  color: var(--heading-color);
+  color: var(--text-color);
 }
 
 h1,
@@ -107,9 +107,16 @@ ul {
 
 a {
   text-decoration: none;
+  color: inherit;
 }
 
 main {
   margin: 5rem auto;
   max-width: 120rem;
+}
+
+.page-title {
+  font-size: 4rem;
+  color: var(--highlight-color);
+  margin-bottom: 2rem;
 }

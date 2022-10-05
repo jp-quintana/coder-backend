@@ -7,6 +7,7 @@ exports.getAllProducts = async (req, res, next) => {
     res.json(product);
   } else {
     const products = await Product.fetchAll();
+    console.log(products);
     res.json(products);
   }
 };

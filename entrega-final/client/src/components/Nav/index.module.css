@@ -1,0 +1,38 @@
+.nav_container {
+  padding: 2rem 0;
+  background: var(--bg-color);
+}
+
+.nav_container nav {
+  max-width: 120rem;
+  margin: 0 auto;
+}
+
+.nav_container nav ul {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.nav_container a {
+  padding: 1rem;
+}
+
+.nav_container .logo {
+  margin-right: auto;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--highlight-color);
+}
+
+.nav_container .active {
+  background: rgb(244, 72, 115);
+  background: linear-gradient(
+    90deg,
+    rgba(244, 72, 115, 1) 0%,
+    rgba(250, 84, 95, 1) 35%,
+    rgba(255, 96, 83, 1) 100%
+  );
+  border: 0;
+  border-radius: 1rem;
+}

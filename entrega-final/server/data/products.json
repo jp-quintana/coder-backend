@@ -3,8 +3,8 @@
     "title": 123,
     "description": 123,
     "sku": 123,
-    "thumbnail": 123,
-    "price": 123,
+    "thumbnail": "https://www.publicdomainpictures.net/pictures/10000/velka/1-1210009435EGmE.jpg",
+    "price": "123",
     "stock": 123,
     "id": "1",
     "timestamp": 1664920730164
@@ -13,7 +13,7 @@
     "title": 321,
     "description": 321,
     "sku": 321,
-    "thumbnail": 321,
+    "thumbnail": "https://www.publicdomainpictures.net/pictures/10000/velka/1-1210009435EGmE.jpg",
     "price": 321,
     "stock": 321,
     "id": "2",
@@ -25,7 +25,7 @@
     "title": 456,
     "description": 456,
     "sku": 456,
-    "thumbnail": 456,
+    "thumbnail": "https://www.publicdomainpictures.net/pictures/10000/velka/1-1210009435EGmE.jpg",
     "price": 456,
     "stock": 456
   },
@@ -35,7 +35,7 @@
     "title": 654,
     "description": 654,
     "sku": 654,
-    "thumbnail": 654,
+    "thumbnail": "https://www.publicdomainpictures.net/pictures/10000/velka/1-1210009435EGmE.jpg",
     "price": 654,
     "stock": 654
   }

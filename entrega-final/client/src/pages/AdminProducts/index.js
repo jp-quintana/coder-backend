@@ -4,7 +4,7 @@ import ProductCard from './ProductCard';
 
 import styles from './index.module.css';
 
-const Home = () => {
+const AdminProducts = () => {
   const [products, setProducts] = useState(null);
   const [isPending, setIsPending] = useState(true);
 
@@ -22,7 +22,7 @@ const Home = () => {
   console.log(products);
   return (
     <div>
-      <h1 className="page-title">Productos</h1>
+      <h1 className="page-title">Productos Admin</h1>
       {isPending && <p>Cargando productos...</p>}
       {products && (
         <div className={styles.products_container}>
@@ -45,4 +45,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default AdminProducts;
