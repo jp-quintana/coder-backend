@@ -31,13 +31,3 @@
   font-weight: 700;
   font-size: 4rem;
 }
-
-.button {
-  width: 100%;
-  background: white;
-  border: 5px solid var(--primary-color);
-  padding: 1rem;
-  color: var(--primary-color);;
-  font-weight: 700;
-}
-

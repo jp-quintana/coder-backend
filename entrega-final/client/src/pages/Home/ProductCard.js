@@ -26,7 +26,7 @@ const ProductCard = ({
         <p>{description}</p>
         <p className={styles.price}>${price}</p>
       </div>
-      <button className={styles.button} onClick={handleAddToCart}>
+      <button className="btn" onClick={handleAddToCart}>
         Agregar a carrito
       </button>
     </Card>

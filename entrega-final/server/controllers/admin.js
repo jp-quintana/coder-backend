@@ -1,11 +1,11 @@
 const Product = require('../models/product');
 
-exports.getAllProducts = async (req, res, next) => {
-  if (!req.user.auth) {
-    res.json({ error: 'Error: Ruta no autorizada.' });
-    return;
-  }
-};
+// exports.getAllProducts = async (req, res, next) => {
+//   if (!req.user.auth) {
+//     res.json({ error: 'Error: Ruta no autorizada.' });
+//     return;
+//   }
+// };
 
 exports.postAddProduct = async (req, res, next) => {
   if (!req.user.auth) {
@@ -14,8 +14,7 @@ exports.postAddProduct = async (req, res, next) => {
   }
 
   const title = req.body.title;
-  const name = req.body.title;
-  const description = req.body.title;
+  const description = req.body.description;
   const sku = req.body.sku;
   const thumbnail = req.body.thumbnail;
   const price = req.body.price;
@@ -23,7 +22,6 @@ exports.postAddProduct = async (req, res, next) => {
 
   const product = new Product({
     title,
-    name,
     description,
     sku,
     thumbnail,
@@ -32,9 +30,10 @@ exports.postAddProduct = async (req, res, next) => {
   });
 
   await product.save();
+  res.json('Success');
 };
 
-exports.putUpdateProduct = async (req, res, next) => {
+exports.putEditProduct = async (req, res, next) => {
   if (!req.user.auth) {
     res.json({ error: 'Error: Ruta no autorizada.' });
     return;
@@ -42,8 +41,7 @@ exports.putUpdateProduct = async (req, res, next) => {
   const id = req.params.id;
   const timestamp = req.body.timestamp;
   const title = req.body.title;
-  const name = req.body.title;
-  const description = req.body.title;
+  const description = req.body.description;
   const sku = req.body.sku;
   const thumbnail = req.body.thumbnail;
   const price = req.body.price;
@@ -53,7 +51,6 @@ exports.putUpdateProduct = async (req, res, next) => {
     id,
     timestamp,
     title,
-    name,
     description,
     sku,
     thumbnail,
@@ -62,6 +59,7 @@ exports.putUpdateProduct = async (req, res, next) => {
   });
 
   await product.save();
+  res.json('Success');
 };
 
 exports.deleteProduct = async (req, res, next) => {

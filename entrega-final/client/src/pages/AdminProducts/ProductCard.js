@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import Card from '../../components/Card';
 
@@ -14,8 +14,12 @@ const ProductCard = ({
   price,
   stock,
 }) => {
-  const handleAddToCart = (e) => {
-    console.log(id);
+  const navigate = useNavigate();
+
+  const handleDelete = async () => {
+    await fetch(`/api/productos/${id}`, { method: 'DELETE' });
+
+    navigate('/');
   };
 
   return (
@@ -28,9 +32,12 @@ const ProductCard = ({
         <p>{description}</p>
         <p className={styles.price}>${price}</p>
       </div>
-      <Link className={styles.button} to={`/productos/admin/${id}`}>
+      <Link className={`btn ${styles.button}`} to={`/productos/admin/${id}`}>
         <span>Editar</span>
       </Link>
+      <button className="btn" onClick={handleDelete}>
+        Eliminar
+      </button>
     </Card>
   );
 };

@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import AdminProducts from './pages/AdminProducts';
 import AddProduct from './pages/AddProduct';
+import EditProduct from './pages/EditProduct';
 import Cart from './pages/Cart';
 
 import Nav from './components/Nav';
@@ -21,6 +22,7 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/productos/admin" element={<AdminProducts />} />
             <Route path="/productos/admin/agregar" element={<AddProduct />} />
+            <Route path="/productos/admin/:id" element={<EditProduct />} />
             <Route path="/carrito" element={<Cart />} />
           </Routes>
         </main>

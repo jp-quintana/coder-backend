@@ -13,6 +13,16 @@ const app = express();
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader(
+    'Access-Control-Allow-Header',
+    'Origin, X-Requested-With, Content-Type, Accept,Authorization'
+  );
+  res.setHeader('Access-Control-Allow-Methods', '*');
+  next();
+});
+
+app.use((req, res, next) => {
   req.user = { auth: true };
   next();
 });
