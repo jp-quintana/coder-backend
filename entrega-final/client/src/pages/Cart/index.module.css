@@ -1,0 +1,28 @@
+.cart_container {
+  background: white;
+  border: 0;
+  border-radius: 1rem;
+  padding: 3rem;
+}
+
+.card {
+  display: grid;
+  grid-template-columns: 1fr 4fr  1fr;
+  align-items: center;
+  justify-content: center;
+}
+
+.card img {
+  border: 0;
+  border-radius: 1rem;
+}
+
+.info p  {
+  color: var(--primary-color);
+  text-align: center;
+  font-size: 2.4rem;
+}
+
+p.quantity {
+  font-size: 1.6rem;
+}

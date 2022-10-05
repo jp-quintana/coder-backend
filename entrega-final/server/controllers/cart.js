@@ -15,9 +15,9 @@ exports.deleteCart = (req, res, next) => {
   Cart.delete(cartId);
 };
 
-exports.getCartItems = (req, res, next) => {
+exports.getCartItems = async (req, res, next) => {
   const cartId = req.params.id;
-  const products = Cart.fetchProducts(cartId);
+  const products = await Cart.fetchProducts(cartId);
 
   res.json(products);
 };
