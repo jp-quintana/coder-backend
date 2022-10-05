@@ -67,4 +67,9 @@ exports.deleteProduct = async (req, res, next) => {
     res.json({ error: 'Error: Ruta no autorizada.' });
     return;
   }
+
+  const id = req.params.id;
+
+  await Product.delete(id);
+  res.json('Success');
 };

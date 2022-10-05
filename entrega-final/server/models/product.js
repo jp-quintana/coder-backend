@@ -92,6 +92,32 @@ class Product {
       console.log(error);
     }
   }
+
+  static async delete(prodId) {
+    try {
+      let products = await getProductsFromFile(p);
+
+      const productToDelete = products.find(
+        (product) => prodId.toString() === product.id.toString()
+      );
+
+      if (!productToDelete) {
+        throw new Error(`{ error: 'producto no encontrado' }`);
+      }
+
+      products = products.filter(
+        (product) => prodId.toString() !== product.id.toString()
+      );
+
+      for (let i = 0; i < products.length; i++) {
+        products[i].id = `${i + 1}`;
+      }
+
+      await fs.writeFile(p, JSON.stringify(products));
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
 
 module.exports = Product;
