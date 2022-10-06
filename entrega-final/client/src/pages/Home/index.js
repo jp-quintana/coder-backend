@@ -5,7 +5,7 @@ import ProductCard from './ProductCard';
 import styles from './index.module.css';
 
 const Home = () => {
-  const [products, setProducts] = useState(null);
+  const [products, setProducts] = useState([]);
   const [isPending, setIsPending] = useState(true);
 
   useEffect(() => {
@@ -19,12 +19,14 @@ const Home = () => {
     fetchProducts();
   }, []);
 
-  console.log(products);
   return (
     <div>
       <h1 className="page-title">Productos</h1>
       {isPending && <p>Cargando productos...</p>}
-      {products && (
+      {!isPending && products.length === 0 && (
+        <p>No se agregaron productos todavia!</p>
+      )}
+      {products.length > 0 && (
         <div className={styles.products_container}>
           {products.map((product) => (
             <ProductCard

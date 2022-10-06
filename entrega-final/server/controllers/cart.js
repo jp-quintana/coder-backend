@@ -8,27 +8,44 @@ exports.getCart = (req, res, next) => {
 exports.postAddCart = (req, res, next) => {
   const cart = new Cart({});
   cart.save();
+
+  res.json('Success');
 };
 
 exports.deleteCart = (req, res, next) => {
   const cartId = req.params.id;
   Cart.delete(cartId);
+
+  res.json('Success');
 };
 
 exports.getCartItems = async (req, res, next) => {
   const cartId = req.params.id;
-  const products = await Cart.fetchProducts(cartId);
+  const productsIds = await Cart.fetchProducts(cartId);
+
+  const products = [];
+
+  for (const product of productsIds) {
+    const productDetails = await Product.fetchById(product.id);
+    products.push({ ...productDetails, quantity: product.quantity });
+  }
 
   res.json(products);
 };
 
 exports.postAddItemToCart = async (req, res, next) => {
   const cartId = req.params.id;
-  const productId = req.body.id;
+  const prodId = req.body.id;
 
-  const product = await Product.fetchById(productId);
+  const product = await Product.fetchById(prodId);
 
-  Cart.addProduct(cartId, product);
+  if (!product) {
+    res.json({ error: 'Producto no existe!' });
+    return;
+  }
+
+  Cart.addProduct(cartId, prodId);
+  res.json('Success');
 };
 
 exports.deleteCartItem = (req, res, next) => {
@@ -36,4 +53,6 @@ exports.deleteCartItem = (req, res, next) => {
   const prodId = req.params.id_prod;
 
   Cart.deleteProduct(cartId, prodId);
+
+  res.json('Success');
 };

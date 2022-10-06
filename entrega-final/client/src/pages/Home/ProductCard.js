@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom';
+
 import Card from '../../components/Card';
 
 import styles from './index.module.css';
@@ -12,8 +14,16 @@ const ProductCard = ({
   price,
   stock,
 }) => {
-  const handleAddToCart = (e) => {
-    console.log(id);
+  const navigate = useNavigate();
+
+  const handleAddToCart = async (e) => {
+    await fetch('/api/carrito/1/productos', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id }),
+    });
+
+    navigate('/carrito');
   };
 
   return (

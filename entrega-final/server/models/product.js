@@ -50,7 +50,7 @@ class Product {
       } else {
         const product = {
           ...this,
-          id: (products.length + 1).toString(),
+          id: (Math.floor(Math.random() * (100000 - 1 + 1)) + 1).toString(),
           timestamp: Date.now(),
         };
 
@@ -76,7 +76,6 @@ class Product {
 
   static async fetchById(prodId) {
     try {
-      console.log(prodId);
       const products = await getProductsFromFile(p);
 
       const product = products.find(
@@ -108,10 +107,6 @@ class Product {
       products = products.filter(
         (product) => prodId.toString() !== product.id.toString()
       );
-
-      for (let i = 0; i < products.length; i++) {
-        products[i].id = `${i + 1}`;
-      }
 
       await fs.writeFile(p, JSON.stringify(products));
     } catch (error) {

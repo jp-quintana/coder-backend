@@ -1,3 +1,5 @@
+// import { useEffect } from 'react';
+
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Home from './pages/Home';
@@ -11,6 +13,9 @@ import Nav from './components/Nav';
 import './App.css';
 
 const App = () => {
+  // useEffect(() => {
+  //   fetch('/api/carrito', { method: 'POST' });
+  // }, []);
   return (
     <div>
       <BrowserRouter>

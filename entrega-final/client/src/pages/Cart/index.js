@@ -5,7 +5,7 @@ import CartItem from './CartItem';
 import styles from './index.module.css';
 
 const Cart = () => {
-  const [cartProducts, setCartProducts] = useState(null);
+  const [cartProducts, setCartProducts] = useState([]);
   const [isPending, setIsPending] = useState(true);
 
   useEffect(() => {
@@ -20,12 +20,22 @@ const Cart = () => {
     fetchCart();
   }, []);
 
-  console.log(cartProducts);
+  const handleDeleteCartItem = (id) => {
+    const updatedCartProducts = cartProducts.filter(
+      (cartProduct) => cartProduct.id !== id
+    );
+
+    setCartProducts(updatedCartProducts);
+  };
 
   return (
     <>
+      <h1 className="page-title">Carrito</h1>
       {isPending && <p>Cargando carrito</p>}
-      {cartProducts && (
+      {!isPending && cartProducts.length === 0 && (
+        <p>No hay productos en el carrito...</p>
+      )}
+      {cartProducts.length > 0 && (
         <div className={styles.cart_container}>
           {cartProducts.map((product) => {
             return (
@@ -40,6 +50,7 @@ const Cart = () => {
                 price={product.price}
                 stock={product.stock}
                 quantity={product.quantity}
+                onDelete={handleDeleteCartItem}
               />
             );
           })}

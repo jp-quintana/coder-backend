@@ -63,7 +63,7 @@ class Cart {
     }
   }
 
-  static async addProduct(cartId, product) {
+  static async addProduct(cartId, prodId) {
     try {
       const carts = await getCartsFromFile(p);
       const cartIndex = carts.findIndex(
@@ -74,7 +74,7 @@ class Cart {
         console.log({ error: 'carrito no encontrado' });
       } else {
         const existingProductIndex = carts[cartIndex].products.findIndex(
-          (prod) => prod.id.toString() === product.id.toString()
+          (product) => prodId.toString() === product.id.toString()
         );
 
         const existingProduct = carts[cartIndex].products[existingProductIndex];
@@ -86,7 +86,7 @@ class Cart {
           updatedProduct.quantity += 1;
           carts[cartIndex].products[existingProductIndex] = updatedProduct;
         } else {
-          updatedProduct = { ...product, quantity: 1 };
+          updatedProduct = { id: prodId, quantity: 1 };
           carts[cartIndex].products.push(updatedProduct);
         }
 
@@ -110,10 +110,6 @@ class Cart {
       }
 
       carts = carts.filter((cart) => cartId.toString() !== cart.id.toString());
-
-      // for (let i = 0; i < carts.length; i++) {
-      //   carts[i].id = `${i + 1}`;
-      // }
 
       await fs.writeFile(p, JSON.stringify(carts));
     } catch (error) {

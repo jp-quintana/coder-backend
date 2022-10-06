@@ -8,7 +8,13 @@ const CartItem = ({
   thumbnail,
   price,
   quantity,
+  onDelete,
 }) => {
+  const handleDelete = async (e) => {
+    await fetch(`/api/carrito/1/productos/${id}`, { method: 'DELETE' });
+    onDelete(id);
+  };
+
   return (
     <div className={styles.card}>
       <img className={styles.image} src={thumbnail} alt="" />
@@ -16,7 +22,9 @@ const CartItem = ({
         <p className={styles.title}>{title}</p>
         <p className={styles.quantity}>Cantidad: {quantity}</p>
       </div>
-      <button className="btn">Eliminar</button>
+      <button className="btn" onClick={handleDelete}>
+        Eliminar
+      </button>
     </div>
   );
 };
