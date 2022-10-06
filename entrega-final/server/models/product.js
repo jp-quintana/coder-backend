@@ -6,6 +6,8 @@ const rootDir = require('../utils/path');
 
 const p = path.join(rootDir, 'data', 'products.json');
 
+const Cart = require('./cart');
+
 const getProductsFromFile = async (path) => {
   try {
     const content = await fs.readFile(path);
@@ -95,6 +97,8 @@ class Product {
   static async delete(prodId) {
     try {
       let products = await getProductsFromFile(p);
+
+      await Cart.deleteProductInAllCarts(prodId);
 
       const productToDelete = products.find(
         (product) => prodId.toString() === product.id.toString()

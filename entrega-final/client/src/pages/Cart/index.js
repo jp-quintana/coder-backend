@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useCartContext } from '../../hooks/useCartContext';
 
 import CartItem from './CartItem';
@@ -6,13 +7,14 @@ import CartItem from './CartItem';
 import styles from './index.module.css';
 
 const Cart = () => {
+  const navigate = useNavigate();
   const { id: cartId, items, dispatch } = useCartContext();
   const [isPending, setIsPending] = useState(true);
 
   useEffect(() => {
     if (cartId) {
       const fetchCart = async () => {
-        const response = await fetch(`api/carrito/${cartId}/productos`);
+        const response = await fetch(`/api/carrito/${cartId}/productos`);
         const data = await response.json();
 
         dispatch({ type: 'UPDATE_CART', payload: data });
@@ -22,6 +24,13 @@ const Cart = () => {
       fetchCart();
     }
   }, [cartId, dispatch]);
+
+  const handleDeleteCart = async () => {
+    await fetch(`/api/carrito/${cartId}`, { method: 'DELETE' });
+    dispatch({ type: 'DELETE_CART' });
+
+    navigate('/');
+  };
 
   return (
     <>
@@ -45,10 +54,12 @@ const Cart = () => {
                 price={product.price}
                 stock={product.stock}
                 quantity={product.quantity}
-                // onDelete={handleDeleteCartItem}
               />
             );
           })}
+          <button className={`btn ${styles.button}`} onClick={handleDeleteCart}>
+            Vaciar carrito
+          </button>
         </div>
       )}
     </>

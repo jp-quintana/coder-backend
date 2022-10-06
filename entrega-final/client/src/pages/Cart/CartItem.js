@@ -13,7 +13,7 @@ const CartItem = ({
 }) => {
   const { id: cartId, dispatch } = useCartContext();
 
-  const handleDelete = async (e) => {
+  const handleDeleteItem = async (e) => {
     await fetch(`/api/carrito/${cartId}/productos/${id}`, { method: 'DELETE' });
 
     dispatch({ type: 'DELETE_PRODUCT', payload: id });
@@ -26,7 +26,7 @@ const CartItem = ({
         <p className={styles.title}>{title}</p>
         <p className={styles.quantity}>Cantidad: {quantity}</p>
       </div>
-      <button className="btn" onClick={handleDelete}>
+      <button className="btn" onClick={handleDeleteItem}>
         Eliminar
       </button>
     </div>

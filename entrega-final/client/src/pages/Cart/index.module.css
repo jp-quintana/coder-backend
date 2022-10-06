@@ -10,10 +10,10 @@
 
 .card {
   display: grid;
-  grid-template-columns: 1fr 4fr  1fr;
+  grid-template-columns: 1fr 4fr 1fr;
   align-items: center;
   justify-content: center;
-  border-bottom: .2rem solid var(--highlight-color);
+  border-bottom: 0.2rem solid var(--highlight-color);
   padding-bottom: 3rem;
 }
 
@@ -22,7 +22,7 @@
   border-radius: 1rem;
 }
 
-.info p  {
+.info p {
   color: var(--primary-color);
   text-align: center;
   font-size: 2.4rem;
@@ -30,4 +30,9 @@
 
 p.quantity {
   font-size: 1.6rem;
+}
+
+.button {
+  width: 40%;
+  margin: 0 auto;
 }

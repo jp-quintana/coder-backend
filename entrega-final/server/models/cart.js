@@ -135,6 +135,23 @@ class Cart {
       console.log(error);
     }
   }
+
+  static async deleteProductInAllCarts(prodId) {
+    try {
+      let carts = await getCartsFromFile(p);
+
+      for (const cart of carts) {
+        const updatedProducts = cart.products.filter(
+          (product) => prodId !== product.id
+        );
+        cart.products = updatedProducts;
+      }
+
+      await fs.writeFile(p, JSON.stringify(carts));
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
 
 module.exports = Cart;
