@@ -17,12 +17,19 @@ const ProductCard = ({
   stock,
 }) => {
   const navigate = useNavigate();
-  const { dispatch } = useCartContext();
+  const { id: cartId, dispatch } = useCartContext();
 
   const handleDelete = async () => {
     await fetch(`/api/productos/${id}`, { method: 'DELETE' });
 
-    navigate('/carrito');
+    const response = await fetch(`/api/carrito/${cartId}/productos`);
+    const updatedItems = await response.json();
+
+    console.log('error', updatedItems);
+
+    dispatch({ type: 'UPDATE_CART', payload: updatedItems });
+
+    navigate('/');
   };
 
   return (
