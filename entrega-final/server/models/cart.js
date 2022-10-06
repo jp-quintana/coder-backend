@@ -27,23 +27,18 @@ class Cart {
     try {
       const carts = await getCartsFromFile(p);
 
-      if (this.id) {
-        // const existingProductIndex = products.findIndex(
-        //   (product) => product.id === this.id
-        // );
-        // products[existingProductIndex] = this;
-      } else {
-        const cart = {
-          ...this,
-          id: (carts.length + 1).toString(),
-          timestamp: Date.now(),
-        };
+      const cart = {
+        ...this,
+        id: (Math.floor(Math.random() * (100000 - 1 + 1)) + 1).toString(),
+        timestamp: Date.now(),
+      };
 
-        carts.push(cart);
-        console.log(cart.id);
-      }
+      carts.push(cart);
+      console.log(cart.id);
 
       await fs.writeFile(p, JSON.stringify(carts));
+
+      return cart.id;
     } catch (error) {
       console.log(error);
     }

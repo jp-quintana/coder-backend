@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { useCartContext } from '../../hooks/useCartContext';
 
 import Card from '../../components/Card';
 
@@ -15,9 +16,10 @@ const ProductCard = ({
   stock,
 }) => {
   const navigate = useNavigate();
+  const { id: cartId } = useCartContext();
 
   const handleAddToCart = async (e) => {
-    await fetch('/api/carrito/1/productos', {
+    await fetch(`/api/carrito/${cartId}/productos`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id }),

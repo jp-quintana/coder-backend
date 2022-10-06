@@ -5,11 +5,11 @@ exports.getCart = (req, res, next) => {
   console.log('hola');
 };
 
-exports.postAddCart = (req, res, next) => {
+exports.postAddCart = async (req, res, next) => {
   const cart = new Cart({});
-  cart.save();
+  const cartId = await cart.save();
 
-  res.json('Success');
+  res.json(cartId);
 };
 
 exports.deleteCart = (req, res, next) => {

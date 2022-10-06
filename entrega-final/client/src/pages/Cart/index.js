@@ -1,43 +1,38 @@
 import { useState, useEffect } from 'react';
+import { useCartContext } from '../../hooks/useCartContext';
 
 import CartItem from './CartItem';
 
 import styles from './index.module.css';
 
 const Cart = () => {
-  const [cartProducts, setCartProducts] = useState([]);
+  const { id: cartId, items, dispatch } = useCartContext();
   const [isPending, setIsPending] = useState(true);
 
   useEffect(() => {
-    const fetchCart = async () => {
-      const response = await fetch('/api/carrito/1/productos');
-      const data = await response.json();
+    if (cartId) {
+      const fetchCart = async () => {
+        const response = await fetch(`api/carrito/${cartId}/productos`);
+        const data = await response.json();
 
-      setCartProducts(data);
-      setIsPending(false);
-    };
+        dispatch({ type: 'UPDATE_CART', payload: data });
+        setIsPending(false);
+      };
 
-    fetchCart();
-  }, []);
-
-  const handleDeleteCartItem = (id) => {
-    const updatedCartProducts = cartProducts.filter(
-      (cartProduct) => cartProduct.id !== id
-    );
-
-    setCartProducts(updatedCartProducts);
-  };
+      fetchCart();
+    }
+  }, [cartId, dispatch]);
 
   return (
     <>
       <h1 className="page-title">Carrito</h1>
       {isPending && <p>Cargando carrito</p>}
-      {!isPending && cartProducts.length === 0 && (
+      {!isPending && items.length === 0 && (
         <p>No hay productos en el carrito...</p>
       )}
-      {cartProducts.length > 0 && (
+      {items.length > 0 && (
         <div className={styles.cart_container}>
-          {cartProducts.map((product) => {
+          {items.map((product) => {
             return (
               <CartItem
                 key={product.id}
@@ -50,7 +45,7 @@ const Cart = () => {
                 price={product.price}
                 stock={product.stock}
                 quantity={product.quantity}
-                onDelete={handleDeleteCartItem}
+                // onDelete={handleDeleteCartItem}
               />
             );
           })}

@@ -1,6 +1,5 @@
-// import { useEffect } from 'react';
-
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useCartContext } from './hooks/useCartContext';
 
 import Home from './pages/Home';
 import AdminProducts from './pages/AdminProducts';
@@ -13,25 +12,25 @@ import Nav from './components/Nav';
 import './App.css';
 
 const App = () => {
-  // useEffect(() => {
-  //   fetch('/api/carrito', { method: 'POST' });
-  // }, []);
+  const { cartIsReady } = useCartContext();
   return (
     <div>
-      <BrowserRouter>
-        <header>
-          <Nav />
-        </header>
-        <main>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/productos/admin" element={<AdminProducts />} />
-            <Route path="/productos/admin/agregar" element={<AddProduct />} />
-            <Route path="/productos/admin/:id" element={<EditProduct />} />
-            <Route path="/carrito" element={<Cart />} />
-          </Routes>
-        </main>
-      </BrowserRouter>
+      {cartIsReady && (
+        <BrowserRouter>
+          <header>
+            <Nav />
+          </header>
+          <main>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/productos/admin" element={<AdminProducts />} />
+              <Route path="/productos/admin/agregar" element={<AddProduct />} />
+              <Route path="/productos/admin/:id" element={<EditProduct />} />
+              <Route path="/carrito" element={<Cart />} />
+            </Routes>
+          </main>
+        </BrowserRouter>
+      )}
     </div>
   );
 };
