@@ -51,7 +51,7 @@ class Cart {
       const cart = carts.find(
         (cart) => cartId.toString() === cart.id.toString()
       );
-      console.log(cart.products);
+
       return cart.products;
     } catch (error) {
       console.log(error);
@@ -86,6 +86,8 @@ class Cart {
         }
 
         await fs.writeFile(p, JSON.stringify(carts));
+        //TODO: CHECK 1
+        return updatedProduct;
       }
     } catch (error) {
       console.log(error);

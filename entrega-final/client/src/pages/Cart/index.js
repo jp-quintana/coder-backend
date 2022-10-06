@@ -9,10 +9,12 @@ import styles from './index.module.css';
 const Cart = () => {
   const navigate = useNavigate();
   const { id: cartId, items, dispatch } = useCartContext();
-  const [isPending, setIsPending] = useState(true);
+  const [isPending, setIsPending] = useState(false);
 
   useEffect(() => {
     if (cartId) {
+      setIsPending(true);
+
       const fetchCart = async () => {
         const response = await fetch(`/api/carrito/${cartId}/productos`);
         const data = await response.json();
@@ -25,8 +27,21 @@ const Cart = () => {
     }
   }, [cartId, dispatch]);
 
+  //TODO: CHECK 2
+  useEffect(() => {
+    if (cartId && items.length === 0) {
+      const deleteCart = async () => {
+        await fetch(`/api/carrito/${cartId}`, { method: 'DELETE' });
+        dispatch({ type: 'DELETE_CART' });
+      };
+
+      deleteCart();
+    }
+  }, [cartId, dispatch, items]);
+
   const handleDeleteCart = async () => {
     await fetch(`/api/carrito/${cartId}`, { method: 'DELETE' });
+
     dispatch({ type: 'DELETE_CART' });
 
     navigate('/');

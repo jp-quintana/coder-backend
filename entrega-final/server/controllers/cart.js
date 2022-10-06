@@ -44,8 +44,9 @@ exports.postAddItemToCart = async (req, res, next) => {
     return;
   }
 
-  Cart.addProduct(cartId, prodId);
-  res.json('Success');
+  await Cart.addProduct(cartId, prodId);
+  const updatedProducts = await Cart.fetchProducts(cartId);
+  res.json(updatedProducts);
 };
 
 exports.deleteCartItem = (req, res, next) => {

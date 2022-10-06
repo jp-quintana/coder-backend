@@ -10,19 +10,40 @@ const initialState = {
 
 const cartReducer = (state, action) => {
   switch (action.type) {
-    case 'LOAD_CART':
-      console.log('check', state);
-      return { ...state, id: action.payload, cartIsReady: true };
-    case 'UPDATE_CART':
+    case 'LOAD_CART_IN_STORAGE': {
+      return {
+        id: action.payload.id,
+        cartIsReady: true,
+        items: action.payload.items,
+      };
+    }
+    case 'NO_CART_IN_STORAGE': {
+      return {
+        ...state,
+        cartIsReady: true,
+      };
+    }
+    case 'CREATE_CART': {
+      localStorage.setItem('cart', action.payload);
+      return {
+        ...state,
+        id: action.payload,
+      };
+    }
+    case 'UPDATE_CART': {
       const items = action.payload;
       return { ...state, items };
-    case 'DELETE_CART':
-      return { ...initialState };
-    case 'DELETE_PRODUCT':
+    }
+    case 'DELETE_CART': {
+      localStorage.removeItem('cart');
+      return { ...initialState, cartIsReady: true };
+    }
+    case 'DELETE_PRODUCT': {
       const updatedItems = state.items.filter(
         (item) => item.id !== action.payload
       );
       return { ...state, items: updatedItems };
+    }
     default:
       return state;
   }
@@ -32,16 +53,22 @@ const CartProvider = ({ children }) => {
   const [state, dispatch] = useReducer(cartReducer, initialState);
 
   useEffect(() => {
-    if (!state.id) {
-      console.log('running');
+    const cartInStorageId = localStorage.getItem('cart');
+
+    if (cartInStorageId) {
       const controller = new AbortController();
       const fetchCart = async () => {
-        const response = await fetch('/api/carrito/', {
-          method: 'POST',
-          signal: controller.signal,
-        });
+        const response = await fetch(
+          `/api/carrito/${cartInStorageId}/productos`,
+          {
+            signal: controller.signal,
+          }
+        );
         const data = await response.json();
-        dispatch({ type: 'LOAD_CART', payload: data });
+        dispatch({
+          type: 'LOAD_CART_IN_STORAGE',
+          payload: { id: cartInStorageId, items: data },
+        });
       };
 
       fetchCart();
@@ -49,8 +76,10 @@ const CartProvider = ({ children }) => {
       return () => {
         controller.abort();
       };
+    } else {
+      dispatch({ type: 'NO_CART_IN_STORAGE' });
     }
-  }, [state.id]);
+  }, []);
 
   return (
     <CartContext.Provider value={{ ...state, dispatch }}>

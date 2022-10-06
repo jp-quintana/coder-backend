@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import { useCartContext } from '../../hooks/useCartContext';
 
 import Card from '../../components/Card';
@@ -15,17 +14,31 @@ const ProductCard = ({
   price,
   stock,
 }) => {
-  const navigate = useNavigate();
-  const { id: cartId } = useCartContext();
+  const { id: cartId, dispatch } = useCartContext();
 
   const handleAddToCart = async (e) => {
-    await fetch(`/api/carrito/${cartId}/productos`, {
+    let cId = cartId;
+    if (!cId) {
+      const response = await fetch(`/api/carrito`, {
+        method: 'POST',
+      });
+      cId = await response.json();
+
+      dispatch({ type: 'CREATE_CART', payload: cId });
+    }
+
+    const response = await fetch(`/api/carrito/${cId}/productos`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id }),
     });
 
-    navigate('/carrito');
+    //TODO: CHECK 1
+    const updatedItems = await response.json();
+
+    dispatch({ type: 'UPDATE_CART', payload: updatedItems });
+
+    // navigate('/carrito');
   };
 
   return (

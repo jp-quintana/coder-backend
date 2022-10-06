@@ -1,8 +1,15 @@
 import { NavLink, Link } from 'react-router-dom';
 
+import { useCartContext } from '../../hooks/useCartContext';
+
 import styles from './index.module.css';
 
 const Nav = () => {
+  const { items } = useCartContext();
+
+  let cartQuantity = 0;
+  items.forEach((item) => (cartQuantity += item.quantity));
+
   const navLinkStyles = styles.active;
 
   return (
@@ -51,7 +58,7 @@ const Nav = () => {
                 isActive ? navLinkStyles : undefined
               }
             >
-              Carrito
+              Carrito <span>({cartQuantity})</span>
             </NavLink>
           </li>
         </ul>

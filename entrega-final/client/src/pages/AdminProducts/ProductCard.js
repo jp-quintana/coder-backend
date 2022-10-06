@@ -1,5 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 
+import { useCartContext } from '../../hooks/useCartContext';
+
 import Card from '../../components/Card';
 
 import styles from './index.module.css';
@@ -15,11 +17,12 @@ const ProductCard = ({
   stock,
 }) => {
   const navigate = useNavigate();
+  const { dispatch } = useCartContext();
 
   const handleDelete = async () => {
     await fetch(`/api/productos/${id}`, { method: 'DELETE' });
 
-    navigate('/');
+    navigate('/carrito');
   };
 
   return (

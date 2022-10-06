@@ -98,8 +98,6 @@ class Product {
     try {
       let products = await getProductsFromFile(p);
 
-      await Cart.deleteProductInAllCarts(prodId);
-
       const productToDelete = products.find(
         (product) => prodId.toString() === product.id.toString()
       );
@@ -111,6 +109,8 @@ class Product {
       products = products.filter(
         (product) => prodId.toString() !== product.id.toString()
       );
+
+      await Cart.deleteProductInAllCarts(prodId);
 
       await fs.writeFile(p, JSON.stringify(products));
     } catch (error) {
