@@ -1,0 +1,251 @@
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+/* Remove default margin */
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+/* Set core root defaults */
+html:focus-within {
+  scroll-behavior: smooth;
+}
+
+/* Set core body defaults */
+body {
+  min-height: 100vh;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+  font-size: 1.6rem;
+}
+
+/* A elements that don't have a class get default styles */
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+}
+
+/* Make images easier to work with */
+img,
+picture {
+  max-width: 100%;
+  display: block;
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* Remove all animations, transitions and smooth scroll for people that prefer not to see them */
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+:root {
+  --heading-color: #444;
+  --text-color: #999;
+  --primary-color: #8d69f1;
+  --highlight-color: #d13267;
+  --bg-color: #f4f4f4;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  background: var(--bg-color);
+  color: var(--heading-color);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--heading-color);
+}
+
+ol,
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+main {
+  margin: 5rem auto;
+  max-width: 120rem;
+}
+
+.card {
+  margin-bottom: 10rem;
+}
+
+.page-title {
+  margin-bottom: 5rem;
+  text-align: center;
+}
+
+.card-title {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.nav ul {
+  max-width: 120rem;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  font-size: 2rem;
+}
+
+.nav .logo {
+  margin-right: auto;
+  font-weight: bold;
+  font-size: 2.4rem;
+}
+
+.nav a {
+  color: var(--heading-color);
+}
+
+.nav a.active {
+  font-weight: bold;
+}
+
+.form {
+  max-width: 60rem;
+  margin: 0 auto;
+}
+
+.form input {
+  width: 100%;
+}
+
+.form button {
+  margin-top: 3rem;
+}
+
+.products {
+  margin: 0 auto;
+  border-collapse: collapse;
+  border: 1px solid black;
+  min-width: 60rem;
+}
+
+.products tr {
+  display: grid;
+  grid-template-columns: 20% 20% 60%;
+}
+
+.products th {
+  text-align: left;
+  border: 1px solid black;
+}
+
+.products td {
+  border: 1px solid black;
+  word-wrap: break-word;
+}
+
+.no-products {
+  text-align: center;
+}
+
+.chat-container {
+  max-width: 100rem;
+  border: 0;
+  border-radius: 5px;
+  background: #fff;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.chat-header {
+  background: var(--heading-color);
+  color: #fff;
+  padding: 1.5rem;
+}
+
+.chat-main {
+  padding: 2rem;
+}
+
+.chat-messages {
+  max-height: 50rem;
+  overflow-y: scroll;
+  padding: 5rem;
+}
+
+.chat-messages .message {
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 5px;
+  background: #f4f4f4;
+  overflow-wrap: break-word;
+}
+
+.chat-messages .message .meta {
+  font-size: 1.5rem;
+  font-weight: bold;
+  opacity: 0.7;
+  margin-bottom: 0.7rem;
+}
+
+.chat-form-container {
+  padding: 2rem 3rem;
+}
+
+.chat-form-container label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.chat-form-container form {
+  display: grid;
+  grid-template-columns: 2fr 4fr 1fr;
+  gap: 1rem;
+}
+
+.chat-form-container input {
+  font-size: 1.6rem;
+  padding: 0.5rem;
+  height: 4rem;
+  flex: 1;
+}
