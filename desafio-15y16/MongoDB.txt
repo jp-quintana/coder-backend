@@ -1,0 +1,118 @@
+1) Agrego 10 docs con valores distintos a las colecciones mensajes y productos.
+
+  db.mensajes.insertMany([
+    {
+      user: 'juanquintana1996@gmail.com',
+      body: 'Hola',
+      time: new Date().toLocaleTimeString(),
+      date: new Date().toLocaleDateString(),
+    },
+    {
+      user: 'vaporoso@gmail.com',
+      body: 'rechazar',
+      time: new Date().toLocaleTimeString(),
+      date: new Date().toLocaleDateString(),
+    },
+    {
+      user: 'material@gmail.com',
+      body: 'perfecto',
+      time: new Date().toLocaleTimeString(),
+      date: new Date().toLocaleDateString(),
+    },
+    {
+      user: 'sellar@gmail.com',
+      body: 'roca',
+      time: new Date().toLocaleTimeString(),
+      date: new Date().toLocaleDateString(),
+    },
+    {
+      user: 'carburante@gmail.com',
+      body: 'asentar',
+      time: new Date().toLocaleTimeString(),
+      date: new Date().toLocaleDateString(),
+    },
+  ]);
+
+  db.productos.insertMany([
+    {
+      title: 'Libro 1',
+      price: 1000,
+      thumbnail:
+        'https://www.publicdomainpictures.net/pictures/10000/velka/1-1210009435EGmE.jpg',
+    },
+    {
+      title: 'Libro 2',
+      price: 2000,
+      thumbnail:
+        'https://www.publicdomainpictures.net/pictures/10000/velka/1-1210009435EGmE.jpg',
+    },
+    {
+      title: 'Libro 3',
+      price: 3000,
+      thumbnail:
+        'https://www.publicdomainpictures.net/pictures/10000/velka/1-1210009435EGmE.jpg',
+    },
+    {
+      title: 'Libro 4',
+      price: 4000,
+      thumbnail:
+        'https://www.publicdomainpictures.net/pictures/10000/velka/1-1210009435EGmE.jpg',
+    },
+    {
+      title: 'Libro 5',
+      price: 5000,
+      thumbnail:
+        'https://www.publicdomainpictures.net/pictures/10000/velka/1-1210009435EGmE.jpg',
+    },
+  ]);
+
+3) Listo los documentos de cada colección.
+
+  db.mensajes.find();
+  db.productos.find();
+
+4) Muestro cantidad de documentos en cada colección.
+
+  db.mensajes.countDocuments();
+  db.productos.countDocuments();
+
+5) CRUD
+
+  a) Agrego un producto en la colleción de productos.
+
+    db.productos.insertOne({
+      title: 'Libro 1 Edicion Limitada',
+      price: 1499,
+      thumbnail:
+        'https://www.publicdomainpictures.net/pictures/10000/velka/1-1210009435EGmE.jpg',
+    });
+
+  b) Realizo consulta por nombre de producto específico.
+
+    i) Precio menor a 1000
+      db.productos.find({ price: { $lt: 1000 } });
+
+    ii) Precio entre 1000 y 3000.
+     db.productos.find({ price: { $gte: 1000, $lte: 3000 } });
+
+    iii) Precio mayor a 3000.
+      db.productos.find({ price: { $gt: 3000 } });
+
+    iv) Solo el nombre del tercer producto más barato.
+      db.productos.find({}, { title: 1, _id: 0 }).sort({ price: 1 }).skip(2).limit(1);
+
+  c) Actualizo todos los productos y agrego el campo stock con un valor de 100 en cada uno.
+
+    db.productos.updateMany({}, { $set: { stock: 100 } });
+
+  d) Cambio el stock a 0 de los productos con precios mayores a 4000 pesos.
+
+    db.productos.updateMany({ price: { $gt: 4000 } }, { $set: { stock: 0 } });
+
+  e) Borro los productos con precio menor a los 1000 pesos.
+
+    db.productos.deleteMany({ price: { $lt: 1000 } });
+
+6) Creo usuario con clave que solo pueda leer la base de datos.
+
+  db.createUser({ user: 'pepe', pwd: 'asd456', roles: ['read'] });
