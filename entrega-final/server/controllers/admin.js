@@ -1,11 +1,6 @@
-const Product = require('../models/product');
+const ProductMongoDAO = require('../daos/ProductMongoDAO');
 
-// exports.getAllProducts = async (req, res, next) => {
-//   if (!req.user.auth) {
-//     res.json({ error: 'Error: Ruta no autorizada.' });
-//     return;
-//   }
-// };
+const productDb = new ProductMongoDAO();
 
 exports.postAddProduct = async (req, res, next) => {
   if (!req.user.auth) {
@@ -13,14 +8,9 @@ exports.postAddProduct = async (req, res, next) => {
     return;
   }
 
-  const title = req.body.title;
-  const description = req.body.description;
-  const sku = req.body.sku;
-  const thumbnail = req.body.thumbnail;
-  const price = req.body.price;
-  const stock = req.body.stock;
+  const { title, description, sku, thumbnail, price, stock } = req.body;
 
-  const product = new Product({
+  await productDb.create({
     title,
     description,
     sku,
@@ -29,7 +19,6 @@ exports.postAddProduct = async (req, res, next) => {
     stock,
   });
 
-  await product.save();
   res.json('Success');
 };
 
@@ -38,18 +27,11 @@ exports.putEditProduct = async (req, res, next) => {
     res.json({ error: 'Error: Ruta no autorizada.' });
     return;
   }
-  const id = req.params.id;
-  const timestamp = req.body.timestamp;
-  const title = req.body.title;
-  const description = req.body.description;
-  const sku = req.body.sku;
-  const thumbnail = req.body.thumbnail;
-  const price = req.body.price;
-  const stock = req.body.stock;
+  const { id } = req.params;
 
-  const product = new Product({
-    id,
-    timestamp,
+  const { title, description, sku, thumbnail, price, stock } = req.body;
+
+  await productDb.update(id, {
     title,
     description,
     sku,
@@ -58,7 +40,6 @@ exports.putEditProduct = async (req, res, next) => {
     stock,
   });
 
-  await product.save();
   res.json('Success');
 };
 
@@ -68,8 +49,8 @@ exports.deleteProduct = async (req, res, next) => {
     return;
   }
 
-  const id = req.params.id;
+  const { id } = req.params;
 
-  await Product.delete(id);
+  await productDb.delete(id);
   res.json('Success');
 };

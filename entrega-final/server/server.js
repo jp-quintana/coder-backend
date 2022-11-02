@@ -1,4 +1,6 @@
 const path = require('path');
+const { dbConnect } = require('./db/mongoConfig');
+// const { dbConnect } = require('./db/firebaseConfig');
 
 const express = require('express');
 
@@ -34,6 +36,11 @@ app.use('*', (req, res, next) => {
 
 const PORT = process.env.PORT || 8080;
 
-app.listen(PORT, () => {
-  console.log('listening on port 8080');
-});
+dbConnect()
+  .then(() => {
+    app.listen(PORT);
+    console.log('listening on port 8080');
+  })
+  .catch((err) => {
+    console.log(err);
+  });

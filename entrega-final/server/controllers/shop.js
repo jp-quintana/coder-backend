@@ -1,13 +1,14 @@
-const Product = require('../models/product');
+const ProductMongoDAO = require('../daos/ProductMongoDAO');
+
+const productDb = new ProductMongoDAO();
 
 exports.getAllProducts = async (req, res, next) => {
-  const prodId = req.params.id;
-  if (prodId) {
-    const product = await Product.fetchById(prodId);
+  const { id } = req.params;
+  if (id) {
+    const product = await productDb.fetchById(id);
     res.json(product);
   } else {
-    const products = await Product.fetchAll();
-    console.log(products);
+    const products = await productDb.fetchAll();
     res.json(products);
   }
 };

@@ -1,10 +1,6 @@
 const Cart = require('../models/cart');
 const Product = require('../models/product');
 
-exports.getCart = (req, res, next) => {
-  console.log('hola');
-};
-
 exports.postAddCart = async (req, res, next) => {
   const cart = new Cart({});
   const cartId = await cart.save();
