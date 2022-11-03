@@ -1,6 +1,8 @@
 const ProductMongoDAO = require('../daos/ProductMongoDAO');
+const CartMongoDAO = require('../daos/CartMongoDAO');
 
 const productDb = new ProductMongoDAO();
+const cartDb = new CartMongoDAO();
 
 exports.postAddProduct = async (req, res, next) => {
   if (!req.user.auth) {
@@ -50,6 +52,8 @@ exports.deleteProduct = async (req, res, next) => {
   }
 
   const { id } = req.params;
+
+  await cartDb.deleteInAllDocs(id);
 
   await productDb.delete(id);
   res.json('Success');

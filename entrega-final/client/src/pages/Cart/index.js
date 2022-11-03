@@ -47,6 +47,8 @@ const Cart = () => {
     navigate('/');
   };
 
+  console.log(items);
+
   return (
     <>
       <h1 className="page-title">Carrito</h1>
@@ -59,9 +61,10 @@ const Cart = () => {
           {items.map((product) => {
             return (
               <CartItem
-                key={product.id}
+                //TODO: FIX VIRTUAL
+                key={product.id || product.productId}
                 id={product.id}
-                timestamp={product.timestamp}
+                // timestamp={product.timestamp}
                 title={product.title}
                 description={product.description}
                 sku={product.sku}

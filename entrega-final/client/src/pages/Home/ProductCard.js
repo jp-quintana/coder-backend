@@ -6,7 +6,7 @@ import styles from './index.module.css';
 
 const ProductCard = ({
   id,
-  timestamp,
+  // timestamp,
   title,
   description,
   sku,

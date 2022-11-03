@@ -8,7 +8,7 @@ import styles from './index.module.css';
 
 const ProductCard = ({
   id,
-  timestamp,
+  // timestamp,
   title,
   description,
   sku,
@@ -25,7 +25,7 @@ const ProductCard = ({
     const response = await fetch(`/api/carrito/${cartId}/productos`);
     const updatedItems = await response.json();
 
-    console.log('error', updatedItems);
+    console.log(updatedItems);
 
     dispatch({ type: 'UPDATE_CART', payload: updatedItems });
 

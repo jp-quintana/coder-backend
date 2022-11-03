@@ -32,7 +32,7 @@ const AdminProducts = () => {
             <ProductCard
               key={product.id}
               id={product.id}
-              timestamp={product.timestamp}
+              // timestamp={product.timestamp}
               title={product.title}
               description={product.description}
               sku={product.sku}

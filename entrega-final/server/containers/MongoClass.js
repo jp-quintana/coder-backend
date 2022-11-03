@@ -24,6 +24,13 @@ class MongoClass {
   async delete(id) {
     return await this.collection.findByIdAndRemove(id);
   }
+
+  async deleteInAllDocs(id) {
+    return await this.collection.updateMany(
+      {},
+      { $pull: { products: { productId: mongoose.Types.ObjectId(id) } } }
+    );
+  }
 }
 
 module.exports = MongoClass;
