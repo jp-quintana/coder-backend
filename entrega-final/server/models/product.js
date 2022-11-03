@@ -39,7 +39,7 @@ class Product {
     this.stock = stock;
   }
 
-  async save() {
+  async create() {
     try {
       const products = await getProductsFromFile(p);
 
@@ -66,57 +66,57 @@ class Product {
     }
   }
 
-  static async fetchAll() {
-    try {
-      const products = await getProductsFromFile(p);
+  // static async fetchAll() {
+  //   try {
+  //     const products = await getProductsFromFile(p);
 
-      return products;
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  //     return products;
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
-  static async fetchById(prodId) {
-    try {
-      const products = await getProductsFromFile(p);
+  // static async fetchById(prodId) {
+  //   try {
+  //     const products = await getProductsFromFile(p);
 
-      const product = products.find(
-        (product) => prodId.toString() === product.id.toString()
-      );
+  //     const product = products.find(
+  //       (product) => prodId.toString() === product.id.toString()
+  //     );
 
-      if (!product) {
-        console.log({ error: 'producto no encontrado' });
-      } else {
-        return product;
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  //     if (!product) {
+  //       console.log({ error: 'producto no encontrado' });
+  //     } else {
+  //       return product;
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
-  static async delete(prodId) {
-    try {
-      let products = await getProductsFromFile(p);
+  // static async delete(prodId) {
+  //   try {
+  //     let products = await getProductsFromFile(p);
 
-      const productToDelete = products.find(
-        (product) => prodId.toString() === product.id.toString()
-      );
+  //     const productToDelete = products.find(
+  //       (product) => prodId.toString() === product.id.toString()
+  //     );
 
-      if (!productToDelete) {
-        throw new Error(`{ error: 'producto no encontrado' }`);
-      }
+  //     if (!productToDelete) {
+  //       throw new Error(`{ error: 'producto no encontrado' }`);
+  //     }
 
-      products = products.filter(
-        (product) => prodId.toString() !== product.id.toString()
-      );
+  //     products = products.filter(
+  //       (product) => prodId.toString() !== product.id.toString()
+  //     );
 
-      await Cart.deleteProductInAllCarts(prodId);
+  //     await Cart.deleteProductInAllCarts(prodId);
 
-      await fs.writeFile(p, JSON.stringify(products));
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  //     await fs.writeFile(p, JSON.stringify(products));
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 }
 
 module.exports = Product;

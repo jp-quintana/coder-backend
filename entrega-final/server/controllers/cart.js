@@ -1,17 +1,19 @@
 const Cart = require('../models/cart');
 const Product = require('../models/product');
 
-const CartMongoDao = require('../daos/CartMongoDao');
-const ProductMongoDao = require('../daos/ProductMongoDao');
+const CartMongoDao = require('../daos/cart/cartMongoDAO');
+const ProductMongoDao = require('../daos/product/productMongoDAO');
+
+const ProductFileDAO = require('../daos/product/productFileDAO');
+const CartFileDAO = require('../daos/cart/cartFileDao');
 
 const cartDb = new CartMongoDao();
 const productDb = new ProductMongoDao();
 
-exports.postAddCart = async (req, res, next) => {
-  // const cart = new Cart({});
-  // const cartId = await cart.save();
+// const cartDb = new CartFileDAO();
+// const productDb = new ProductFileDAO();
 
-  // res.json(cartId);
+exports.postAddCart = async (req, res, next) => {
   const cart = await cartDb.create({});
 
   const { id } = cart;
@@ -31,10 +33,9 @@ exports.getCartItems = async (req, res, next) => {
 
   const { products: productsInCart } = await cartDb.fetchById(cartId);
 
-  // res.json(productsInCart);
-
   const products = [];
 
+  // Mongoose
   for (const product of productsInCart) {
     const { productId } = product;
     const productDetails = await productDb.fetchById(productId);
@@ -45,6 +46,16 @@ exports.getCartItems = async (req, res, next) => {
     });
   }
 
+  // fs
+  // for (const product of productsInCart) {
+  //   const { id } = product;
+  //   const productDetails = await productDb.fetchById(id);
+  //   products.push({
+  //     ...productDetails,
+  //     quantity: product.quantity,
+  //   });
+  // }
+
   res.json(products);
 };
 
@@ -52,22 +63,20 @@ exports.postAddItemToCart = async (req, res, next) => {
   const cartId = req.params.id;
   const prodId = req.body.id;
 
-  // const product = await Product.fetchById(prodId);
   const product = await productDb.fetchById(prodId);
-  console.log(product);
 
   if (!product) {
     res.json({ error: 'Producto no existe!' });
     return;
   }
 
+  // Mongoose
   const cart = await cartDb.fetchById(cartId);
-
-  console.log('cart', cart);
-
   const { products } = await cart.addProduct(product);
 
-  console.log('products', products);
+  // fs
+  // const { products } = await cartDb.addProduct(cartId, prodId);
+
   res.json(products);
 };
 
@@ -75,11 +84,12 @@ exports.deleteCartItem = async (req, res, next) => {
   const cartId = req.params.id;
   const prodId = req.params.id_prod;
 
+  // Mongoose
   const cart = await cartDb.fetchById(cartId);
+  await cart.deleteProduct(prodId);
 
-  const { products } = await cart.deleteProduct(prodId);
-
-  console.log(products);
+  // fs
+  // await cartDb.deleteProduct(cartId, prodId);
 
   res.json('Success');
 };

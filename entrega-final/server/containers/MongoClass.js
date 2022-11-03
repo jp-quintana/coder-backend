@@ -25,6 +25,7 @@ class MongoClass {
     return await this.collection.findByIdAndRemove(id);
   }
 
+  // TODO: ver como pasar esto al Model de Cart
   async deleteInAllDocs(id) {
     return await this.collection.updateMany(
       {},

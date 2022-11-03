@@ -1,8 +1,14 @@
-const ProductMongoDAO = require('../daos/ProductMongoDAO');
-const CartMongoDAO = require('../daos/CartMongoDAO');
+const ProductMongoDAO = require('../daos/product/productMongoDAO');
+const CartMongoDAO = require('../daos/cart/cartMongoDAO');
+
+const ProductFileDAO = require('../daos/product/productFileDAO');
+const CartFileDAO = require('../daos/cart/cartFileDAO');
 
 const productDb = new ProductMongoDAO();
 const cartDb = new CartMongoDAO();
+
+// const productDb = new ProductFileDAO();
+// const cartDb = new CartFileDAO();
 
 exports.postAddProduct = async (req, res, next) => {
   if (!req.user.auth) {
@@ -56,5 +62,6 @@ exports.deleteProduct = async (req, res, next) => {
   await cartDb.deleteInAllDocs(id);
 
   await productDb.delete(id);
+
   res.json('Success');
 };

@@ -19,16 +19,13 @@ const EditProduct = () => {
     stock: 0,
   });
 
-  const [productTimestamp, setProductTimestamp] = useState('');
-
   useEffect(() => {
     const fetchProduct = async () => {
       const response = await fetch(`/api/productos/${urlId}`);
-      const { timestamp, title, description, sku, thumbnail, price, stock } =
+      const { title, description, sku, thumbnail, price, stock } =
         await response.json();
 
       setUserInput({ title, description, sku, thumbnail, price, stock });
-      setProductTimestamp(timestamp);
     };
 
     fetchProduct();
@@ -73,7 +70,7 @@ const EditProduct = () => {
       await fetch(`/api/productos/${urlId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...userInput, timestamp: productTimestamp }),
+        body: JSON.stringify({ ...userInput }),
       });
       //   const data = await response.json();
 

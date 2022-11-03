@@ -12,7 +12,8 @@ import Nav from './components/Nav';
 import './App.css';
 
 const App = () => {
-  const { cartIsReady } = useCartContext();
+  const { cartIsReady, id } = useCartContext();
+  console.log(id);
   return (
     <div>
       {cartIsReady && (
