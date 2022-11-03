@@ -7,11 +7,17 @@ const ProductMongoDao = require('../daos/product/productMongoDAO');
 const ProductFileDAO = require('../daos/product/productFileDAO');
 const CartFileDAO = require('../daos/cart/cartFileDao');
 
+const ProductFirebaseDAO = require('../daos/product/productFirebaseDAO');
+const CartFirebaseDAO = require('../daos/cart/cartFirebaseDao');
+
 const cartDb = new CartMongoDao();
 const productDb = new ProductMongoDao();
 
 // const cartDb = new CartFileDAO();
 // const productDb = new ProductFileDAO();
+
+// const cartDb = new CartFirebaseDAO();
+// const productDb = new ProductFirebaseDAO();
 
 exports.postAddCart = async (req, res, next) => {
   const cart = await cartDb.create({});
@@ -46,7 +52,7 @@ exports.getCartItems = async (req, res, next) => {
     });
   }
 
-  // fs
+  // // fs && Firebase
   // for (const product of productsInCart) {
   //   const { id } = product;
   //   const productDetails = await productDb.fetchById(id);
@@ -63,6 +69,7 @@ exports.postAddItemToCart = async (req, res, next) => {
   const cartId = req.params.id;
   const prodId = req.body.id;
 
+  // Mongoose
   const product = await productDb.fetchById(prodId);
 
   if (!product) {
@@ -70,11 +77,10 @@ exports.postAddItemToCart = async (req, res, next) => {
     return;
   }
 
-  // Mongoose
   const cart = await cartDb.fetchById(cartId);
   const { products } = await cart.addProduct(product);
 
-  // fs
+  // // fs && Firebase
   // const { products } = await cartDb.addProduct(cartId, prodId);
 
   res.json(products);
@@ -88,7 +94,7 @@ exports.deleteCartItem = async (req, res, next) => {
   const cart = await cartDb.fetchById(cartId);
   await cart.deleteProduct(prodId);
 
-  // fs
+  // // fs && Firebase
   // await cartDb.deleteProduct(cartId, prodId);
 
   res.json('Success');

@@ -65,7 +65,7 @@ class CartFileDAO extends FileClass {
       );
 
       if (cartIndex < 0) {
-        throw new Error(`{ error: 'producto no encontrado' }`);
+        throw new Error(`{ error: 'carrito no encontrado' }`);
       }
 
       const updatedProducts = carts[cartIndex].products.filter(
