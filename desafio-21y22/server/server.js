@@ -17,22 +17,28 @@ const io = new Server(server, {
 
 app.use('/api/productos-test', indexRoutes);
 
-const authorEntity = new schema.Entity('authors');
+const authorEntity = new schema.Entity(
+  'authors',
+  {},
+  {
+    idAtribute: 'email',
+  }
+);
 
-const contentEntity = new schema.Entity('content', {
+const textEntity = new schema.Entity('text', {
   author: authorEntity,
 });
 
 const messageEntity = new schema.Entity('messages', {
-  author: authorEntity,
-  post: [contentEntity],
+  posts: [textEntity],
 });
 
 io.on('connection', async (socket) => {
   socket.on('user_connect', async () => {
     const messages = await Message.fetchAll();
-    const chat = { id: 1000, post: messages };
-    const payload = await normalize(chat, messageEntity);
+    const chat = { id: 1000, posts: [...messages] };
+
+    const payload = normalize(chat, messageEntity);
     socket.emit('load_messages', payload);
   });
 
@@ -40,7 +46,10 @@ io.on('connection', async (socket) => {
     console.log('hola');
     const message = new Message(data);
     await message.save();
-    const payload = await Message.fetchAll();
+    const messages = await Message.fetchAll();
+    const chat = { id: 1000, posts: [...messages] };
+
+    const payload = normalize(chat, messageEntity);
     io.emit('receive_message', payload);
   });
 });

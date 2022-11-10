@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 
 import io from 'socket.io-client';
+import { denormalize, schema } from 'normalizr';
 
 import './App.css';
 
@@ -23,7 +24,6 @@ function App() {
     const fetchProducts = async () => {
       const response = await fetch('http://localhost:8080/api/productos-test');
       const data = await response.json();
-
       setProducts(data);
     };
 
@@ -36,15 +36,52 @@ function App() {
 
   useEffect(() => {
     if (!messages) {
-      socket.on('load_messages', (payload) => {
-        console.log(payload);
+      socket.on('load_messages', async (payload) => {
+        const authorEntity = new schema.Entity('authors');
+
+        const textEntity = new schema.Entity('text', {
+          author: authorEntity,
+        });
+
+        const messageEntity = new schema.Entity('messages', {
+          posts: [textEntity],
+        });
+
+        const deNormalize = await denormalize(
+          payload.result,
+          messageEntity,
+          payload.entities
+        );
+
+        const { posts } = deNormalize;
+
+        setMessages(posts);
       });
     }
   }, []);
 
   useEffect(() => {
-    socket.on('receive_message', (payload) => {
-      setMessages(payload);
+    console.log('runnin');
+    socket.on('receive_message', async (payload) => {
+      const authorEntity = new schema.Entity('authors');
+
+      const textEntity = new schema.Entity('text', {
+        author: authorEntity,
+      });
+
+      const messageEntity = new schema.Entity('messages', {
+        posts: [textEntity],
+      });
+
+      const deNormalize = await denormalize(
+        payload.result,
+        messageEntity,
+        payload.entities
+      );
+
+      const { posts } = deNormalize;
+
+      setMessages(posts);
     });
   }, []);
 
@@ -60,7 +97,7 @@ function App() {
         userName: userNameInput.current.value,
         avatar: avatarInput.current.value,
       },
-      content: messageInput.current.value,
+      text: messageInput.current.value,
     };
     await socket.emit('send_message', payload);
     setIsLoading(false);
@@ -108,9 +145,8 @@ function App() {
               <div id="chatMessages">
                 {messages &&
                   messages.map((message) => (
-                    <div key={message.time}>
-                      {message.author.userName}{' '}
-                      {`[${message.date} ${message.time}]`}: {message.content}
+                    <div key={message.id}>
+                      {message.author.userName}: {message.text}
                     </div>
                   ))}
               </div>

@@ -17,11 +17,12 @@ const getMessagesFromFile = async (path) => {
 };
 
 class Message {
-  constructor({ author, content }) {
+  constructor({ author, text }) {
+    this.id = Math.random();
     this.author = author;
-    this.content = content;
-    this.time = new Date().toLocaleTimeString();
-    this.date = new Date().toLocaleDateString();
+    this.text = text;
+    // this.time = new Date().toLocaleTimeString();
+    // this.date = new Date().toLocaleDateString();
   }
 
   async save() {
