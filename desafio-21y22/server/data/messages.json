@@ -1,0 +1,67 @@
+[
+  {
+    "author": {
+      "id": "juanquintana1996@gmail.com",
+      "name": "Juan",
+      "lastName": "Quintana",
+      "age": "26",
+      "userName": "jpquintana",
+      "avatar": "http://localhost:3000/"
+    },
+    "content": "Hola",
+    "time": "22:17:06",
+    "date": "9/11/2022"
+  },
+  {
+    "author": {
+      "id": "juanquintana1996@gmail.com",
+      "name": "Juan",
+      "lastName": "Quintana",
+      "age": "26",
+      "userName": "jpquintana",
+      "avatar": "http://localhost:3000/"
+    },
+    "content": "Hola",
+    "time": "22:17:15",
+    "date": "9/11/2022"
+  },
+  {
+    "author": {
+      "id": "juanquintana1996@gmail.com",
+      "name": "Juan",
+      "lastName": "Quintana",
+      "age": "26",
+      "userName": "jpquintana",
+      "avatar": "http://localhost:3000/"
+    },
+    "content": "Hola",
+    "time": "22:17:48",
+    "date": "9/11/2022"
+  },
+  {
+    "author": {
+      "id": "prueba@gmail.com",
+      "name": "prueba",
+      "lastName": "prueba",
+      "age": "99",
+      "userName": "prueba",
+      "avatar": "http://localhost:3000/"
+    },
+    "content": "prueba",
+    "time": "22:18:30",
+    "date": "9/11/2022"
+  },
+  {
+    "author": {
+      "id": "juanquintana1996@gmail.com",
+      "name": "Juan",
+      "lastName": "Quintana",
+      "age": "26",
+      "userName": "jpquintana",
+      "avatar": "http://localhost:3000/"
+    },
+    "content": "Hola",
+    "time": "22:27:01",
+    "date": "9/11/2022"
+  }
+]
