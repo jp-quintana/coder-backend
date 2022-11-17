@@ -1,21 +1,23 @@
-import { useState, useReducer, useEffect } from 'react';
+import { useReducer, useEffect } from 'react';
 
 import { AuthContext } from './auth-context';
 
 const initialState = {
   user: null,
+  authIsReady: false,
 };
 
-const authReducer = (action, state) => {
+const authReducer = (state, action) => {
   switch (action.type) {
     case 'LOAD_USER': {
-      return { user: action.payload };
+      return { user: action.payload, authIsReady: true };
     }
     case 'LOGIN': {
-      return { user: action.payload };
+      console.log('running');
+      return { ...state, user: action.payload };
     }
     case 'LOGOUT': {
-      return { initialState };
+      return { ...state, user: null };
     }
     default: {
       return state;
@@ -25,29 +27,22 @@ const authReducer = (action, state) => {
 
 const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchUser = async () => {
-      const response = await fetch('/session', {
-        method: 'GET',
-        credentials: 'include',
-      });
-      console.log(response);
-      const data = await response.json();
-
-      console.log(data);
-
-      dispatch({ type: 'LOAD_USER', payload: data });
-      setIsLoading(false);
+      const response = await fetch('/session', { credentials: 'include' });
+      const { name } = await response.json();
+      dispatch({ type: 'LOAD_USER', payload: name });
     };
 
     fetchUser();
   }, []);
 
+  console.log(state);
+
   return (
     <AuthContext.Provider value={{ ...state, dispatch }}>
-      {!isLoading && children}
+      {children}
     </AuthContext.Provider>
   );
 };

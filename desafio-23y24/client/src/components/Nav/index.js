@@ -16,11 +16,9 @@ const Nav = () => {
         )}
         {user && (
           <>
-            <li className="greeting">
-              <Link to="/login">Login</Link>
-            </li>
+            <li className="greeting">Bienvenido {user}</li>
             <li className="logout">
-              <Link to="/login">Logout</Link>
+              <Link to="/logout">Logout</Link>
             </li>
           </>
         )}

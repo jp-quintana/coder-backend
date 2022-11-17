@@ -18,7 +18,7 @@ body {
   font-weight: 400;
   color: #000;
   font-size: 1.6rem;
-  line-height: 1.5;
+  line-height: normal;
 }
 
 ul {
@@ -48,6 +48,15 @@ a {
   align-self: center;
 }
 
+.section {
+  padding-top: 2rem;
+}
+
+.page-title {
+  font-size: 3rem;
+  text-align: center;
+}
+
 .button:hover {
   cursor: pointer;
 }
@@ -62,6 +71,7 @@ a {
 .nav ul {
   display: flex;
   align-items: center;
+  gap: 2rem;
 }
 
 .logo {
@@ -69,12 +79,13 @@ a {
   font-size: 2rem;
 }
 
-.login {
+.login,
+.greeting {
   margin-left: auto;
 }
 
-.login-section {
-  padding-top: 2rem;
+.greeting {
+  font-weight: bold;
 }
 
 .login-form {
@@ -90,5 +101,4 @@ a {
   padding: 1rem;
   border-radius: 1rem;
   border: 1px solid #ccc;
-
 }

@@ -16,12 +16,12 @@ app.use(
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// app.use(cookieParser());
+app.use(cookieParser());
 app.use(
   session({
     secret: 'mongoKey',
-    resave: true,
-    saveUninitialized: true,
+    resave: false,
+    saveUninitialized: false,
     store: MongoStore.create({
       mongoUrl: '',
       mongoOptions: advancedOptions,
@@ -31,17 +31,25 @@ app.use(
 );
 
 app.get('/session', (req, res, next) => {
-  res.json(req.session.name);
+  res.json({ name: req.session.name });
 });
 
 app.post('/session', async (req, res, next) => {
   try {
-    console.log('Working');
     const { name } = req.body;
     req.session.name = name;
-    res.json(req.session.name);
+    res.json({ name: req.session.name });
 
     console.log(req.session.id);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+app.delete('/session', async (req, res, next) => {
+  try {
+    req.session.destroy(function () {});
+    res.json('Session destroyed');
   } catch (err) {
     console.log(err);
   }

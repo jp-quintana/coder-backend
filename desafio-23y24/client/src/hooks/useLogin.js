@@ -7,22 +7,22 @@ export const useLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const login = async (name) => {
-    console.log(name);
+  const login = async (userName) => {
     setError(null);
     setIsLoading(true);
     try {
       const response = await fetch('/session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(name),
+        body: JSON.stringify(userName),
         credentials: 'include',
       });
-      const data = await response.json();
-
-      dispatch({ type: 'LOGIN', payload: data });
+      const { name } = await response.json();
+      console.log(name);
+      dispatch({ type: 'LOGIN', payload: name });
       setIsLoading(false);
     } catch (err) {
+      console.log(err);
       setError(err);
       setIsLoading(false);
     }
