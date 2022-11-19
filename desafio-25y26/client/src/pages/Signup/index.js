@@ -2,11 +2,11 @@ import { Link } from 'react-router-dom';
 
 import styles from './index.module.css';
 
-const Login = () => {
+const Signup = () => {
   return (
     <section>
       <div className="main-container">
-        <h1 className={styles.page_title}>Login</h1>
+        <h1 className={styles.page_title}>Signup</h1>
         <form className={styles.form}>
           <h2>Ingresá tus datos:</h2>
           <label>
@@ -19,9 +19,9 @@ const Login = () => {
           </label>
           <button className={styles.button}>Ingresar</button>
           <p>
-            No tenés cuenta?{' '}
-            <Link to="/signup" className={styles.signup}>
-              Registrate acá!
+            Ya tenés cuenta?{' '}
+            <Link to="/login" className={styles.signup}>
+              Ingresá acá!
             </Link>
           </p>
         </form>
@@ -30,4 +30,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;

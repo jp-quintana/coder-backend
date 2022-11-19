@@ -1,7 +1,11 @@
 import styles from './index.module.css';
 
 const Home = () => {
-  return <div className="hola">Home</div>;
+  return (
+    <section>
+      <h1 className={styles.page_title}>Home</h1>
+    </section>
+  );
 };
 
 export default Home;
