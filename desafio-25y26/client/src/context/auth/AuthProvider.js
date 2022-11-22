@@ -28,7 +28,19 @@ const authReducer = (state, action) => {
 const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const fetchUser = async () => {
+      const response = await fetch('http://localhost:8080', {
+        credentials: 'include',
+      });
+
+      const data = await response.json();
+
+      dispatch({ type: 'LOAD_USER', payload: data.email });
+    };
+
+    fetchUser();
+  }, []);
 
   return (
     <AuthContext.Provider value={{ ...state, dispatch }}>
