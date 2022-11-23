@@ -2,9 +2,9 @@ const User = require('../models/user');
 const { generatePassword } = require('../utils/password');
 
 exports.getUser = (req, res, next) => {
-  // console.log(req.session.passport.user.username);
-  // TODO: VER ESTO NO MAS
-  res.json({ email: req.session.passport.user.username });
+  if (req.user.username) {
+    res.json({ email: req.user.username });
+  }
 };
 
 exports.postLogin = async (req, res, next) => {

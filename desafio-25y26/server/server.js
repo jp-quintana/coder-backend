@@ -25,6 +25,7 @@ app.use(
     saveUninitialized: false,
     resave: false,
     secret: 'keySession',
+    rolling: true,
     store: MongoStore.create({
       mongoUrl: process.env.CONNECTION_STRING,
       mongoOptions: advancedOptions,
