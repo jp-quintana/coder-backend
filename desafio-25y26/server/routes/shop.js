@@ -5,7 +5,7 @@ const shopControllers = require('../controllers/shop');
 
 const router = express.Router();
 
-router.get('/', shopControllers.getUser);
+router.get('/user', shopControllers.getUser);
 
 router.post(
   '/login',
@@ -14,5 +14,7 @@ router.post(
 );
 
 router.post('/signup', shopControllers.postSignup);
+
+router.delete('/session', shopControllers.deleteSession);
 
 module.exports = router;

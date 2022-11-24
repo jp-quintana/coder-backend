@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(
   session({
     saveUninitialized: false,
-    resave: false,
+    resave: true,
     secret: 'keySession',
     rolling: true,
     store: MongoStore.create({

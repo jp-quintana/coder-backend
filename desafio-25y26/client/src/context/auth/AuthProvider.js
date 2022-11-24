@@ -30,11 +30,16 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const response = await fetch('http://localhost:8080', {
+      const response = await fetch('/user', {
         credentials: 'include',
       });
 
       const data = await response.json();
+
+      if (!data.email) {
+        dispatch({ type: 'LOAD_USER', payload: null });
+        return;
+      }
 
       dispatch({ type: 'LOAD_USER', payload: data.email });
     };

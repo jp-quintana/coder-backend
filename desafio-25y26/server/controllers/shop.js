@@ -2,8 +2,10 @@ const User = require('../models/user');
 const { generatePassword } = require('../utils/password');
 
 exports.getUser = (req, res, next) => {
-  if (req.user.username) {
+  if (req.user) {
     res.json({ email: req.user.username });
+  } else {
+    res.json('No user found');
   }
 };
 
@@ -47,5 +49,21 @@ exports.postSignup = async (req, res, next) => {
   } catch (err) {
     console.log(err);
     next(new Error('El usuario ya existe'));
+  }
+};
+
+exports.deleteSession = async (req, res, next) => {
+  try {
+    // req.logut(function () {});
+    req.session.destroy(function (err) {
+      if (!err) {
+        res
+          .status(200)
+          .clearCookie('connect.sid', { path: '/' })
+          .json({ status: 'Success' });
+      }
+    });
+  } catch (err) {
+    console.log(err);
   }
 };

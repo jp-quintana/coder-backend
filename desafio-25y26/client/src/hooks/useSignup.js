@@ -32,8 +32,7 @@ export const useSignup = () => {
       setIsLoading(false);
     } catch (err) {
       setIsLoading(false);
-      console.log(err.message);
-      setError(err.message);
+      setError('Registración falló!');
     }
   };
   return { signup, isLoading, error };
