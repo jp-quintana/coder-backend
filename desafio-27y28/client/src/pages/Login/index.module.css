@@ -1,0 +1,50 @@
+.page_title {
+  margin-top: 2rem;
+}
+
+.form {
+  width: 40rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 3rem;
+  border: 1px solid #ccc;
+  border-radius: 1rem;
+}
+
+.form h2 {
+  text-align: center;
+}
+
+.form input {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 1rem;
+  border: 1px solid #ccc;
+}
+
+.button {
+  width: 40%;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  border: 1px solid #000;
+  border-radius: 1rem;
+  background-color: #000;
+  color: #fff;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.button:hover {
+  cursor: pointer;
+}
+
+.form p {
+  text-align: center;
+}
+
+.signup {
+  font-weight: 700;
+}
