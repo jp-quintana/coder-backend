@@ -7,6 +7,10 @@ const router = express.Router();
 
 router.get('/user', shopControllers.getUser);
 
+router.get('/info', shopControllers.getInfo);
+
+router.get('/random?', shopControllers.getRandom);
+
 router.post(
   '/login',
   passport.authenticate('local'),

@@ -1,3 +1,7 @@
+const path = require('path');
+const { fork } = require('child_process');
+const argv = require('minimist')(process.argv.slice(2));
+
 const User = require('../models/user');
 const { generatePassword } = require('../utils/password');
 
@@ -7,6 +11,34 @@ exports.getUser = (req, res, next) => {
   } else {
     res.json('No user found');
   }
+};
+
+exports.getInfo = (req, res, next) => {
+  // if (req.user) {
+  //   res.json({ email: req.user.username });
+  // } else {
+  //   res.json('No user found');
+  // }
+
+  res.json({
+    arguments: argv._,
+    platform: process.platform,
+    node_version: process.version,
+    memory: process.memoryUsage(),
+    path: path.dirname(__filename),
+    id: process.pid,
+    directory: process.cwd(),
+  });
+};
+
+exports.getRandom = (req, res, next) => {
+  console.log('working');
+  const number = req.query.cant;
+  const childProcess = fork('childProcesses/random.js', [number]);
+  childProcess.send(number);
+  childProcess.on('message', (result) => {
+    res.json({ number, result });
+  });
 };
 
 exports.postLogin = async (req, res, next) => {

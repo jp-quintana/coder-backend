@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+const minimist = require('minimist');
 const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
@@ -44,11 +45,11 @@ require('./middlewares/passport');
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use((req, res, next) => {
-  console.log(req.session);
-  console.log(req.user);
-  next();
-});
+// app.use((req, res, next) => {
+//   console.log(req.session);
+//   console.log(req.user);
+//   next();
+// });
 
 app.use('/', shopRoutes);
 
@@ -57,12 +58,12 @@ app.use((error, req, res, next) => {
   res.status(500).json({ error: error.message });
 });
 
-const PORT = process.env.PORT || 8080;
+const PORT = minimist(process.argv).port || 8080;
 
 connection()
   .then(() => {
     app.listen(PORT);
-    console.log('Listening on port 8080');
+    console.log('Listening on port ' + PORT);
   })
   .catch((err) => {
     console.log(err);
