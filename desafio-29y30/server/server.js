@@ -60,6 +60,8 @@ app.use((error, req, res, next) => {
   res.status(500).json({ error: error.message });
 });
 
+// INICIAR CON PM2 FORK => pm2 start server.js
+// INICIAR CON PM2 CLUSTER => pm2 start server.js "numberProcessors"
 // INICIAR CON FOREVER => forever start server.js "portNumber"
 const PORT = process.argv[2] || 8080;
 
