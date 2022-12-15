@@ -11,11 +11,34 @@ const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true };
 const cluster = require('cluster');
 const os = require('os');
 const argv = require('minimist')(process.argv.slice(2));
+const log4js = require('log4js');
 
 const shopRoutes = require('./routes/shop');
-const { info } = require('console');
 
 const app = express();
+
+log4js.configure({
+  appenders: {
+    myConsole: { type: 'console' },
+    myWarningsFile: { type: 'file', filename: 'warningsFile.log' },
+    myErrorsFile: { type: 'file', filename: 'errorsFile.log' },
+  },
+  categories: {
+    default: { appenders: ['myConsole'], level: 'trace' },
+    info: { appenders: ['myConsole'], level: 'info' },
+    warnings: { appenders: ['myConsole', 'myWarningsFile'], level: 'warn' },
+    errors: { appenders: ['myConsole', 'myErrorsFile'], level: 'error' },
+  },
+});
+
+const logInfo = log4js.getLogger('info');
+const logWarnings = log4js.getLogger('warnings');
+const logErrors = log4js.getLogger('errors');
+
+app.use((req, res, next) => {
+  logInfo.info(req.url, req.method);
+  next();
+});
 
 app.use(
   cors({
@@ -55,10 +78,11 @@ app.use(passport.session());
 //   next();
 // });
 
-app.use((error, req, res, next) => {
-  console.log(error);
-  res.status(500).json({ error: error.message });
-});
+// app.use((error, req, res, next) => {
+//   logErrors.error(error);
+
+//   res.status(500).json({ error: error.message });
+// });
 
 // INICIAR CON PM2 FORK => pm2 start server.js
 // INICIAR CON PM2 CLUSTER => pm2 start server.js "numberProcessors"
@@ -88,6 +112,17 @@ if (argv.modo === 'cluster') {
   }
 } else {
   app.use('/', shopRoutes);
+
+  app.use((req, res, next) => {
+    logWarnings.warn(req.url, req.method);
+    next();
+  });
+
+  app.use((error, req, res, next) => {
+    logErrors.error(error);
+
+    res.status(500).json({ error: error.message });
+  });
 
   connection()
     .then(() => {

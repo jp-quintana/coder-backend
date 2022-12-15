@@ -1,5 +1,6 @@
 const express = require('express');
 const passport = require('passport');
+const compression = require('compression');
 
 const shopControllers = require('../controllers/shop');
 
@@ -7,7 +8,7 @@ const router = express.Router();
 
 router.get('/user', shopControllers.getUser);
 
-router.get('/info', shopControllers.getInfo);
+router.get('/info', compression(), shopControllers.getInfo);
 
 router.get('/random?', shopControllers.getRandom);
 

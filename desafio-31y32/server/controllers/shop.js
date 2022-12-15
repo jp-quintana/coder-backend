@@ -16,25 +16,7 @@ exports.getUser = (req, res, next) => {
 };
 
 exports.getInfo = async (req, res, next) => {
-  // PRUEBA FUNCIONAMIENTO CLUSTER
-  // const calculateRandom = (number) => {
-  //   const result = {};
-
-  //   for (let i = 1; i <= number; i++) {
-  //     const randomNumber = Math.floor(Math.random() * (number - 1 + 1) + 1);
-  //     if (result[randomNumber]) {
-  //       result[randomNumber] = result[randomNumber] + 1;
-  //     } else {
-  //       result[randomNumber] = 1;
-  //     }
-  //   }
-
-  //   return result;
-  // };
-
-  // await calculateRandom(10000000);
-
-  res.json({
+  const info = {
     arguments: argv._,
     platform: process.platform,
     node_version: process.version,
@@ -43,23 +25,43 @@ exports.getInfo = async (req, res, next) => {
     id: process.pid,
     directory: process.cwd(),
     numProcessors: os.cpus().length,
-  });
+  };
+
+  console.log(info);
+
+  res.json(info);
 };
 
 exports.getRandom = (req, res, next) => {
-  console.log('working');
-  const number = req.query.cant;
-  const childProcess = fork('childProcesses/random.js', [number]);
-  childProcess.send(number);
-  childProcess.on('message', (result) => {
-    res.json({ number, result });
-  });
+  // const calculateRandom = (number) => {
+  //   const result = {};
+  //   for (let i = 1; i <= number; i++) {
+  //     const randomNumber = Math.floor(Math.random() * (number - 1 + 1) + 1);
+  //     if (result[randomNumber]) {
+  //       result[randomNumber] = result[randomNumber] + 1;
+  //     } else {
+  //       result[randomNumber] = 1;
+  //     }
+  //   }
+  //   return result;
+  // };
+  // await calculateRandom(10000000);
+  // const number = req.query.cant;
+  // const childProcess = fork('childProcesses/random.js', [number]);
+  // childProcess.send(number);
+  // childProcess.on('message', (result) => {
+  //   res.json({ number, result });
+  // });
 };
 
 exports.postLogin = async (req, res, next) => {
   try {
     const { email } = req.body;
     const user = await User.findOne({ username: email });
+
+    if (!user) {
+      throw new Error('User not found');
+    }
 
     res.json({ email: user.username });
   } catch (err) {
@@ -94,6 +96,7 @@ exports.postSignup = async (req, res, next) => {
       return res.json({ email: newUser.username });
     });
   } catch (err) {
+    console.log('pruebita');
     console.log(err);
     next(new Error('El usuario ya existe'));
   }

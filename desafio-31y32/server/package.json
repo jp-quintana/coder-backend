@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon server.js",
     "fork": "nodemon server.js --modo=fork",
-    "cluster": "nodemon server.js --modo=cluster"
+    "cluster": "nodemon server.js --modo=cluster",
+    "start": "0x server.js"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +21,7 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-session": "^1.17.3",
+    "log4js": "^6.7.1",
     "minimist": "^1.2.7",
     "mongoose": "^6.7.2",
     "passport": "^0.6.0",
