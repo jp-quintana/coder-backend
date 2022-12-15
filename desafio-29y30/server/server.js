@@ -63,7 +63,7 @@ app.use((error, req, res, next) => {
 // INICIAR CON PM2 FORK => pm2 start server.js
 // INICIAR CON PM2 CLUSTER => pm2 start server.js "numberProcessors"
 // INICIAR CON FOREVER => forever start server.js "portNumber"
-const PORT = process.argv[2] || 8080;
+const PORT = 8080;
 
 // INICIAR EN MODO FORK => npm run fork
 // INICIAR EN MODO CLUSTER => npm run cluster
@@ -88,6 +88,8 @@ if (argv.modo === 'cluster') {
   }
 } else {
   app.use('/', shopRoutes);
+
+  console.log('aca');
 
   connection()
     .then(() => {

@@ -13,13 +13,27 @@ const Nav = () => {
           <Link to="/">Logo</Link>
         </li>
         {!user && (
-          <li className={styles.login}>
-            <Link to="/login">Login</Link>
-          </li>
+          <>
+            <li className={styles.login}>
+              <Link to="/info">Info</Link>
+            </li>
+            <li className={styles.login}>
+              <Link to="/random">Random</Link>
+            </li>
+            <li className={styles.login}>
+              <Link to="/login">Login</Link>
+            </li>
+          </>
         )}
         {user && (
           <>
             <li className={styles.greeting}>Bienvenido, {user}</li>
+            <li className={styles.login}>
+              <Link to="/info">Info</Link>
+            </li>
+            <li className={styles.login}>
+              <Link to="/random">Random</Link>
+            </li>
             <li className={styles.logout}>
               <Link to="/logout">Logout</Link>
             </li>

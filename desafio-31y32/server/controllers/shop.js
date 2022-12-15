@@ -1,3 +1,9 @@
+const path = require('path');
+const cluster = require('cluster');
+const os = require('os');
+const { fork } = require('child_process');
+const argv = require('minimist')(process.argv.slice(2));
+
 const User = require('../models/user');
 const { generatePassword } = require('../utils/password');
 
@@ -7,6 +13,47 @@ exports.getUser = (req, res, next) => {
   } else {
     res.json('No user found');
   }
+};
+
+exports.getInfo = async (req, res, next) => {
+  // PRUEBA FUNCIONAMIENTO CLUSTER
+  // const calculateRandom = (number) => {
+  //   const result = {};
+
+  //   for (let i = 1; i <= number; i++) {
+  //     const randomNumber = Math.floor(Math.random() * (number - 1 + 1) + 1);
+  //     if (result[randomNumber]) {
+  //       result[randomNumber] = result[randomNumber] + 1;
+  //     } else {
+  //       result[randomNumber] = 1;
+  //     }
+  //   }
+
+  //   return result;
+  // };
+
+  // await calculateRandom(10000000);
+
+  res.json({
+    arguments: argv._,
+    platform: process.platform,
+    node_version: process.version,
+    memory: process.memoryUsage(),
+    path: path.dirname(__filename),
+    id: process.pid,
+    directory: process.cwd(),
+    numProcessors: os.cpus().length,
+  });
+};
+
+exports.getRandom = (req, res, next) => {
+  console.log('working');
+  const number = req.query.cant;
+  const childProcess = fork('childProcesses/random.js', [number]);
+  childProcess.send(number);
+  childProcess.on('message', (result) => {
+    res.json({ number, result });
+  });
 };
 
 exports.postLogin = async (req, res, next) => {

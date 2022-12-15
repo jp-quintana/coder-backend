@@ -5,6 +5,8 @@ import { useAuthContext } from './hooks/useAuthContext';
 import Layout from './setup/Layout';
 
 import Home from './pages/Home';
+import Info from './pages/Info';
+import Random from './pages/Random';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Logout from './pages/Logout';
@@ -21,6 +23,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
+            <Route path="/info" element={<Info />} />
+            <Route path="/random" element={<Random />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/logout" element={<Logout />} />
