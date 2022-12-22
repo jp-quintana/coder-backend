@@ -1,3 +1,0 @@
-[2022-12-15T11:09:56.872] [ERROR] errors - Error: El usuario ya existe
-    at exports.postSignup (C:\Users\stefano\Desktop\VARIOS\coder-backend-entrega\server\controllers\shop.js:103:10)
-    at processTicksAndRejections (node:internal/process/task_queues:96:5)
