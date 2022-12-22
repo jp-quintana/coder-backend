@@ -1,0 +1,24 @@
+.container div {
+  margin-top: 10rem;
+  display: flex;
+  justify-content: center;
+}
+
+.page_title {
+  margin-top: 2rem;
+}
+
+.error_message {
+  width: 50%;
+  margin: 0 auto;
+  text-align: center;
+  color: red;
+  border: red 1px solid;
+  background-color: salmon;
+  border-radius: 1rem;
+  padding: 1rem 2rem;
+}
+
+.back {
+  font-weight: bold;
+}
