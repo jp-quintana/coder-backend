@@ -1,5 +1,6 @@
 const UserMongoDAO = require('../daos/user/UserMongoDAO');
 const { generatePassword } = require('../utils/password');
+const { transporter } = require('../utils/mailer');
 
 const userDb = new UserMongoDAO();
 
@@ -56,6 +57,23 @@ exports.postSignup = async (req, res, next) => {
       id: newUser.id,
       username: newUser.username,
     };
+
+    const contentHTML = `
+      <h1>Informacion del usuario</h1>
+      <ul>
+        <li>
+          Nombre de usuario: ${user.username}
+        </li>
+      </ul>
+
+    `;
+
+    let info = await transporter.sendMail({
+      from: '"CODER API" <process.env.EMAIL_ADMIN>', // sender address
+      to: process.env.EMAIL_ADMIN, // list of receivers
+      subject: 'Registro Nuevo Usuario', // Subject line
+      html: contentHTML, // html body
+    });
 
     req.login(user, () => {
       return res.json({ email: newUser.username, id: newUser.id });
