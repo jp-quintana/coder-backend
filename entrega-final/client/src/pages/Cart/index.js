@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import { useCartContext } from '../../hooks/useCartContext';
+import { useAuthContext } from '../../hooks/useAuthContext';
+import { useCart } from '../../hooks/useCart';
 
 import CartItem from './CartItem';
 
@@ -8,55 +11,39 @@ import styles from './index.module.css';
 
 const Cart = () => {
   const navigate = useNavigate();
+
+  const { user } = useAuthContext();
   const { id: cartId, items, dispatch } = useCartContext();
-  const [isPending, setIsPending] = useState(false);
+  const { updateCart, deleteCart, isLoading, error } = useCart();
+
+  const [navigation, setNavigation] = useState(false);
 
   useEffect(() => {
-    if (cartId) {
-      setIsPending(true);
-
-      const fetchCart = async () => {
-        const response = await fetch(`/api/carrito/${cartId}/productos`);
-        const data = await response.json();
-
-        dispatch({ type: 'UPDATE_CART', payload: data });
-        setIsPending(false);
-      };
-
-      fetchCart();
-    }
-  }, [cartId, dispatch]);
-
-  //TODO: CHECK 2
-  useEffect(() => {
-    if (cartId && items.length === 0) {
-      const deleteCart = async () => {
-        await fetch(`/api/carrito/${cartId}`, { method: 'DELETE' });
-        dispatch({ type: 'DELETE_CART' });
-      };
-
-      deleteCart();
-    }
-  }, [cartId, dispatch, items]);
+    updateCart();
+  }, []);
 
   const handleDeleteCart = async () => {
-    await fetch(`/api/carrito/${cartId}`, { method: 'DELETE' });
+    await deleteCart();
 
-    dispatch({ type: 'DELETE_CART' });
-
-    navigate('/');
+    setNavigation(true);
   };
 
-  console.log(items);
+  useEffect(() => {
+    if (navigation && !error) {
+      navigate('/');
+    } else {
+      setNavigation(false);
+    }
+  }, [navigation]);
 
   return (
     <>
       <h1 className="page-title">Carrito</h1>
-      {isPending && <p>Cargando carrito</p>}
-      {!isPending && items.length === 0 && (
+      {isLoading && <p>Cargando carrito...</p>}
+      {!isLoading && items.length === 0 && (
         <p>No hay productos en el carrito...</p>
       )}
-      {items.length > 0 && (
+      {!isLoading && items.length > 0 && (
         <div className={styles.cart_container}>
           {items.map((product) => {
             return (

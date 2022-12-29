@@ -10,38 +10,15 @@ const initialState = {
 
 const cartReducer = (state, action) => {
   switch (action.type) {
-    case 'LOAD_CART': {
+    case 'UPDATE_CART': {
       return {
         items: action.payload,
       };
     }
-    case 'NO_CART_IN_STORAGE': {
-      return {
-        ...state,
-        cartIsReady: true,
-      };
-    }
-    case 'CREATE_CART': {
-      localStorage.setItem('cart', action.payload);
-      return {
-        ...state,
-        id: action.payload,
-      };
-    }
-    case 'UPDATE_CART': {
-      const items = action.payload;
-      return { ...state, items };
-    }
     case 'DELETE_CART': {
-      localStorage.removeItem('cart');
-      return { ...initialState, cartIsReady: true };
+      return initialState;
     }
-    case 'DELETE_PRODUCT': {
-      const updatedItems = state.items.filter(
-        (item) => item.id !== action.payload
-      );
-      return { ...state, items: updatedItems };
-    }
+
     default:
       return state;
   }
@@ -62,7 +39,7 @@ const CartProvider = ({ children }) => {
     const items = await response.json();
 
     dispatch({
-      type: 'LOAD_CART',
+      type: 'UPDATE_CART',
       payload: items,
     });
   };

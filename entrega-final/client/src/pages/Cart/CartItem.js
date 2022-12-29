@@ -1,4 +1,4 @@
-import { useCartContext } from '../../hooks/useCartContext';
+import { useCart } from '../../hooks/useCart';
 
 import styles from './index.module.css';
 
@@ -11,12 +11,10 @@ const CartItem = ({
   price,
   quantity,
 }) => {
-  const { id: cartId, dispatch } = useCartContext();
+  const { removeItem } = useCart();
 
   const handleDeleteItem = async (e) => {
-    await fetch(`/api/carrito/${cartId}/productos/${id}`, { method: 'DELETE' });
-
-    dispatch({ type: 'DELETE_PRODUCT', payload: id });
+    removeItem(id);
   };
 
   return (

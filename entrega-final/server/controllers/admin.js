@@ -17,7 +17,7 @@ const cartDb = new CartMongoDAO();
 // const cartDb = new CartFirebaseDAO();
 
 exports.postAddProduct = async (req, res, next) => {
-  if (!req.user.auth) {
+  if (!req.session.isAdmin) {
     res.json({ error: 'Error: Ruta no autorizada.' });
     return;
   }
@@ -37,7 +37,7 @@ exports.postAddProduct = async (req, res, next) => {
 };
 
 exports.putEditProduct = async (req, res, next) => {
-  if (!req.user.auth) {
+  if (!req.session.isAdmin) {
     res.json({ error: 'Error: Ruta no autorizada.' });
     return;
   }
@@ -58,7 +58,7 @@ exports.putEditProduct = async (req, res, next) => {
 };
 
 exports.deleteProduct = async (req, res, next) => {
-  if (!req.user.auth) {
+  if (!req.session.isAdmin) {
     res.json({ error: 'Error: Ruta no autorizada.' });
     return;
   }

@@ -35,6 +35,7 @@ exports.deleteCart = (req, res, next) => {
 };
 
 exports.getCartItems = async (req, res, next) => {
+  console.log('working');
   const cartId = req.params.id;
 
   const cart = await cartDb.fetchById(cartId);
