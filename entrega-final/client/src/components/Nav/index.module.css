@@ -36,3 +36,11 @@
   border: 0;
   border-radius: 1rem;
 }
+
+.nav_container span {
+  font-weight: bold;
+}
+
+.logout:hover {
+  cursor: pointer;
+}

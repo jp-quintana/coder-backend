@@ -6,6 +6,7 @@ import { useAuthContext } from './hooks/useAuthContext';
 
 import Home from './pages/Home';
 import Login from './pages/Login';
+import SignUp from './pages/SignUp';
 import AdminProducts from './pages/AdminProducts';
 import AddProduct from './pages/AddProduct';
 import EditProduct from './pages/EditProduct';
@@ -28,6 +29,7 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<SignUp />} />
               <Route path="/productos/admin" element={<AdminProducts />} />
               <Route path="/productos/admin/agregar" element={<AddProduct />} />
               <Route path="/productos/admin/:id" element={<EditProduct />} />

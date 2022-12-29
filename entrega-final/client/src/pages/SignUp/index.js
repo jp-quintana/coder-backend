@@ -1,13 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { useLogin } from '../../hooks/useLogin';
+import { useSignUp } from '../../hooks/useSignUp';
 
 import styles from './index.module.css';
 
-const Login = () => {
+const SignUp = () => {
   const navigate = useNavigate();
-  const { login, isLoading, error } = useLogin();
+  const { signUp, isLoading, error } = useSignUp();
 
   const [navigation, setNavigation] = useState(false);
 
@@ -16,7 +16,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await login({
+    await signUp({
       email: emailInput.current.value,
       password: passwordInput.current.value,
     });
@@ -34,7 +34,7 @@ const Login = () => {
   return (
     <section>
       <div className="main-container">
-        <h1 className="page-title">Login</h1>
+        <h1 className="page-title">Registrate</h1>
         <form onSubmit={handleSubmit} className={styles.form}>
           <h2>Ingresá tus datos:</h2>
           <label>
@@ -47,19 +47,19 @@ const Login = () => {
           </label>
           {!isLoading && (
             <button type="submit" className={`btn ${styles.button}`}>
-              Ingresar
+              Registrate
             </button>
           )}
           {isLoading && (
             <button type="submit" className={`btn ${styles.button}`} disabled>
               {' '}
-              Ingresando...
+              Registrando...
             </button>
           )}
           <p>
-            No tenés cuenta?{' '}
-            <Link to="/signup" className={styles.signup}>
-              Registrate acá!
+            Ya tenés cuenta?{' '}
+            <Link to="/login" className={styles.signup}>
+              Ingresá acá!
             </Link>
           </p>
         </form>
@@ -68,4 +68,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;

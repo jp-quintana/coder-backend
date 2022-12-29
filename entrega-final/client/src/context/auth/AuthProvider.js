@@ -42,6 +42,8 @@ const AuthProvider = ({ children }) => {
     fetchUser();
   }, []);
 
+  console.log('auth', state);
+
   return (
     <AuthContext.Provider value={{ ...state, dispatch }}>
       {children}

@@ -37,19 +37,27 @@ exports.deleteCart = (req, res, next) => {
 exports.getCartItems = async (req, res, next) => {
   const cartId = req.params.id;
 
-  const { products: productsInCart } = await cartDb.fetchById(cartId);
+  const cart = await cartDb.fetchById(cartId);
 
-  const products = [];
+  if (cart) {
+    const { products: productsInCart } = cart;
 
-  // Mongoose
-  for (const product of productsInCart) {
-    const { productId } = product;
-    const productDetails = await productDb.fetchById(productId);
-    products.push({
-      ...productDetails._doc,
-      id: productDetails.id,
-      quantity: product.quantity,
-    });
+    const products = [];
+
+    // Mongoose
+    for (const product of productsInCart) {
+      const { productId } = product;
+      const productDetails = await productDb.fetchById(productId);
+      products.push({
+        ...productDetails._doc,
+        id: productDetails.id,
+        quantity: product.quantity,
+      });
+    }
+
+    res.json(products);
+  } else {
+    res.json([]);
   }
 
   // // fs && Firebase
@@ -61,8 +69,6 @@ exports.getCartItems = async (req, res, next) => {
   //     quantity: product.quantity,
   //   });
   // }
-
-  res.json(products);
 };
 
 exports.postAddItemToCart = async (req, res, next) => {
@@ -78,12 +84,25 @@ exports.postAddItemToCart = async (req, res, next) => {
   }
 
   const cart = await cartDb.fetchById(cartId);
-  const { products } = await cart.addProduct(product);
+
+  if (cart) {
+    const { products } = await cart.addProduct(product);
+    res.json(products);
+  } else {
+    const newCart = await cartDb.create({
+      _id: cartId,
+      products: [
+        {
+          productId: prodId,
+          quantity: 1,
+        },
+      ],
+    });
+    res.json(newCart.products);
+  }
 
   // // fs && Firebase
   // const { products } = await cartDb.addProduct(cartId, prodId);
-
-  res.json(products);
 };
 
 exports.deleteCartItem = async (req, res, next) => {

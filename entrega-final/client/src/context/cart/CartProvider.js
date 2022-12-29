@@ -54,7 +54,13 @@ const CartProvider = ({ children }) => {
 
   const fetchCart = async () => {
     const response = await fetch(`/api/carrito/${user.id}/productos`);
+
+    if (!response.ok) {
+      return;
+    }
+
     const items = await response.json();
+
     dispatch({
       type: 'LOAD_CART',
       payload: items,

@@ -13,6 +13,10 @@ const User = new Schema({
   },
   hash: String,
   salt: String,
+  isAdmin: {
+    type: Boolean,
+    required: false,
+  },
 });
 
 module.exports = mongoose.model('User', User);

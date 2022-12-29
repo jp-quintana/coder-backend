@@ -1,4 +1,9 @@
-import { useCartContext } from '../../hooks/useCartContext';
+import { useState, useEffect } from 'react';
+
+import { useNavigate } from 'react-router-dom';
+
+import { useAuthContext } from '../../hooks/useAuthContext';
+import { useCart } from '../../hooks/useCart';
 
 import Card from '../../components/Card';
 
@@ -14,32 +19,27 @@ const ProductCard = ({
   price,
   stock,
 }) => {
-  const { id: cartId, dispatch } = useCartContext();
+  const navigate = useNavigate();
+
+  const { user } = useAuthContext();
+  const { addItem } = useCart();
+
+  const [navigation, setNavigation] = useState();
 
   const handleAddToCart = async (e) => {
-    let cId = cartId;
-    if (!cId) {
-      const response = await fetch(`/api/carrito`, {
-        method: 'POST',
-      });
-      cId = await response.json();
-
-      dispatch({ type: 'CREATE_CART', payload: cId });
+    if (!user) {
+      setNavigation(true);
+      return;
     }
 
-    const response = await fetch(`/api/carrito/${cId}/productos`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id }),
-    });
-
-    //TODO: CHECK 1
-    const updatedItems = await response.json();
-
-    dispatch({ type: 'UPDATE_CART', payload: updatedItems });
-
-    // navigate('/carrito');
+    await addItem(id);
   };
+
+  useEffect(() => {
+    if (navigation) {
+      navigate('/login');
+    }
+  }, [navigation]);
 
   return (
     <Card>

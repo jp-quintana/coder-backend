@@ -1,18 +1,27 @@
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 
 import { useAuthContext } from '../../hooks/useAuthContext';
 import { useCartContext } from '../../hooks/useCartContext';
+import { useLogout } from '../../hooks/useLogout';
 
 import styles from './index.module.css';
 
 const Nav = () => {
+  const navigate = useNavigate();
+
   const { user } = useAuthContext();
   const { items } = useCartContext();
+  const { logout } = useLogout();
 
   let cartQuantity = 0;
   items.forEach((item) => (cartQuantity += item.quantity));
 
   const navLinkStyles = styles.active;
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/');
+  };
 
   return (
     <div className={styles.nav_container}>
@@ -69,7 +78,12 @@ const Nav = () => {
                   Carrito <span>({cartQuantity})</span>
                 </NavLink>
               </li>
-              <li>Hola {user.email}!</li>
+              <li>
+                Hola <span>{user.email}</span>!
+              </li>
+              <li className={styles.logout} onClick={handleLogout}>
+                Logout
+              </li>
             </>
           )}
           {!user && (
@@ -82,6 +96,16 @@ const Nav = () => {
                   }
                 >
                   Login
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/signup"
+                  className={({ isActive }) =>
+                    isActive ? navLinkStyles : undefined
+                  }
+                >
+                  Registrate
                 </NavLink>
               </li>
             </>

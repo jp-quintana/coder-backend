@@ -24,7 +24,13 @@ exports.postLogin = async (req, res, next) => {
     const { email } = req.body;
     const user = await userDb.collection.findOne({ username: email });
 
-    res.json({ email: user.username });
+    const isAdmin = user.isAdmin ? true : false;
+
+    res.json({
+      email: user.username,
+      id: user.id,
+      isAdmin,
+    });
   } catch (err) {
     next(new Error(err));
   }
@@ -52,7 +58,7 @@ exports.postSignup = async (req, res, next) => {
     };
 
     req.login(user, () => {
-      return res.json({ email: newUser.username });
+      return res.json({ email: newUser.username, id: newUser.id });
     });
   } catch (err) {
     console.log(err);
