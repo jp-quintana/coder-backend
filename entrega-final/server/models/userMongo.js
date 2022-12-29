@@ -13,6 +13,10 @@ const User = new Schema({
   },
   hash: String,
   salt: String,
+  name: { type: String, required: true },
+  address: { type: String, required: true },
+  age: { type: String, required: true },
+  phone: { type: String, required: true },
   isAdmin: {
     type: Boolean,
     required: false,

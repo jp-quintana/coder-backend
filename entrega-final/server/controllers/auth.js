@@ -10,6 +10,10 @@ exports.getUser = async (req, res, next) => {
       res.json({
         email: req.user.username,
         id: req.user.id,
+        name: req.user.name,
+        age: req.user.age,
+        address: req.user.address,
+        phone: req.user.phone,
         isAdmin: req.session.isAdmin,
       });
     } else {
@@ -39,7 +43,7 @@ exports.postLogin = async (req, res, next) => {
 
 exports.postSignup = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, name, address, phone, age } = req.body;
     const existingUser = await userDb.collection.findOne({ username: email });
 
     if (existingUser) {
@@ -51,18 +55,29 @@ exports.postSignup = async (req, res, next) => {
     const newUser = await userDb.create({
       username: email,
       password: hashedPassword,
+      name,
+      address,
+      phone,
+      age,
     });
-
-    const user = {
-      id: newUser.id,
-      username: newUser.username,
-    };
 
     const contentHTML = `
       <h1>Informacion del usuario</h1>
       <ul>
         <li>
-          Nombre de usuario: ${user.username}
+          Nombre de usuario: ${newUser.username}
+        </li>
+        <li>
+          Nombre: ${newUser.name}
+        </li>
+        <li>
+          Edad: ${newUser.age}
+        </li>
+        <li>
+          Direccion: ${newUser.address}
+        </li>
+        <li>
+          Telefono: ${newUser.phone}
         </li>
       </ul>
 
@@ -75,7 +90,7 @@ exports.postSignup = async (req, res, next) => {
       html: contentHTML, // html body
     });
 
-    req.login(user, () => {
+    req.login(newUser, () => {
       return res.json({ email: newUser.username, id: newUser.id });
     });
   } catch (err) {

@@ -13,12 +13,20 @@ const SignUp = () => {
 
   const emailInput = useRef();
   const passwordInput = useRef();
+  const nameInput = useRef();
+  const ageInput = useRef();
+  const addressInput = useRef();
+  const phoneInput = useRef();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     await signUp({
       email: emailInput.current.value,
       password: passwordInput.current.value,
+      name: nameInput.current.value,
+      age: ageInput.current.value,
+      address: addressInput.current.value,
+      phone: phoneInput.current.value,
     });
     setNavigation(true);
   };
@@ -44,6 +52,22 @@ const SignUp = () => {
           <label>
             <span>Password:</span>
             <input ref={passwordInput} type="password" required />
+          </label>
+          <label>
+            <span>Nombre:</span>
+            <input ref={nameInput} type="text" required />
+          </label>
+          <label>
+            <span>Edad:</span>
+            <input ref={ageInput} type="text" required />
+          </label>
+          <label>
+            <span>Direccion:</span>
+            <input ref={addressInput} type="text" required />
+          </label>
+          <label>
+            <span>Telefono:</span>
+            <input ref={phoneInput} type="text" required />
           </label>
           {!isLoading && (
             <button type="submit" className={`btn ${styles.button}`}>

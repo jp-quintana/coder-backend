@@ -7,11 +7,11 @@ export const useSignUp = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const signUp = async ({ email, password }) => {
+  const signUp = async (userInput) => {
     setError(null);
     setIsLoading(true);
 
-    const newUser = { email, password };
+    const newUser = { ...userInput };
 
     try {
       const response = await fetch('api/cuenta/signup', {
