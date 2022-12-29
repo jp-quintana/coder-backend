@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const cartSchema = new Schema(
+const Cart = new Schema(
   {
     products: [
       {
@@ -15,7 +15,7 @@ const cartSchema = new Schema(
 );
 
 //TODO: FIX VIRTUAL
-// cartSchema
+// Cart
 //   // .path('products')
 //   // .schema.virtual('id')
 //   .virtual('products.id')
@@ -23,7 +23,7 @@ const cartSchema = new Schema(
 //     return this._id;
 //   });
 
-cartSchema.methods.addProduct = function (product) {
+Cart.methods.addProduct = function (product) {
   const cartProductIndex = this.products.findIndex(
     (p) => p.productId.toString() === product._id.toString()
   );
@@ -46,7 +46,7 @@ cartSchema.methods.addProduct = function (product) {
   return this.save();
 };
 
-cartSchema.methods.deleteProduct = function (productId) {
+Cart.methods.deleteProduct = function (productId) {
   let updatedCartItems = this.products.filter(
     (p) => p.productId.toString() !== productId.toString()
   );
@@ -56,8 +56,8 @@ cartSchema.methods.deleteProduct = function (productId) {
   return this.save();
 };
 
-cartSchema.statics.deleteProductInAllCarts = function (productId) {
+Cart.statics.deleteProductInAllCarts = function (productId) {
   return 'hola';
 };
 
-module.exports = mongoose.model('Cart', cartSchema);
+module.exports = mongoose.model('Cart', Cart);

@@ -2,7 +2,7 @@ import { useReducer, useEffect } from 'react';
 
 import AuthContext from './auth-context';
 
-const initialState = { user: null, authIsReady: false };
+const initialState = { user: null, authIsReady: false, isAdmin: false };
 
 const authReducer = (state, action) => {
   switch (action.type) {
@@ -25,7 +25,7 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const response = await fetch('/user', {
+      const response = await fetch('api/cuenta/user', {
         credentials: 'include',
       });
 
@@ -36,7 +36,7 @@ const AuthProvider = ({ children }) => {
         return;
       }
 
-      dispatch({ type: 'LOAD_USER', payload: data.email });
+      dispatch({ type: 'LOAD_USER', payload: data });
     };
 
     fetchUser();

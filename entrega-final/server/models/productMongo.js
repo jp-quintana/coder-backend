@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const productSchema = new Schema(
+const Product = new Schema(
   {
     title: {
       type: String,
@@ -32,8 +32,8 @@ const productSchema = new Schema(
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
-productSchema.virtual('id').get(function () {
+Product.virtual('id').get(function () {
   return this._id;
 });
 
-module.exports = mongoose.model('Product', productSchema);
+module.exports = mongoose.model('Product', Product);

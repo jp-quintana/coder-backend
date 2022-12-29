@@ -1,7 +1,11 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const User = require('../models/user');
+const UserMongoDAO = require('../daos/user/UserMongoDAO');
 const { validatePassword } = require('../utils/password');
+
+const userDb = new UserMongoDAO();
+
+console.log(userDb.collection);
 
 const customFields = {
   usernameField: 'email',
@@ -10,7 +14,7 @@ const customFields = {
 
 const verifyCallback = async (username, password, done) => {
   try {
-    const user = await User.findOne({ username: username });
+    const user = await userDb.collection.findOne({ username: username });
 
     if (!user) {
       return done(null, false);
@@ -38,7 +42,7 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (userId, done) => {
   try {
-    const user = await User.findById(userId);
+    const user = await userDb.collection.findById(userId);
     done(null, user);
   } catch (err) {
     console.log(err);

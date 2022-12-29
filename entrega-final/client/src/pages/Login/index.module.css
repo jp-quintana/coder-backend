@@ -1,0 +1,57 @@
+.page_title {
+  margin-top: 2rem;
+}
+
+.form {
+  width: 40rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 3rem;
+  border: 1px solid #ccc;
+  border-radius: 1rem;
+  background: white;
+}
+
+.form h2 {
+  text-align: center;
+  color: var(--primary-color);
+}
+
+.form label {
+  color: var(--primary-color);
+}
+
+.form input {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 1rem;
+  border: 1px solid var(--primary-color);
+}
+
+.button {
+  margin: 0 auto;
+  margin-top: 6rem;
+  padding: 2rem;
+  text-align: center;
+  border: 1px solid #000;
+  border-radius: 1rem;
+  background-color: #000;
+  color: #fff;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.button:hover {
+  cursor: pointer;
+}
+
+.form p {
+  text-align: center;
+  color: var(--primary-color);
+}
+
+.signup {
+  font-weight: 700;
+}

@@ -12,6 +12,7 @@ const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true };
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const cartRoutes = require('./routes/cart');
+const authRoutes = require('./routes/auth');
 
 const app = express();
 
@@ -21,7 +22,7 @@ app.use(
     credentials: true,
   })
 );
-app.use(bodyParser.json());
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   session({
@@ -42,33 +43,36 @@ app.use(
   })
 );
 
+require('./middlewares/passport');
+
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use((req, res, next) => {
+  if (req.user) {
+    if (req.user.id === '63ad05a28edf6398ca65b474') {
+      req.session.isAdmin = true;
+    }
+  } else {
+    req.session.isAdmin = false;
+  }
   console.log(req.session);
   console.log(req.user);
   next();
 });
 
-// app.use((req, res, next) => {
-//   res.setHeader('Access-Control-Allow-Origin', '*');
-//   res.setHeader('Access-Control-Allow-Header', '*');
-//   res.setHeader('Access-Control-Allow-Methods', '*');
-//   next();
-// });
-
-// app.use((req, res, next) => {
-//   req.user = { auth: true };
-//   next();
-// });
-
+app.use('/api/cuenta', authRoutes);
 app.use('/api/productos', adminRoutes);
 app.use('/api/productos', shopRoutes);
 app.use('/api/carrito', cartRoutes);
 
 app.use('*', (req, res, next) => {
   res.status(404).json({ error: -2, descripcion: 'ruta no implementada' });
+});
+
+app.use((error, req, res, next) => {
+  console.log(error);
+  res.status(500).json({ error: error.message });
 });
 
 const PORT = process.env.PORT || 8080;
@@ -81,7 +85,3 @@ connection()
   .catch((err) => {
     console.log(err);
   });
-
-// app.listen(PORT, () => {
-//   console.log('listening on port 8080');
-// });

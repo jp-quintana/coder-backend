@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
 
-exports.dbConnect = async () => {
+exports.connection = async () => {
   await mongoose.connect(process.env.CONNECTION_STRING);
 };

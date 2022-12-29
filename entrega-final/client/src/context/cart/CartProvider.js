@@ -2,19 +2,17 @@ import { useReducer, useEffect } from 'react';
 
 import CartContext from './cart-context';
 
+import { useAuthContext } from '../../hooks/useAuthContext';
+
 const initialState = {
-  id: null,
-  cartIsReady: false,
   items: [],
 };
 
 const cartReducer = (state, action) => {
   switch (action.type) {
-    case 'LOAD_CART_IN_STORAGE': {
+    case 'LOAD_CART': {
       return {
-        id: action.payload.id,
-        cartIsReady: true,
-        items: action.payload.items,
+        items: action.payload,
       };
     }
     case 'NO_CART_IN_STORAGE': {
@@ -50,36 +48,24 @@ const cartReducer = (state, action) => {
 };
 
 const CartProvider = ({ children }) => {
+  const { user } = useAuthContext();
+
   const [state, dispatch] = useReducer(cartReducer, initialState);
 
+  const fetchCart = async () => {
+    const response = await fetch(`/api/carrito/${user.id}/productos`);
+    const items = await response.json();
+    dispatch({
+      type: 'LOAD_CART',
+      payload: items,
+    });
+  };
+
   useEffect(() => {
-    const cartInStorageId = localStorage.getItem('cart');
-
-    if (cartInStorageId) {
-      const controller = new AbortController();
-      const fetchCart = async () => {
-        const response = await fetch(
-          `/api/carrito/${cartInStorageId}/productos`,
-          {
-            signal: controller.signal,
-          }
-        );
-        const data = await response.json();
-        dispatch({
-          type: 'LOAD_CART_IN_STORAGE',
-          payload: { id: cartInStorageId, items: data },
-        });
-      };
-
+    if (user) {
       fetchCart();
-
-      return () => {
-        controller.abort();
-      };
-    } else {
-      dispatch({ type: 'NO_CART_IN_STORAGE' });
     }
-  }, []);
+  }, [user]);
 
   return (
     <CartContext.Provider value={{ ...state, dispatch }}>
