@@ -14,4 +14,6 @@ router.post('/:id/productos', cartController.postAddItemToCart);
 
 router.delete('/:id/productos/:id_prod', cartController.deleteCartItem);
 
+router.post('/:id/confirm', cartController.createOrder);
+
 module.exports = router;

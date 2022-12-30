@@ -51,7 +51,6 @@ Cart.methods.deleteProduct = function (productId) {
   let updatedCartItems = this.products.filter(
     (p) => p.productId.toString() !== productId.toString()
   );
-  console.log('in method', updatedCartItems);
   this.products = updatedCartItems;
 
   return this.save();

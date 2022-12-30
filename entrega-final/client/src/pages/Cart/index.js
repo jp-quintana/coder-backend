@@ -14,7 +14,7 @@ const Cart = () => {
 
   const { user } = useAuthContext();
   const { id: cartId, items, dispatch } = useCartContext();
-  const { updateCart, deleteCart, isLoading, error } = useCart();
+  const { updateCart, deleteCart, createOrder, isLoading, error } = useCart();
 
   const [navigation, setNavigation] = useState(false);
 
@@ -24,6 +24,12 @@ const Cart = () => {
 
   const handleDeleteCart = async () => {
     await deleteCart();
+
+    setNavigation(true);
+  };
+
+  const handleCreateOrder = async () => {
+    await createOrder();
 
     setNavigation(true);
   };
@@ -62,6 +68,12 @@ const Cart = () => {
               />
             );
           })}
+          <button
+            className={`btn ${styles.button}`}
+            onClick={handleCreateOrder}
+          >
+            Confirmar compra
+          </button>
           <button className={`btn ${styles.button}`} onClick={handleDeleteCart}>
             Vaciar carrito
           </button>

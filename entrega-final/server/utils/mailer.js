@@ -9,7 +9,3 @@ exports.transporter = nodemailer.createTransport({
     pass: process.env.EMAIL_STRING, // generated ethereal password
   },
 });
-
-// transporter.verify().then(() => {
-//   console.log('Working');
-// });

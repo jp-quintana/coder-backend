@@ -8,8 +8,6 @@ const productDb = new ProductMongoDAO();
 
 // const productDb = new ProductFirebaseDAO();
 
-console.log(productDb);
-
 exports.getAllProducts = async (req, res, next) => {
   try {
     const { id } = req.params;

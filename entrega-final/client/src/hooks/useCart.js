@@ -78,5 +78,27 @@ export const useCart = () => {
     }
   };
 
-  return { addItem, removeItem, updateCart, deleteCart, isLoading, error };
+  const createOrder = async () => {
+    setError(null);
+    setIsLoading(true);
+    try {
+      await fetch(`/api/carrito/${user.id}/confirm`, { method: 'POST' });
+
+      dispatch({ type: 'DELETE_CART' });
+    } catch (err) {
+      console.log(err);
+      setError(err);
+      setIsLoading(false);
+    }
+  };
+
+  return {
+    addItem,
+    removeItem,
+    updateCart,
+    deleteCart,
+    createOrder,
+    isLoading,
+    error,
+  };
 };

@@ -5,8 +5,6 @@ const { validatePassword } = require('../utils/password');
 
 const userDb = new UserMongoDAO();
 
-console.log(userDb.collection);
-
 const customFields = {
   usernameField: 'email',
   passwordField: 'password',

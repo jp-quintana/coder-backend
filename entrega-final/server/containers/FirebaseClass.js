@@ -35,7 +35,6 @@ class FirebaseClass {
   }
 
   async delete(id) {
-    console.log('working');
     return await this.collection.doc(id).delete();
   }
 
