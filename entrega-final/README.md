@@ -33,6 +33,8 @@ Para poder tener accesos a rutas privilegiadas conectarse con el siguiente usuar
 
 ![Vista Admin](https://user-images.githubusercontent.com/87621233/210142995-d1cc515f-eda6-4257-b133-bc7ed01b98b5.png)
 
+### Modo Cluster
+Para habilitar modo cluster utilizar command "npm run cluster"
 ## DAO (NO FUNCIONA. USAR MONGOOSE)
 
 ### Mongoose + Mongo

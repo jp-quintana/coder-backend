@@ -8,6 +8,9 @@ const passport = require('passport');
 const { connection } = require('./db/mongoConfig');
 const MongoStore = require('connect-mongo');
 const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true };
+const cluster = require('cluster');
+const os = require('os');
+const argv = require('minimist')(process.argv.slice(2));
 
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
@@ -48,40 +51,88 @@ require('./middlewares/passport');
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use((req, res, next) => {
-  if (req.user) {
-    if (req.user.id === '63ad05a28edf6398ca65b474') {
-      req.session.isAdmin = true;
+if (argv.mode === 'cluster') {
+  const numProcessors = os.cpus().length;
+
+  if (cluster.isMaster) {
+    for (let i = 0; i < numProcessors; i++) {
+      cluster.fork();
     }
   } else {
-    req.session.isAdmin = false;
+    app.use((req, res, next) => {
+      if (req.user) {
+        if (req.user.id === '63ad05a28edf6398ca65b474') {
+          req.session.isAdmin = true;
+        }
+      } else {
+        req.session.isAdmin = false;
+      }
+      console.log(req.session);
+      console.log(req.user);
+      next();
+    });
+
+    app.use('/api/cuenta', authRoutes);
+    app.use('/api/productos', adminRoutes);
+    app.use('/api/productos', shopRoutes);
+    app.use('/api/carrito', cartRoutes);
+
+    app.use('*', (req, res, next) => {
+      res.status(404).json({ error: -2, descripcion: 'ruta no implementada' });
+    });
+
+    app.use((error, req, res, next) => {
+      console.log(error);
+      res.status(500).json({ error: error.message });
+    });
+
+    const PORT = process.env.PORT || 8080;
+
+    connection()
+      .then(() => {
+        app.listen(PORT);
+        console.log('listening on port 8080');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
-  console.log(req.session);
-  console.log(req.user);
-  next();
-});
-
-app.use('/api/cuenta', authRoutes);
-app.use('/api/productos', adminRoutes);
-app.use('/api/productos', shopRoutes);
-app.use('/api/carrito', cartRoutes);
-
-app.use('*', (req, res, next) => {
-  res.status(404).json({ error: -2, descripcion: 'ruta no implementada' });
-});
-
-app.use((error, req, res, next) => {
-  console.log(error);
-  res.status(500).json({ error: error.message });
-});
-
-const PORT = process.env.PORT || 8080;
-
-connection()
-  .then(() => {
-    app.listen(PORT);
-    console.log('listening on port 8080');
-  })
-  .catch((err) => {
-    console.log(err);
+} else {
+  app.use((req, res, next) => {
+    if (req.user) {
+      if (req.user.id === '63ad05a28edf6398ca65b474') {
+        req.session.isAdmin = true;
+      }
+    } else {
+      req.session.isAdmin = false;
+    }
+    console.log(req.session);
+    console.log(req.user);
+    next();
   });
+
+  app.use('/api/cuenta', authRoutes);
+  app.use('/api/productos', adminRoutes);
+  app.use('/api/productos', shopRoutes);
+  app.use('/api/carrito', cartRoutes);
+
+  app.use('*', (req, res, next) => {
+    res.status(404).json({ error: -2, descripcion: 'ruta no implementada' });
+  });
+
+  app.use((error, req, res, next) => {
+    console.log(error);
+    res.status(500).json({ error: error.message });
+  });
+
+  const PORT = process.env.PORT || 8080;
+
+  connection()
+    .then(() => {
+      app.listen(PORT);
+      console.log('listening on port 8080');
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
