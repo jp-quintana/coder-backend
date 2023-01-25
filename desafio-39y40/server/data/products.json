@@ -1,0 +1,42 @@
+[
+  {
+    "id": "89492",
+    "timestamp": 1665017530865,
+    "title": "Libro 1",
+    "description": "Primer libro de la saga",
+    "sku": "1001LIBP1",
+    "thumbnail": "https://www.publicdomainpictures.net/pictures/10000/velka/1-1210009435EGmE.jpg",
+    "price": "3800",
+    "stock": "120"
+  },
+  {
+    "id": "35120",
+    "timestamp": 1665017756908,
+    "title": "Libro 2",
+    "description": "Segundo libro de la saga",
+    "sku": "1002LIBP2",
+    "thumbnail": "https://www.publicdomainpictures.net/pictures/10000/velka/1-1210009435EGmE.jpg",
+    "price": "4200",
+    "stock": "180"
+  },
+  {
+    "id": "29789",
+    "timestamp": 1665017794930,
+    "title": "Libro 3",
+    "description": "Ultimo libro de la saga",
+    "sku": "1003LIBP3",
+    "thumbnail": "https://www.publicdomainpictures.net/pictures/10000/velka/1-1210009435EGmE.jpg",
+    "price": "5000",
+    "stock": "240"
+  },
+  {
+    "id": "7157",
+    "timestamp": 1665091545711,
+    "title": "Libro 1 Remake",
+    "description": "Remake del primer libro",
+    "sku": "1004LIBP1R",
+    "thumbnail": "https://www.publicdomainpictures.net/pictures/10000/velka/1-1210009435EGmE.jpg",
+    "price": "6000",
+    "stock": "350"
+  }
+]
