@@ -16,58 +16,48 @@ const cartDb = new CartMongoDAO();
 // const productDb = new ProductFirebaseDAO();
 // const cartDb = new CartFirebaseDAO();
 
+import {
+  createProduct,
+  editProduct,
+  deleteProduct as _deleteProduct,
+} from '../services/product';
+
 exports.postAddProduct = async (req, res, next) => {
-  if (!req.session.isAdmin) {
-    res.json({ error: 'Error: Ruta no autorizada.' });
-    return;
-  }
+  // if (!req.session.isAdmin) {
+  //   res.json({ error: 'Error: Ruta no autorizada.' });
+  //   return;
+  // }
 
   const { title, description, sku, thumbnail, price, stock } = req.body;
 
-  await productDb.create({
-    title,
-    description,
-    sku,
-    thumbnail,
-    price,
-    stock,
-  });
+  await createProduct({ title, description, sku, thumbnail, price, stock });
 
   res.json('Success');
 };
 
 exports.putEditProduct = async (req, res, next) => {
-  if (!req.session.isAdmin) {
-    res.json({ error: 'Error: Ruta no autorizada.' });
-    return;
-  }
+  // if (!req.session.isAdmin) {
+  //   res.json({ error: 'Error: Ruta no autorizada.' });
+  //   return;
+  // }
   const { id } = req.params;
 
   const { title, description, sku, thumbnail, price, stock } = req.body;
 
-  await productDb.update(id, {
-    title,
-    description,
-    sku,
-    thumbnail,
-    price,
-    stock,
-  });
+  await editProduct({ title, description, sku, thumbnail, price, stock });
 
   res.json('Success');
 };
 
 exports.deleteProduct = async (req, res, next) => {
-  if (!req.session.isAdmin) {
-    res.json({ error: 'Error: Ruta no autorizada.' });
-    return;
-  }
+  // if (!req.session.isAdmin) {
+  //   res.json({ error: 'Error: Ruta no autorizada.' });
+  //   return;
+  // }
 
   const { id } = req.params;
 
-  await cartDb.deleteInAllDocs(id);
-
-  await productDb.delete(id);
+  await _deleteProduct(id);
 
   res.json('Success');
 };
