@@ -4,6 +4,8 @@ const { transporter } = require('../utils/mailer');
 
 const userDb = new UserMongoDAO();
 
+import { fetchUser } from '../services/auth';
+
 exports.getUser = async (req, res, next) => {
   try {
     if (req.user) {
@@ -27,7 +29,7 @@ exports.getUser = async (req, res, next) => {
 exports.postLogin = async (req, res, next) => {
   try {
     const { email } = req.body;
-    const user = await userDb.collection.findOne({ username: email });
+    const user = fetchUser({ email });
 
     const isAdmin = user.isAdmin ? true : false;
 
