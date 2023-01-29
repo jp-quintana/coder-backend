@@ -16,11 +16,11 @@ const cartDb = new CartMongoDAO();
 // const productDb = new ProductFirebaseDAO();
 // const cartDb = new CartFirebaseDAO();
 
-import {
+const {
   createProduct,
   editProduct,
-  deleteProduct as _deleteProduct,
-} from '../services/product';
+  // deleteProduct: _deleteProduct,
+} = require('../services/product');
 
 exports.postAddProduct = async (req, res, next) => {
   // if (!req.session.isAdmin) {
