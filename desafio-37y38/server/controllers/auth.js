@@ -1,8 +1,4 @@
-const UserMongoDAO = require('../daos/user/UserMongoDAO');
 const { generatePassword } = require('../utils/password');
-const { transporter } = require('../utils/mailer');
-
-const userDb = new UserMongoDAO();
 
 const { createUser, fetchUser } = require('../services/auth');
 
@@ -26,12 +22,12 @@ exports.postLogin = async (req, res, next) => {
   const { email } = req.body;
   const user = await fetchUser({ email });
 
-  const isAdmin = user.isAdmin ? true : false;
+  // const isAdmin = user.isAdmin ? true : false;
 
   res.json({
     email: user.username,
     id: user.id,
-    isAdmin,
+    isAdmin: user.isAdmin,
   });
 };
 

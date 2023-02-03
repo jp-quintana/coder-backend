@@ -1,7 +1,6 @@
 const UserMongoDAO = require('../daos/user/UserMongoDAO');
 const userDb = new UserMongoDAO();
 
-const { generatePassword } = require('../utils/password');
 const { transporter } = require('../utils/mailer');
 
 exports.createUser = async ({

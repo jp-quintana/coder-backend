@@ -7,6 +7,9 @@ const productDb = new ProductMongoDao();
 
 exports.createCart = async () => {
   try {
-    await cartDb.create({});
-  } catch (error) {}
+    const { id } = await cartDb.create({});
+    return id;
+  } catch (error) {
+    console.log(error);
+  }
 };

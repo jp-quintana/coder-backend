@@ -15,8 +15,6 @@ const { transporter } = require('../utils/mailer');
 const cartDb = new CartMongoDao();
 const productDb = new ProductMongoDao();
 
-const { createCart } = require('../services/cart');
-
 // const cartDb = new CartFileDAO();
 // const productDb = new ProductFileDAO();
 
@@ -24,9 +22,11 @@ const { createCart } = require('../services/cart');
 // const productDb = new ProductFirebaseDAO();
 
 exports.postAddCart = async (req, res, next) => {
-  const cartId = await createCart();
+  const cart = await cartDb.create({});
 
-  res.json(cartId);
+  const { id } = cart;
+
+  res.json(id);
 };
 
 exports.deleteCart = (req, res, next) => {
