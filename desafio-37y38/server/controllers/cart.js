@@ -15,7 +15,12 @@ const { transporter } = require('../utils/mailer');
 const cartDb = new CartMongoDao();
 const productDb = new ProductMongoDao();
 
-const { createCart } = require('../services/cart');
+const {
+  createCart,
+  deleteCart: _deleteCart,
+  fetchCartItems,
+  addItemToCart,
+} = require('../services/cart');
 
 // const cartDb = new CartFileDAO();
 // const productDb = new ProductFileDAO();
@@ -29,9 +34,10 @@ exports.postAddCart = async (req, res, next) => {
   res.json(cartId);
 };
 
-exports.deleteCart = (req, res, next) => {
+exports.deleteCart = async (req, res, next) => {
   const cartId = req.params.id;
-  cartDb.delete(cartId);
+
+  await _deleteCart(cartId);
 
   res.json('Success');
 };
@@ -39,72 +45,21 @@ exports.deleteCart = (req, res, next) => {
 exports.getCartItems = async (req, res, next) => {
   const cartId = req.params.id;
 
-  const cart = await cartDb.fetchById(cartId);
+  const items = await fetchCartItems(cartId);
 
-  if (cart) {
-    const { products: productsInCart } = cart;
-
-    const products = [];
-
-    // Mongoose
-    for (const product of productsInCart) {
-      const { productId } = product;
-      const productDetails = await productDb.fetchById(productId);
-      products.push({
-        ...productDetails._doc,
-        id: productDetails.id,
-        quantity: product.quantity,
-      });
-    }
-
-    res.json(products);
-  } else {
-    res.json([]);
-  }
-
-  // // fs && Firebase
-  // for (const product of productsInCart) {
-  //   const { id } = product;
-  //   const productDetails = await productDb.fetchById(id);
-  //   products.push({
-  //     ...productDetails,
-  //     quantity: product.quantity,
-  //   });
-  // }
+  res.json(items);
 };
 
 exports.postAddItemToCart = async (req, res, next) => {
   const cartId = req.params.id;
   const prodId = req.body.id;
 
-  // Mongoose
-  const product = await productDb.fetchById(prodId);
-
-  if (!product) {
-    res.json({ error: 'Producto no existe!' });
-    return;
+  try {
+    addItemToCart({ cartId, prodId });
+    res.json({});
+  } catch (error) {
+    console.log('aca', error);
   }
-
-  const cart = await cartDb.fetchById(cartId);
-
-  if (cart) {
-    const { products } = await cart.addProduct(product);
-    res.json(products);
-  } else {
-    const newCart = await cartDb.create({
-      _id: cartId,
-      products: [
-        {
-          productId: prodId,
-          quantity: 1,
-        },
-      ],
-    });
-    res.json(newCart.products);
-  }
-
-  // // fs && Firebase
-  // const { products } = await cartDb.addProduct(cartId, prodId);
 };
 
 exports.deleteCartItem = async (req, res, next) => {
