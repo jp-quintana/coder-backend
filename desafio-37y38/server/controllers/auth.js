@@ -20,39 +20,47 @@ exports.getUser = async (req, res, next) => {
 
 exports.postLogin = async (req, res, next) => {
   const { email } = req.body;
-  const user = await fetchUser({ email });
 
-  // const isAdmin = user.isAdmin ? true : false;
+  try {
+    const user = await fetchUser({ email });
 
-  res.json({
-    email: user.username,
-    id: user.id,
-    isAdmin: user.isAdmin,
-  });
+    res.json({
+      email: user.username,
+      id: user.id,
+      isAdmin: user.isAdmin,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 exports.postSignup = async (req, res, next) => {
   const { email, password, name, address, phone, age } = req.body;
-  const existingUser = await fetchUser({ username: email });
 
-  if (existingUser) {
-    throw new Error('El usuario ya existe');
+  try {
+    const existingUser = await fetchUser({ username: email });
+
+    if (existingUser) {
+      throw new Error('El usuario ya existe');
+    }
+
+    const hashedPassword = await generatePassword(password);
+
+    const newUser = await createUser({
+      username: email,
+      password: hashedPassword,
+      name,
+      address,
+      phone,
+      age,
+    });
+
+    req.login(newUser, () => {
+      return res.json({ email: newUser.username, id: newUser.id });
+    });
+  } catch (error) {
+    console.log(error);
   }
-
-  const hashedPassword = await generatePassword(password);
-
-  const newUser = await createUser({
-    username: email,
-    password: hashedPassword,
-    name,
-    address,
-    phone,
-    age,
-  });
-
-  req.login(newUser, () => {
-    return res.json({ email: newUser.username, id: newUser.id });
-  });
 };
 
 exports.deleteSession = async (req, res, next) => {

@@ -11,17 +11,16 @@ exports.createUser = async ({
   phone,
   age,
 }) => {
-  try {
-    await userDb.create({
-      username,
-      password,
-      name,
-      address,
-      phone,
-      age,
-    });
+  await userDb.create({
+    username,
+    password,
+    name,
+    address,
+    phone,
+    age,
+  });
 
-    const contentHTML = `
+  const contentHTML = `
         <h1>Informacion del usuario</h1>
         <ul>
           <li>
@@ -42,21 +41,14 @@ exports.createUser = async ({
         </ul>
       `;
 
-    let info = await transporter.sendMail({
-      from: '"CODER API" <process.env.EMAIL_ADMIN>', // sender address
-      to: process.env.EMAIL_ADMIN, // list of receivers
-      subject: 'Registro Nuevo Usuario', // Subject line
-      html: contentHTML, // html body
-    });
-  } catch (error) {
-    console.log(error);
-  }
+  await transporter.sendMail({
+    from: '"CODER API" <process.env.EMAIL_ADMIN>', // sender address
+    to: process.env.EMAIL_ADMIN, // list of receivers
+    subject: 'Registro Nuevo Usuario', // Subject line
+    html: contentHTML, // html body
+  });
 };
 
 exports.fetchUser = async ({ email }) => {
-  try {
-    return await userDb.collection.findOne({ username: email });
-  } catch (error) {
-    console.log(error);
-  }
+  return await userDb.collection.findOne({ username: email });
 };
