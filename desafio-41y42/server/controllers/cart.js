@@ -103,9 +103,8 @@ exports.createOrder = async (req, res, next) => {
 
   try {
     await _createOrder(cartId);
+    res.json('Success');
   } catch (error) {
     console.log(error);
   }
-
-  res.json('Success');
 };

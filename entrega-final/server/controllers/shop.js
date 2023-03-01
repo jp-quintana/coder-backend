@@ -1,8 +1,7 @@
-const ProductMongoDAO = require('../daos/product/ProductMongoDAO');
-const ProductFileDAO = require('../daos/product/ProductFileDAO');
-const ProductFirebaseDAO = require('../daos/product/ProductFirebaseDAO');
+// const ProductFileDAO = require('../daos/product/ProductFileDAO');
+// const ProductFirebaseDAO = require('../daos/product/ProductFirebaseDAO');
 
-const productDb = new ProductMongoDAO();
+const { fetchProduct, fetchAllProducts } = require('../services/product');
 
 // const productDb = new ProductFileDAO();
 
@@ -12,10 +11,10 @@ exports.getAllProducts = async (req, res, next) => {
   try {
     const { id } = req.params;
     if (id) {
-      const product = await productDb.fetchById(id);
+      const product = await fetchProduct(id);
       res.json(product);
     } else {
-      const products = await productDb.fetchAll();
+      const products = await fetchAllProducts();
       res.json(products);
     }
   } catch (err) {

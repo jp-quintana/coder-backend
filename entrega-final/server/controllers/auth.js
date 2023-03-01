@@ -1,8 +1,6 @@
-const UserMongoDAO = require('../daos/user/UserMongoDAO');
 const { generatePassword } = require('../utils/password');
-const { transporter } = require('../utils/mailer');
 
-const userDb = new UserMongoDAO();
+const { createUser, fetchUser } = require('../services/auth');
 
 exports.getUser = async (req, res, next) => {
   try {
@@ -20,6 +18,7 @@ exports.getUser = async (req, res, next) => {
       res.json('No user found');
     }
   } catch (err) {
+    console.log(err);
     next(new Error(err));
   }
 };
@@ -27,9 +26,8 @@ exports.getUser = async (req, res, next) => {
 exports.postLogin = async (req, res, next) => {
   try {
     const { email } = req.body;
-    const user = await userDb.collection.findOne({ username: email });
 
-    const isAdmin = user.isAdmin ? true : false;
+    const user = await fetchUser({ email });
 
     res.json({
       email: user.username,
@@ -37,6 +35,7 @@ exports.postLogin = async (req, res, next) => {
       isAdmin,
     });
   } catch (err) {
+    console.log(error);
     next(new Error(err));
   }
 };
@@ -44,7 +43,7 @@ exports.postLogin = async (req, res, next) => {
 exports.postSignup = async (req, res, next) => {
   try {
     const { email, password, name, address, phone, age } = req.body;
-    const existingUser = await userDb.collection.findOne({ username: email });
+    const existingUser = await fetchUser({ email });
 
     if (existingUser) {
       throw new Error('El usuario ya existe');
@@ -52,42 +51,13 @@ exports.postSignup = async (req, res, next) => {
 
     const hashedPassword = await generatePassword(password);
 
-    const newUser = await userDb.create({
+    const newUser = await createUser({
       username: email,
       password: hashedPassword,
       name,
       address,
       phone,
       age,
-    });
-
-    const contentHTML = `
-      <h1>Informacion del usuario</h1>
-      <ul>
-        <li>
-          Nombre de usuario: ${newUser.username}
-        </li>
-        <li>
-          Nombre: ${newUser.name}
-        </li>
-        <li>
-          Edad: ${newUser.age}
-        </li>
-        <li>
-          Direccion: ${newUser.address}
-        </li>
-        <li>
-          Telefono: ${newUser.phone}
-        </li>
-      </ul>
-
-    `;
-
-    let info = await transporter.sendMail({
-      from: '"CODER API" <process.env.EMAIL_ADMIN>', // sender address
-      to: process.env.EMAIL_ADMIN, // list of receivers
-      subject: 'Registro Nuevo Usuario', // Subject line
-      html: contentHTML, // html body
     });
 
     req.login(newUser, () => {
@@ -102,12 +72,10 @@ exports.postSignup = async (req, res, next) => {
 exports.deleteSession = async (req, res, next) => {
   try {
     req.session.destroy(function (err) {
-      if (!err) {
-        res
-          .status(200)
-          .clearCookie('connect.sid', { path: '/' })
-          .json({ status: 'Success' });
-      }
+      res
+        .status(200)
+        .clearCookie('connect.sid', { path: '/' })
+        .json({ status: 'Success' });
     });
   } catch (err) {
     console.log(err);

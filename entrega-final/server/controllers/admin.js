@@ -1,14 +1,8 @@
-const ProductMongoDAO = require('../daos/product/productMongoDAO');
-const CartMongoDAO = require('../daos/cart/cartMongoDAO');
-
 const ProductFileDAO = require('../daos/product/productFileDAO');
 const CartFileDAO = require('../daos/cart/cartFileDAO');
 
 const ProductFirebaseDAO = require('../daos/product/productFirebaseDAO');
 const CartFirebaseDAO = require('../daos/cart/cartFirebaseDAO');
-
-const productDb = new ProductMongoDAO();
-const cartDb = new CartMongoDAO();
 
 // const productDb = new ProductFileDAO();
 // const cartDb = new CartFileDAO();
@@ -16,24 +10,33 @@ const cartDb = new CartMongoDAO();
 // const productDb = new ProductFirebaseDAO();
 // const cartDb = new CartFirebaseDAO();
 
+const {
+  createProduct,
+  editProduct,
+  deleteProduct: _deleteProduct,
+} = require('../services/product');
+
 exports.postAddProduct = async (req, res, next) => {
   if (!req.session.isAdmin) {
     res.json({ error: 'Error: Ruta no autorizada.' });
     return;
   }
+  try {
+    const { title, description, sku, thumbnail, price, stock } = req.body;
 
-  const { title, description, sku, thumbnail, price, stock } = req.body;
+    await createProduct({
+      title,
+      description,
+      sku,
+      thumbnail,
+      price,
+      stock,
+    });
 
-  await productDb.create({
-    title,
-    description,
-    sku,
-    thumbnail,
-    price,
-    stock,
-  });
-
-  res.json('Success');
+    res.json('Success');
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 exports.putEditProduct = async (req, res, next) => {
@@ -41,20 +44,25 @@ exports.putEditProduct = async (req, res, next) => {
     res.json({ error: 'Error: Ruta no autorizada.' });
     return;
   }
-  const { id } = req.params;
 
-  const { title, description, sku, thumbnail, price, stock } = req.body;
+  try {
+    const { id } = req.params;
 
-  await productDb.update(id, {
-    title,
-    description,
-    sku,
-    thumbnail,
-    price,
-    stock,
-  });
+    const { title, description, sku, thumbnail, price, stock } = req.body;
 
-  res.json('Success');
+    await editProduct(id, {
+      title,
+      description,
+      sku,
+      thumbnail,
+      price,
+      stock,
+    });
+
+    res.json('Success');
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 exports.deleteProduct = async (req, res, next) => {
@@ -63,11 +71,13 @@ exports.deleteProduct = async (req, res, next) => {
     return;
   }
 
-  const { id } = req.params;
+  try {
+    const { id } = req.params;
 
-  await cartDb.deleteInAllDocs(id);
+    await _deleteProduct(id);
 
-  await productDb.delete(id);
-
-  res.json('Success');
+    res.json('Success');
+  } catch (error) {
+    console.log(error);
+  }
 };

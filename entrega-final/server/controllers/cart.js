@@ -1,19 +1,11 @@
-const Cart = require('../models/cart');
-const Product = require('../models/product');
+// const Cart = require('../models/cart');
+// const Product = require('../models/product');
 
-const CartMongoDao = require('../daos/cart/cartMongoDAO');
-const ProductMongoDao = require('../daos/product/productMongoDAO');
+// const ProductFileDAO = require('../daos/product/productFileDAO');
+// const CartFileDAO = require('../daos/cart/cartFileDao');
 
-const ProductFileDAO = require('../daos/product/productFileDAO');
-const CartFileDAO = require('../daos/cart/cartFileDao');
-
-const ProductFirebaseDAO = require('../daos/product/productFirebaseDAO');
-const CartFirebaseDAO = require('../daos/cart/cartFirebaseDao');
-
-const { transporter } = require('../utils/mailer');
-
-const cartDb = new CartMongoDao();
-const productDb = new ProductMongoDao();
+// const ProductFirebaseDAO = require('../daos/product/productFirebaseDAO');
+// const CartFirebaseDAO = require('../daos/cart/cartFirebaseDao');
 
 // const cartDb = new CartFileDAO();
 // const productDb = new ProductFileDAO();
@@ -21,45 +13,45 @@ const productDb = new ProductMongoDao();
 // const cartDb = new CartFirebaseDAO();
 // const productDb = new ProductFirebaseDAO();
 
+const {
+  createCart,
+  deleteCart: _deleteCart,
+  fetchCart,
+  addItemToCart,
+  deleteCartItem: _deleteCartItem,
+} = require('../services/cart');
+
 exports.postAddCart = async (req, res, next) => {
-  const cart = await cartDb.create({});
+  try {
+    const cartId = await createCart();
 
-  const { id } = cart;
-
-  res.json(id);
+    res.json(cartId);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
-exports.deleteCart = (req, res, next) => {
+exports.deleteCart = async (req, res, next) => {
   const cartId = req.params.id;
-  cartDb.delete(cartId);
 
-  res.json('Success');
+  try {
+    await _deleteCart(cartId);
+
+    res.json('Success');
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 exports.getCartItems = async (req, res, next) => {
-  const cartId = req.params.id;
+  try {
+    const cartId = req.params.id;
 
-  const cart = await cartDb.fetchById(cartId);
+    const items = await fetchCart(cartId);
 
-  if (cart) {
-    const { products: productsInCart } = cart;
-
-    const products = [];
-
-    // Mongoose
-    for (const product of productsInCart) {
-      const { productId } = product;
-      const productDetails = await productDb.fetchById(productId);
-      products.push({
-        ...productDetails._doc,
-        id: productDetails.id,
-        quantity: product.quantity,
-      });
-    }
-
-    res.json(products);
-  } else {
-    res.json([]);
+    res.json(items);
+  } catch (error) {
+    console.log(error);
   }
 
   // // fs && Firebase
@@ -74,33 +66,21 @@ exports.getCartItems = async (req, res, next) => {
 };
 
 exports.postAddItemToCart = async (req, res, next) => {
-  const cartId = req.params.id;
-  const prodId = req.body.id;
+  try {
+    const cartId = req.params.id;
+    const prodId = req.body.id;
 
-  // Mongoose
-  const product = await productDb.fetchById(prodId);
+    const product = await fetchProduct(prodId);
 
-  if (!product) {
-    res.json({ error: 'Producto no existe!' });
-    return;
-  }
+    if (!product) {
+      return Error({ message: 'Producto no existe' });
+    }
 
-  const cart = await cartDb.fetchById(cartId);
+    const cartItems = await addItemToCart({ cartId, prodId, product });
 
-  if (cart) {
-    const { products } = await cart.addProduct(product);
-    res.json(products);
-  } else {
-    const newCart = await cartDb.create({
-      _id: cartId,
-      products: [
-        {
-          productId: prodId,
-          quantity: 1,
-        },
-      ],
-    });
-    res.json(newCart.products);
+    res.json(cartItems);
+  } catch (error) {
+    console.log(error);
   }
 
   // // fs && Firebase
@@ -108,15 +88,14 @@ exports.postAddItemToCart = async (req, res, next) => {
 };
 
 exports.deleteCartItem = async (req, res, next) => {
-  const cartId = req.params.id;
-  const prodId = req.params.id_prod;
+  try {
+    const cartId = req.params.id;
+    const prodId = req.params.id_prod;
 
-  // Mongoose
-  const cart = await cartDb.fetchById(cartId);
-  await cart.deleteProduct(prodId);
-
-  if (cart.products.length === 0) {
-    cart.delete(cartId);
+    await _deleteCartItem({ cartId, prodId });
+    res.json('Success');
+  } catch (error) {
+    console.log(error);
   }
 
   // // fs && Firebase
@@ -126,70 +105,12 @@ exports.deleteCartItem = async (req, res, next) => {
 };
 
 exports.createOrder = async (req, res, next) => {
-  console.log('working');
+  try {
+    const cartId = req.params.id;
 
-  const cartId = req.params.id;
-
-  const cart = await cartDb.fetchById(cartId);
-
-  const { products: productsInCart } = cart;
-
-  const products = [];
-
-  for (const product of productsInCart) {
-    const { productId } = product;
-    const productDetails = await productDb.fetchById(productId);
-    products.push({
-      ...productDetails._doc,
-      id: productDetails.id,
-      quantity: product.quantity,
-    });
+    await _createOrder(cartId);
+    res.json('Success');
+  } catch (error) {
+    console.log(error);
   }
-
-  // const productsHTML = [];
-
-  // for (const product of products) {
-  //   productsHTML.push(`
-  //   <ul>
-  //     <li>
-  //       Producto: ${product.title}
-  //     </li>
-  //     <li>
-  //       Precio: ${product.price}
-  //     </li>
-  //     <li>
-  //       SKU: ${product.sku}
-  //     </li>
-  //   </ul>
-  //   `);
-  // }
-
-  const contentHTML = `
-      <h1>Informacion del usuario</h1>
-      <ul>
-        <li>
-          Nombre de usuario: ${req.user.username}
-        </li>
-      </ul>
-      <h1>Informacion de compra</h1>
-        ${products.map(
-          (product) =>
-            `<ul>
-            <li>Producto: ${product.title}</li>
-            <li>Precio: ${product.price}</li>
-            <li>SKU: ${product.sku}</li>
-          </ul>`
-        )}
-    `;
-
-  let info = await transporter.sendMail({
-    from: '"CODER API" <process.env.EMAIL_ADMIN>', // sender address
-    to: process.env.EMAIL_ADMIN, // list of receivers
-    subject: `Orden Creada por ${req.user.username}`, // Subject line
-    html: contentHTML, // html body
-  });
-
-  await cartDb.delete(cartId);
-
-  res.json('Success');
 };
