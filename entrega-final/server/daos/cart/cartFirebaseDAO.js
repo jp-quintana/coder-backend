@@ -56,7 +56,7 @@ class CartFirebaseDAO extends FirebaseClass {
     await cartRef.update(cart);
   }
 
-  async deleteInAllCarts(prodId) {
+  async deleteProductInAllCarts(prodId) {
     const cartsRef = this.collection;
 
     const cartsSnapshot = await cartsRef.get();

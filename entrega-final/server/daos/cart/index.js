@@ -1,11 +1,11 @@
-const CartMongoDao = require('./cartMongoDao.js');
+const CartMongoDAO = require('./CartMongoDAO.js');
 
 const dbOption = process.env.dbOption || 'MONGO';
 
 switch (dbOption) {
   case 'MONGO':
-    exports.cartDAO = new CartMongoDao();
+    exports.CartDAO = new CartMongoDAO();
     break;
   default:
-    exports.cartDAO = new CartMongoDao();
+    exports.CartDAO = new CartMongoDAO();
 }

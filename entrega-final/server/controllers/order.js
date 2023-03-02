@@ -5,7 +5,6 @@ exports.getOrders = async (req, res, next) => {
     const userId = req.params.id;
 
     const orders = await fetchOrders(userId);
-    console.log('running');
     res.json(orders);
   } catch (error) {
     console.log(error);
@@ -16,7 +15,12 @@ exports.createOrder = async (req, res, next) => {
   try {
     const cartId = req.params.id;
 
-    await _createOrder(cartId);
+    await _createOrder({
+      cartId,
+      userId: req.user.id,
+      username: req.user.username,
+      address: req.user.address,
+    });
     res.json('Success');
   } catch (error) {
     console.log(error);

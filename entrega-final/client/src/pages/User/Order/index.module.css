@@ -1,0 +1,8 @@
+.order {
+  border: 1px solid #ccc;
+  border-radius: 1rem;
+  padding: 1rem 2rem;
+  max-height: 12rem;
+  display: flex;
+  justify-content: space-between;
+}

@@ -15,15 +15,6 @@ const Cart = new Schema(
   { timestamps: true }
 );
 
-//TODO: FIX VIRTUAL
-// Cart
-//   // .path('products')
-//   // .schema.virtual('id')
-//   .virtual('products.id')
-//   .get(function () {
-//     return this._id;
-//   });
-
 Cart.methods.addProduct = function (product) {
   const cartProductIndex = this.products.findIndex(
     (p) => p.productId.toString() === product._id.toString()
@@ -54,10 +45,6 @@ Cart.methods.deleteProduct = function (productId) {
   this.products = updatedCartItems;
 
   return this.save();
-};
-
-Cart.statics.deleteProductInAllCarts = function (productId) {
-  return 'hola';
 };
 
 module.exports = mongoose.model('Cart', Cart);

@@ -1,14 +1,15 @@
-const { cartDAO } = require('../daos/cart');
-const { productDAO } = require('../daos/product');
+const { CartDAO } = require('../daos/cart');
+const { ProductDAO } = require('../daos/product');
+const { OrderDAO } = require('../daos/order');
 
 const { transporter } = require('../utils/mailer');
 
 exports.fetchOrders = async (userId) => {
-  return [];
+  return await OrderDAO.fetchOrders(userId);
 };
 
-exports.createOrder = async (cartId) => {
-  const cart = await cartDAO.fetchById(cartId);
+exports.createOrder = async ({ cartId, userId, username, address }) => {
+  const cart = await CartDAO.fetchById(cartId);
 
   const { products: productsInCart } = cart;
 
@@ -16,7 +17,7 @@ exports.createOrder = async (cartId) => {
 
   for (const product of productsInCart) {
     const { productId } = product;
-    const productDetails = await productDAO.fetchById(productId);
+    const productDetails = await ProductDAO.fetchById(productId);
     products.push({
       ...productDetails._doc,
       id: productDetails.id,
@@ -24,30 +25,36 @@ exports.createOrder = async (cartId) => {
     });
   }
 
-  const contentHTML = `
-      <h1>Informacion del usuario</h1>
-      <ul>
-        <li>
-          Nombre de usuario: ${req.user.username}
-        </li>
-      </ul>
-      <h1>Informacion de compra</h1>
-        ${products.map(
-          (product) =>
-            `<ul>
-            <li>Producto: ${product.title}</li>
-            <li>Precio: ${product.price}</li>
-            <li>SKU: ${product.sku}</li>
-          </ul>`
-        )}
-    `;
+  // const contentHTML = `
+  //     <h1>Informacion del usuario</h1>
+  //     <ul>
+  //       <li>
+  //         Nombre de usuario: ${req.user.username}
+  //       </li>
+  //     </ul>
+  //     <h1>Informacion de compra</h1>
+  //       ${products.map(
+  //         (product) =>
+  //           `<ul>
+  //           <li>Producto: ${product.title}</li>
+  //           <li>Precio: ${product.price}</li>
+  //           <li>SKU: ${product.sku}</li>
+  //         </ul>`
+  //       )}
+  //   `;
 
-  let info = await transporter.sendMail({
-    from: '"CODER API" <process.env.EMAIL_ADMIN>', // sender address
-    to: process.env.EMAIL_ADMIN, // list of receivers
-    subject: `Orden Creada por ${req.user.username}`, // Subject line
-    html: contentHTML, // html body
+  // let info = await transporter.sendMail({
+  //   from: '"CODER API" <process.env.EMAIL_ADMIN>', // sender address
+  //   to: process.env.EMAIL_ADMIN, // list of receivers
+  //   subject: `Orden Creada por ${req.user.username}`, // Subject line
+  //   html: contentHTML, // html body
+  // });
+
+  await OrderDAO.create({
+    products,
+    userId,
+    username,
+    address,
   });
-
-  await cartDAO.delete(cartId);
+  await CartDAO.delete(cartId);
 };

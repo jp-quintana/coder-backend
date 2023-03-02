@@ -80,7 +80,7 @@ class CartFileDAO extends FileClass {
     }
   }
 
-  async deleteInAllCarts(prodId) {
+  async deleteProductInAllCarts(prodId) {
     try {
       let carts = await getDocsFromFile(p);
 

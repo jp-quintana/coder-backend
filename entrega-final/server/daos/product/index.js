@@ -1,11 +1,11 @@
-const ProductMongoDAO = require('./productMongoDAO');
+const ProductMongoDAO = require('./ProductMongoDAO');
 
 const dbOption = process.env.dbOption || 'MONGO';
 
 switch (dbOption) {
   case 'MONGO':
-    exports.productDAO = new ProductMongoDAO();
+    exports.ProductDAO = new ProductMongoDAO();
     break;
   default:
-    exports.productDAO = new ProductMongoDAO();
+    exports.ProductDAO = new ProductMongoDAO();
 }

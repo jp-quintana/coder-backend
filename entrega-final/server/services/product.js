@@ -1,12 +1,12 @@
-const { productDAO } = require('../daos/product');
-const { cartDAO } = require('../daos/cart');
+const { ProductDAO } = require('../daos/product');
+const { CartDAO } = require('../daos/cart');
 
 exports.fetchAllProducts = async (prodId) => {
-  return await productDAO.fetchAll();
+  return await ProductDAO.fetchAll();
 };
 
 exports.fetchProduct = async (prodId) => {
-  return await productDAO.fetchById(prodId);
+  return await ProductDAO.fetchById(prodId);
 };
 
 exports.createProduct = async ({
@@ -17,7 +17,7 @@ exports.createProduct = async ({
   price,
   stock,
 }) => {
-  await productDAO.create({
+  await ProductDAO.create({
     title,
     description,
     sku,
@@ -31,7 +31,7 @@ exports.editProduct = async (
   id,
   { title, description, sku, thumbnail, price, stock }
 ) => {
-  await productDAO.update(id, {
+  await ProductDAO.update(id, {
     title,
     description,
     sku,
@@ -42,7 +42,7 @@ exports.editProduct = async (
 };
 
 exports.deleteProduct = async (id) => {
-  await cartDAO.deleteInAllCarts(id);
+  await cartDAO.deleteProductInAllCarts(id);
 
-  await productDAO.delete(id);
+  await ProductDAO.delete(id);
 };

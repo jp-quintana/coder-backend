@@ -1,14 +1,12 @@
-const mongoose = require('mongoose');
-
 const MongoClass = require('../base/MongoClass');
-const CartMongo = require('../../models/cartMongo');
+const CartMongo = require('../../models/cart/CartMongo');
 
-class CartMongoDao extends MongoClass {
+class CartMongoDAO extends MongoClass {
   constructor() {
     super(CartMongo);
   }
 
-  async deleteInAllCarts(id) {
+  async deleteProductInAllCarts(id) {
     return await this.collection.updateMany(
       {},
       { $pull: { products: { productId: id } } }
@@ -16,4 +14,4 @@ class CartMongoDao extends MongoClass {
   }
 }
 
-module.exports = CartMongoDao;
+module.exports = CartMongoDAO;

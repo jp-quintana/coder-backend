@@ -1,4 +1,4 @@
-const { userDAO } = require('../daos/user');
+const { UserDAO } = require('../daos/user');
 
 const { transporter } = require('../utils/mailer');
 
@@ -10,7 +10,7 @@ exports.createUser = async ({
   phone,
   age,
 }) => {
-  await userDAO.create({
+  await UserDAO.create({
     username,
     password,
     name,
@@ -49,5 +49,5 @@ exports.createUser = async ({
 };
 
 exports.fetchUser = async ({ email }) => {
-  return await userDAO.collection.findOne({ username: email });
+  return await UserDAO.collection.findOne({ username: email });
 };

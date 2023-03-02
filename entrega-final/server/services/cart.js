@@ -1,19 +1,19 @@
-const { cartDAO } = require('../daos/cart');
-const { productDAO } = require('../daos/product');
+const { CartDAO } = require('../daos/cart');
+const { ProductDAO } = require('../daos/product');
 
 const { transporter } = require('../utils/mailer');
 
 exports.createCart = async () => {
-  const { id } = await cartDAO.create({});
+  const { id } = await CartDAO.create({});
   return id;
 };
 
 exports.deleteCart = async (cartId) => {
-  await cartDAO.delete(cartId);
+  await CartDAO.delete(cartId);
 };
 
 exports.fetchCart = async (cartId) => {
-  const cart = await cartDAO.fetchById(cartId);
+  const cart = await CartDAO.fetchById(cartId);
 
   const products = [];
 
@@ -22,7 +22,7 @@ exports.fetchCart = async (cartId) => {
 
     for (const product of productsInCart) {
       const { productId } = product;
-      const productDetails = await productDAO.fetchById(productId);
+      const productDetails = await ProductDAO.fetchById(productId);
       products.push({
         ...productDetails._doc,
         id: productDetails.id,
@@ -35,7 +35,7 @@ exports.fetchCart = async (cartId) => {
 };
 
 exports.addItemToCart = async ({ cartId, prodId, product }) => {
-  const cart = await cartDAO.fetchById(cartId);
+  const cart = await CartDAO.fetchById(cartId);
 
   let items;
 
@@ -43,7 +43,7 @@ exports.addItemToCart = async ({ cartId, prodId, product }) => {
     const { products } = await cart.addProduct(product);
     items = products;
   } else {
-    const newCart = await cartDAO.create({
+    const newCart = await CartDAO.create({
       _id: cartId,
       products: [
         {
@@ -60,7 +60,7 @@ exports.addItemToCart = async ({ cartId, prodId, product }) => {
 };
 
 exports.deleteCartItem = async ({ cartId, prodId }) => {
-  const cart = await cartDAO.fetchById(cartId);
+  const cart = await CartDAO.fetchById(cartId);
   await cart.deleteProduct(prodId);
 
   if (cart.products.length === 0) {

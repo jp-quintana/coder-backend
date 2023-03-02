@@ -37,14 +37,6 @@ class FirebaseClass {
   async delete(id) {
     return await this.collection.doc(id).delete();
   }
-
-  // TODO: ver como pasar esto al Model de Cart
-  // async deleteInAllCarts(id) {
-  //   return await this.collection.updateMany(
-  //     {},
-  //     { $pull: { products: { productId: mongoose.Types.ObjectId(id) } } }
-  //   );
-  // }
 }
 
 module.exports = FirebaseClass;

@@ -1,11 +1,11 @@
-const userMongoDAO = require('./userMongoDAO.js');
+const UserMongoDAO = require('./UserMongoDAO.js');
 
 const dbOption = process.env.dbOption || 'MONGO';
 
 switch (dbOption) {
   case 'MONGO':
-    exports.userDAO = new userMongoDAO();
+    exports.UserDAO = new UserMongoDAO();
     break;
   default:
-    exports.userDAO = new userMongoDAO();
+    exports.UserDAO = new UserMongoDAO();
 }
