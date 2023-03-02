@@ -19,6 +19,6 @@ router.delete(
   cartController.deleteCartItem
 );
 
-router.post('/:id/confirm', needAuth, cartController.createOrder);
+// router.post('/:id/confirm', needAuth, cartController.createOrder);
 
 module.exports = router;

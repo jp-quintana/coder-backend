@@ -16,6 +16,7 @@ const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const cartRoutes = require('./routes/cart');
 const authRoutes = require('./routes/auth');
+const orderRoutes = require('./routes/order');
 
 const app = express();
 
@@ -76,6 +77,7 @@ if (argv.mode === 'cluster') {
     app.use('/api/productos', adminRoutes);
     app.use('/api/productos', shopRoutes);
     app.use('/api/carrito', cartRoutes);
+    app.use('/api/ordenes', orderRoutes);
 
     app.use('*', (req, res, next) => {
       res.status(404).json({ error: -2, descripcion: 'ruta no implementada' });
@@ -99,6 +101,7 @@ if (argv.mode === 'cluster') {
   }
 } else {
   app.use((req, res, next) => {
+    console.log('req', req.url);
     if (req.user) {
       if (req.user.id === '63ad05a28edf6398ca65b474') {
         req.session.isAdmin = true;
@@ -115,6 +118,7 @@ if (argv.mode === 'cluster') {
   app.use('/api/productos', adminRoutes);
   app.use('/api/productos', shopRoutes);
   app.use('/api/carrito', cartRoutes);
+  app.use('/api/ordenes', orderRoutes);
 
   app.use('*', (req, res, next) => {
     res.status(404).json({ error: -2, descripcion: 'ruta no implementada' });

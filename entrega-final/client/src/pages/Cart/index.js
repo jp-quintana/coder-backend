@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCartContext } from '../../hooks/useCartContext';
 import { useAuthContext } from '../../hooks/useAuthContext';
 import { useCart } from '../../hooks/useCart';
+import { useOrder } from '../../hooks/useOrder';
 
 import CartItem from './CartItem';
 
@@ -14,7 +15,8 @@ const Cart = () => {
 
   const { user } = useAuthContext();
   const { id: cartId, items, dispatch } = useCartContext();
-  const { updateCart, deleteCart, createOrder, isLoading, error } = useCart();
+  const { updateCart, deleteCart, isLoading, error } = useCart();
+  const { createOrder } = useOrder();
 
   const [navigation, setNavigation] = useState(false);
 

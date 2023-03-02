@@ -3,6 +3,10 @@ const { productDAO } = require('../daos/product');
 
 const { transporter } = require('../utils/mailer');
 
+exports.fetchOrders = async (userId) => {
+  return [];
+};
+
 exports.createOrder = async (cartId) => {
   const cart = await cartDAO.fetchById(cartId);
 
@@ -19,24 +23,6 @@ exports.createOrder = async (cartId) => {
       quantity: product.quantity,
     });
   }
-
-  // const productsHTML = [];
-
-  // for (const product of products) {
-  //   productsHTML.push(`
-  //   <ul>
-  //     <li>
-  //       Producto: ${product.title}
-  //     </li>
-  //     <li>
-  //       Precio: ${product.price}
-  //     </li>
-  //     <li>
-  //       SKU: ${product.sku}
-  //     </li>
-  //   </ul>
-  //   `);
-  // }
 
   const contentHTML = `
       <h1>Informacion del usuario</h1>

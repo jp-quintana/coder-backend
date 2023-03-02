@@ -79,8 +79,16 @@ const Nav = () => {
                 </NavLink>
               </li>
               <li>
-                Hola <span>{user.email}</span>!
+                <NavLink
+                  to="/usuario"
+                  className={({ isActive }) =>
+                    isActive ? navLinkStyles : undefined
+                  }
+                >
+                  Hola <span>{user.email}</span>!
+                </NavLink>
               </li>
+
               <li className={styles.logout} onClick={handleLogout}>
                 Logout
               </li>

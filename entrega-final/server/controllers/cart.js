@@ -104,13 +104,13 @@ exports.deleteCartItem = async (req, res, next) => {
   // await cartDb.deleteProduct(cartId, prodId);
 };
 
-exports.createOrder = async (req, res, next) => {
-  try {
-    const cartId = req.params.id;
+// exports.createOrder = async (req, res, next) => {
+//   try {
+//     const cartId = req.params.id;
 
-    await _createOrder(cartId);
-    res.json('Success');
-  } catch (error) {
-    console.log(error);
-  }
-};
+//     await _createOrder(cartId);
+//     res.json('Success');
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
