@@ -1,5 +1,4 @@
-const UserMongoDAO = require('../daos/user/UserMongoDAO');
-const userDb = new UserMongoDAO();
+const { userDAO } = require('../daos/user');
 
 const { transporter } = require('../utils/mailer');
 
@@ -11,7 +10,7 @@ exports.createUser = async ({
   phone,
   age,
 }) => {
-  await userDb.create({
+  await userDAO.create({
     username,
     password,
     name,
@@ -50,5 +49,5 @@ exports.createUser = async ({
 };
 
 exports.fetchUser = async ({ email }) => {
-  return await userDb.collection.findOne({ username: email });
+  return await userDAO.collection.findOne({ username: email });
 };

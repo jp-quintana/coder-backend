@@ -1,4 +1,4 @@
-const FileClass = require('../../containers/FileClass');
+const FileClass = require('../base/FileClass');
 
 const path = require('path');
 

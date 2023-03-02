@@ -1,6 +1,6 @@
-const FirebaseClass = require('../../containers/FirebaseClass');
+const FirebaseClass = require('../base/FirebaseClass');
 
-const { db } = require('../../db/firebaseConfig');
+// const { db } = require('../../db/firebaseConfig');
 
 class CartFirebaseDAO extends FirebaseClass {
   constructor() {
@@ -56,7 +56,7 @@ class CartFirebaseDAO extends FirebaseClass {
     await cartRef.update(cart);
   }
 
-  async deleteInAllDocs(prodId) {
+  async deleteInAllCarts(prodId) {
     const cartsRef = this.collection;
 
     const cartsSnapshot = await cartsRef.get();

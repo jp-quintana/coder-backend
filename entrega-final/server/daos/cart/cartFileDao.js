@@ -1,4 +1,4 @@
-const FileClass = require('../../containers/FileClass');
+const FileClass = require('../base/FileClass');
 
 const path = require('path');
 
@@ -80,7 +80,7 @@ class CartFileDAO extends FileClass {
     }
   }
 
-  async deleteInAllDocs(prodId) {
+  async deleteInAllCarts(prodId) {
     try {
       let carts = await getDocsFromFile(p);
 

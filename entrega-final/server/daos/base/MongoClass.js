@@ -1,5 +1,3 @@
-const mongoose = require('mongoose');
-
 class MongoClass {
   constructor(collection) {
     this.collection = collection;
@@ -23,14 +21,6 @@ class MongoClass {
 
   async delete(id) {
     return await this.collection.findByIdAndRemove(id);
-  }
-
-  // TODO: ver como pasar esto al Model de Cart
-  async deleteInAllDocs(id) {
-    return await this.collection.updateMany(
-      {},
-      { $pull: { products: { productId: mongoose.Types.ObjectId(id) } } }
-    );
   }
 }
 

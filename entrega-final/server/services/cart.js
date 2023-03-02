@@ -1,22 +1,19 @@
-const CartMongoDao = require('../daos/cart/cartMongoDAO');
-const ProductMongoDao = require('../daos/product/productMongoDAO');
+const { cartDAO } = require('../daos/cart');
+const { productDAO } = require('../daos/product');
 
 const { transporter } = require('../utils/mailer');
 
-const cartDb = new CartMongoDao();
-const productDb = new ProductMongoDao();
-
 exports.createCart = async () => {
-  const { id } = await cartDb.create({});
+  const { id } = await cartDAO.create({});
   return id;
 };
 
 exports.deleteCart = async (cartId) => {
-  await cartDb.delete(cartId);
+  await cartDAO.delete(cartId);
 };
 
 exports.fetchCart = async (cartId) => {
-  const cart = await cartDb.fetchById(cartId);
+  const cart = await cartDAO.fetchById(cartId);
 
   const products = [];
 
@@ -25,7 +22,7 @@ exports.fetchCart = async (cartId) => {
 
     for (const product of productsInCart) {
       const { productId } = product;
-      const productDetails = await productDb.fetchById(productId);
+      const productDetails = await productDAO.fetchById(productId);
       products.push({
         ...productDetails._doc,
         id: productDetails.id,
@@ -38,7 +35,7 @@ exports.fetchCart = async (cartId) => {
 };
 
 exports.addItemToCart = async ({ cartId, prodId, product }) => {
-  const cart = await cartDb.fetchById(cartId);
+  const cart = await cartDAO.fetchById(cartId);
 
   let items;
 
@@ -46,7 +43,7 @@ exports.addItemToCart = async ({ cartId, prodId, product }) => {
     const { products } = await cart.addProduct(product);
     items = products;
   } else {
-    const newCart = await cartDb.create({
+    const newCart = await cartDAO.create({
       _id: cartId,
       products: [
         {
@@ -63,7 +60,7 @@ exports.addItemToCart = async ({ cartId, prodId, product }) => {
 };
 
 exports.deleteCartItem = async ({ cartId, prodId }) => {
-  const cart = await cartDb.fetchById(cartId);
+  const cart = await cartDAO.fetchById(cartId);
   await cart.deleteProduct(prodId);
 
   if (cart.products.length === 0) {

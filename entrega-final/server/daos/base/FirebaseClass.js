@@ -1,4 +1,4 @@
-const { db } = require('../db/firebaseConfig');
+// const { db } = require('../db/firebaseConfig');
 
 class FirebaseClass {
   constructor(name) {
@@ -39,7 +39,7 @@ class FirebaseClass {
   }
 
   // TODO: ver como pasar esto al Model de Cart
-  // async deleteInAllDocs(id) {
+  // async deleteInAllCarts(id) {
   //   return await this.collection.updateMany(
   //     {},
   //     { $pull: { products: { productId: mongoose.Types.ObjectId(id) } } }

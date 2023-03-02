@@ -17,9 +17,9 @@ exports.getUser = async (req, res, next) => {
     } else {
       res.json('No user found');
     }
-  } catch (err) {
-    console.log(err);
-    next(new Error(err));
+  } catch (error) {
+    console.log(error);
+    next(new Error(error));
   }
 };
 
@@ -32,11 +32,11 @@ exports.postLogin = async (req, res, next) => {
     res.json({
       email: user.username,
       id: user.id,
-      isAdmin,
+      isAdmin: user.isAdmin,
     });
-  } catch (err) {
+  } catch (error) {
     console.log(error);
-    next(new Error(err));
+    next(new Error(error));
   }
 };
 
@@ -63,8 +63,8 @@ exports.postSignup = async (req, res, next) => {
     req.login(newUser, () => {
       return res.json({ email: newUser.username, id: newUser.id });
     });
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    console.log(error);
     next(new Error('El usuario ya existe'));
   }
 };
@@ -72,12 +72,14 @@ exports.postSignup = async (req, res, next) => {
 exports.deleteSession = async (req, res, next) => {
   try {
     req.session.destroy(function (err) {
-      res
-        .status(200)
-        .clearCookie('connect.sid', { path: '/' })
-        .json({ status: 'Success' });
+      if (!err) {
+        res
+          .status(200)
+          .clearCookie('connect.sid', { path: '/' })
+          .json({ status: 'Success' });
+      }
     });
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    console.log(error);
   }
 };

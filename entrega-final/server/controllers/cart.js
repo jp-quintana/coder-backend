@@ -21,6 +21,8 @@ const {
   deleteCartItem: _deleteCartItem,
 } = require('../services/cart');
 
+const { fetchProduct } = require('../services/product');
+
 exports.postAddCart = async (req, res, next) => {
   try {
     const cartId = await createCart();
@@ -100,8 +102,6 @@ exports.deleteCartItem = async (req, res, next) => {
 
   // // fs && Firebase
   // await cartDb.deleteProduct(cartId, prodId);
-
-  res.json('Success');
 };
 
 exports.createOrder = async (req, res, next) => {

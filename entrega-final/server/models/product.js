@@ -65,58 +65,6 @@ class Product {
       console.log(error);
     }
   }
-
-  // static async fetchAll() {
-  //   try {
-  //     const products = await getProductsFromFile(p);
-
-  //     return products;
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
-
-  // static async fetchById(prodId) {
-  //   try {
-  //     const products = await getProductsFromFile(p);
-
-  //     const product = products.find(
-  //       (product) => prodId.toString() === product.id.toString()
-  //     );
-
-  //     if (!product) {
-  //       console.log({ error: 'producto no encontrado' });
-  //     } else {
-  //       return product;
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
-
-  // static async delete(prodId) {
-  //   try {
-  //     let products = await getProductsFromFile(p);
-
-  //     const productToDelete = products.find(
-  //       (product) => prodId.toString() === product.id.toString()
-  //     );
-
-  //     if (!productToDelete) {
-  //       throw new Error(`{ error: 'producto no encontrado' }`);
-  //     }
-
-  //     products = products.filter(
-  //       (product) => prodId.toString() !== product.id.toString()
-  //     );
-
-  //     await Cart.deleteProductInAllCarts(prodId);
-
-  //     await fs.writeFile(p, JSON.stringify(products));
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
 }
 
 module.exports = Product;
