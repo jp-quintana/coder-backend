@@ -32,8 +32,8 @@ export const useLogin = () => {
 
       setIsLoading(false);
     } catch (err) {
-      setIsLoading(false);
       setError('Autenticación falló!');
+      setIsLoading(false);
     }
   };
 

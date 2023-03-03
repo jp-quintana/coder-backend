@@ -1,10 +1,14 @@
 const UserMongoDAO = require('./UserMongoDAO.js');
+const UserFirebaseDAO = require('./UserFirebaseDAO.js');
 
-const dbOption = process.env.dbOption || 'MONGO';
+const daoOption = process.env.daoOption || 'MONGO';
 
-switch (dbOption) {
+switch (daoOption) {
   case 'MONGO':
     exports.UserDAO = new UserMongoDAO();
+    break;
+  case 'FIREBASE':
+    exports.UserDAO = new UserFirebaseDAO();
     break;
   default:
     exports.UserDAO = new UserMongoDAO();

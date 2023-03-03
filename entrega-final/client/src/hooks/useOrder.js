@@ -32,6 +32,7 @@ export const useOrder = () => {
       await fetch(`/api/ordenes/${user.id}/confirm`, { method: 'POST' });
 
       dispatch({ type: 'DELETE_CART' });
+      setIsLoading(false);
     } catch (err) {
       console.log(err);
       setError(err);

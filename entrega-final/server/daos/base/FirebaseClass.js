@@ -1,4 +1,6 @@
-// const { db } = require('../db/firebaseConfig');
+const { db } = require('../../db/firebaseConfig');
+
+const admin = require('firebase-admin');
 
 class FirebaseClass {
   constructor(name) {
@@ -9,25 +11,29 @@ class FirebaseClass {
     const querySnapshot = await this.collection.get();
 
     const docs = [];
+
     querySnapshot.docs.map((doc) => {
       docs.push({ ...doc.data(), id: doc.id });
     });
 
-    // for (const doc of docsSnapshot) {
-    //   products.push(doc.data());
-    // }
     return docs;
   }
 
   async fetchById(id) {
-    const querySnapshot = await this.collection.doc(id).get();
-
-    const doc = { ...querySnapshot.data(), id: querySnapshot.id };
-    return doc;
+    const doc = await this.collection.doc(id).get();
+    if (!doc.exists) {
+      return null;
+    } else {
+      const docData = { ...doc.data(), id: doc.id };
+      return docData;
+    }
   }
 
   async create(obj) {
-    return await this.collection.add(obj);
+    return await this.collection.add({
+      ...obj,
+      createdAt: admin.firestore.Timestamp.now(),
+    });
   }
 
   async update(id, obj) {

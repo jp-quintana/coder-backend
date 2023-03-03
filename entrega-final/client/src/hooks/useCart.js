@@ -39,6 +39,7 @@ export const useCart = () => {
       }
 
       dispatch({ type: 'UPDATE_CART', payload: updatedItems });
+      setIsLoading(false);
     } catch (err) {
       console.log(err);
       setError(err);
@@ -57,6 +58,7 @@ export const useCart = () => {
       const updatedItems = items.filter((item) => item.id !== productId);
 
       dispatch({ type: 'UPDATE_CART', payload: updatedItems });
+      setIsLoading(false);
     } catch (err) {
       console.log(err);
       setError(err);
@@ -87,6 +89,7 @@ export const useCart = () => {
       await fetch(`/api/carrito/${user.id}`, { method: 'DELETE' });
 
       dispatch({ type: 'DELETE_CART' });
+      setIsLoading(false);
     } catch (err) {
       console.log(err);
       setError(err);

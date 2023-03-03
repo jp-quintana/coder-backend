@@ -19,7 +19,6 @@ const User = new Schema({
   phone: { type: String, required: true },
   isAdmin: {
     type: Boolean,
-    required: false,
   },
 });
 

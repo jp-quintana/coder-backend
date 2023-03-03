@@ -62,14 +62,13 @@ if (argv.mode === 'cluster') {
   } else {
     app.use((req, res, next) => {
       if (req.user) {
-        if (req.user.id === '63ad05a28edf6398ca65b474') {
+        if (req.user.isAdmin) {
           req.session.isAdmin = true;
         }
       } else {
         req.session.isAdmin = false;
       }
-      console.log(req.session);
-      console.log(req.user);
+
       next();
     });
 
@@ -101,16 +100,14 @@ if (argv.mode === 'cluster') {
   }
 } else {
   app.use((req, res, next) => {
-    console.log('req', req.url);
     if (req.user) {
-      if (req.user.id === '63ad05a28edf6398ca65b474') {
+      if (req.user.isAdmin) {
         req.session.isAdmin = true;
       }
     } else {
       req.session.isAdmin = false;
     }
-    console.log(req.session);
-    console.log(req.user);
+
     next();
   });
 

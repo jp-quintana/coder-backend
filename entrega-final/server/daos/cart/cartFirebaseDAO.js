@@ -1,58 +1,52 @@
 const FirebaseClass = require('../base/FirebaseClass');
 
-// const { db } = require('../../db/firebaseConfig');
-
 class CartFirebaseDAO extends FirebaseClass {
   constructor() {
     super('carts');
   }
 
-  async addItemToCart({ userId, productId, product }) {}
-  async removeItemFromCart({ userId, productId }) {}
-  async deleteProductInAllCarts(id) {}
+  async addItemToCart({ userId, productId, product }) {
+    const cartRef = this.collection.doc(userId);
 
-  async addProduct(cartId, prodId) {
-    const cartRef = this.collection.doc(cartId);
+    const cartDoc = await cartRef.get();
 
-    const cartSnapshot = await cartRef.get();
+    if (cartDoc.exists) {
+      const cart = { ...cartDoc.data() };
 
-    const cart = { ...cartSnapshot.data() };
+      const existingProductIndex = cart.products.findIndex(
+        (product) => product.productId.toString() === productId.toString()
+      );
 
-    if (!cart.products) {
-      cart.products = [];
-    }
+      const existingProduct = cart.products[existingProductIndex];
 
-    const existingProductIndex = cart.products.findIndex(
-      (product) => prodId.toString() === product.id.toString()
-    );
+      let updatedProduct;
 
-    const existingProduct = cart.products[existingProductIndex];
+      if (existingProduct) {
+        updatedProduct = { ...existingProduct };
+        updatedProduct.quantity += 1;
+        cart.products[existingProductIndex] = updatedProduct;
+      } else {
+        updatedProduct = { productId, quantity: 1 };
+        cart.products.push(updatedProduct);
+      }
 
-    let updatedProduct;
-
-    if (existingProduct) {
-      updatedProduct = { ...existingProduct };
-      updatedProduct.quantity += 1;
-      cart.products[existingProductIndex] = updatedProduct;
+      await cartRef.update(cart);
     } else {
-      updatedProduct = { id: prodId, quantity: 1 };
-      cart.products.push(updatedProduct);
+      await cartRef.set({
+        products: [{ productId, quantity: 1 }],
+      });
     }
-
-    await cartRef.update(cart);
-
-    return cart;
   }
 
-  async deleteProduct(cartId, prodId) {
-    const cartRef = this.collection.doc(cartId);
+  async removeItemFromCart({ userId, productId }) {
+    const cartRef = this.collection.doc(userId);
 
     const cartSnapshot = await cartRef.get();
 
     const cart = { ...cartSnapshot.data() };
 
     const updatedProducts = cart.products.filter(
-      (product) => prodId.toString() !== product.id.toString()
+      (product) => product.productId.toString() === productId.toString()
     );
 
     cart.products = updatedProducts;
@@ -60,7 +54,7 @@ class CartFirebaseDAO extends FirebaseClass {
     await cartRef.update(cart);
   }
 
-  async deleteProductInAllCarts(prodId) {
+  async deleteProductInAllCarts(productId) {
     const cartsRef = this.collection;
 
     const cartsSnapshot = await cartsRef.get();
@@ -73,9 +67,10 @@ class CartFirebaseDAO extends FirebaseClass {
 
     for (const cart of carts) {
       const updatedProducts = cart.products.filter(
-        (product) => prodId !== product.id
+        (product) => product.productId !== productId
       );
       cart.products = updatedProducts;
+
       await cartsRef.doc(cart.id).update({ products: cart.products });
     }
   }

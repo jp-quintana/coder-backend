@@ -1,10 +1,14 @@
 const CartMongoDAO = require('./CartMongoDAO.js');
+const CartFirebaseDAO = require('./CartFirebaseDAO.js');
 
-const dbOption = process.env.dbOption || 'MONGO';
+const daoOption = process.env.daoOption || 'MONGO';
 
-switch (dbOption) {
+switch (daoOption) {
   case 'MONGO':
     exports.CartDAO = new CartMongoDAO();
+    break;
+  case 'FIREBASE':
+    exports.CartDAO = new CartFirebaseDAO();
     break;
   default:
     exports.CartDAO = new CartMongoDAO();

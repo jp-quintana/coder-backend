@@ -20,9 +20,9 @@ export const useAdmin = () => {
 
       setIsLoading(false);
     } catch (err) {
-      setIsLoading(false);
       setError(err);
       console.log(err);
+      setIsLoading(false);
     }
   };
 

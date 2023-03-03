@@ -1,10 +1,14 @@
 const OrderMongoDAO = require('./OrderMongoDAO');
+const OrderFirebaseDAO = require('./OrderFirebaseDAO');
 
-const dbOption = process.env.dbOption || 'MONGO';
+const daoOption = process.env.daoOption || 'MONGO';
 
-switch (dbOption) {
+switch (daoOption) {
   case 'MONGO':
     exports.OrderDAO = new OrderMongoDAO();
+    break;
+  case 'FIREBASE':
+    exports.OrderDAO = new OrderFirebaseDAO();
     break;
   default:
     exports.OrderDAO = new OrderMongoDAO();

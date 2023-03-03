@@ -34,10 +34,17 @@ class CartMongoDAO extends MongoClass {
     }
   }
 
-  async deleteProductInAllCarts(id) {
+  // async deleteProductInAllCarts(id) {
+  //   return await this.collection.updateMany(
+  //     {},
+  //     { $pull: { products: { productId: id } } }
+  //   );
+  // }
+  // TODO: CHEQUEAR SI FUNCIONA
+  async deleteProductInAllCarts(productId) {
     return await this.collection.updateMany(
       {},
-      { $pull: { products: { productId: id } } }
+      { $pull: { products: { productId } } }
     );
   }
 }
