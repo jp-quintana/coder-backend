@@ -10,17 +10,32 @@ export const useCart = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const addItem = async (id) => {
+  const addItem = async (product) => {
     setError(null);
     setIsLoading(true);
     try {
-      const response = await fetch(`/api/carrito/${user.id}/productos`, {
+      await fetch(`/api/carrito/${user.id}/productos`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id }),
+        body: JSON.stringify({ productId: product.id }),
       });
 
-      const updatedItems = await response.json();
+      let updatedItems = [...items];
+
+      const existingItemIndex = updatedItems.findIndex(
+        (item) => item.id === product.id
+      );
+
+      if (existingItemIndex >= 0) {
+        updatedItems[existingItemIndex].quantity += 1;
+      } else {
+        updatedItems = [
+          {
+            ...product,
+            quantity: 1,
+          },
+        ];
+      }
 
       dispatch({ type: 'UPDATE_CART', payload: updatedItems });
     } catch (err) {

@@ -38,7 +38,7 @@ const Cart = () => {
 
   useEffect(() => {
     if (navigation && !error) {
-      navigate('/');
+      navigate('/usuario');
     } else {
       setNavigation(false);
     }

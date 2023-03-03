@@ -1,12 +1,12 @@
 const { ProductDAO } = require('../daos/product');
 const { CartDAO } = require('../daos/cart');
 
-exports.fetchAllProducts = async (prodId) => {
+exports.fetchAllProducts = async () => {
   return await ProductDAO.fetchAll();
 };
 
-exports.fetchProduct = async (prodId) => {
-  return await ProductDAO.fetchById(prodId);
+exports.fetchProduct = async (productId) => {
+  return await ProductDAO.fetchById(productId);
 };
 
 exports.createProduct = async ({

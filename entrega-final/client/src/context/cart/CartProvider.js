@@ -6,6 +6,7 @@ import { useAuthContext } from '../../hooks/useAuthContext';
 
 const initialState = {
   items: [],
+  cartIsReady: false,
 };
 
 const cartReducer = (state, action) => {
@@ -13,10 +14,14 @@ const cartReducer = (state, action) => {
     case 'UPDATE_CART': {
       return {
         items: action.payload,
+        cartIsReady: true,
       };
     }
     case 'DELETE_CART': {
-      return initialState;
+      return {
+        ...initialState,
+        cartIsReady: true,
+      };
     }
 
     default:
@@ -25,9 +30,10 @@ const cartReducer = (state, action) => {
 };
 
 const CartProvider = ({ children }) => {
-  const { user } = useAuthContext();
+  const { user, authIsReady } = useAuthContext();
 
   const [state, dispatch] = useReducer(cartReducer, initialState);
+  console.log(state);
 
   const fetchCart = async () => {
     const response = await fetch(`/api/carrito/${user.id}/productos`);
@@ -45,10 +51,16 @@ const CartProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (user) {
-      fetchCart();
+    if (authIsReady) {
+      if (user) {
+        fetchCart();
+      } else {
+        dispatch({
+          type: 'DELETE_CART',
+        });
+      }
     }
-  }, [user]);
+  }, [user, authIsReady]);
 
   return (
     <CartContext.Provider value={{ ...state, dispatch }}>

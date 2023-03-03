@@ -5,7 +5,7 @@ const cartController = require('../controllers/cart');
 
 const router = express.Router();
 
-router.post('/', needAuth, cartController.postAddCart);
+// router.post('/', needAuth, cartController.postAddCart);
 
 router.delete('/:id', needAuth, cartController.deleteCart);
 

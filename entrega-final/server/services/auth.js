@@ -10,7 +10,7 @@ exports.createUser = async ({
   phone,
   age,
 }) => {
-  await UserDAO.create({
+  const newUser = await UserDAO.create({
     username,
     password,
     name,
@@ -46,8 +46,10 @@ exports.createUser = async ({
     subject: 'Registro Nuevo Usuario', // Subject line
     html: contentHTML, // html body
   });
+
+  return newUser;
 };
 
 exports.fetchUser = async ({ email }) => {
-  return await UserDAO.collection.findOne({ username: email });
+  return await UserDAO.fetchUserByUsername(email);
 };

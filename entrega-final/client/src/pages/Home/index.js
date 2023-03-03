@@ -35,10 +35,8 @@ const Home = () => {
               // timestamp={product.timestamp}
               title={product.title}
               description={product.description}
-              sku={product.sku}
               thumbnail={product.thumbnail}
               price={product.price}
-              stock={product.stock}
             />
           ))}
         </div>

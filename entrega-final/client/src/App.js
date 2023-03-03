@@ -1,8 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 
-import CartProvider from './context/cart/CartProvider';
-
 import { useAuthContext } from './hooks/useAuthContext';
+import { useCartContext } from './hooks/useCartContext';
 
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -19,10 +18,12 @@ import './App.css';
 
 const App = () => {
   const { authIsReady } = useAuthContext();
+  const { cartIsReady } = useCartContext();
+
   return (
     <>
-      {authIsReady && (
-        <CartProvider>
+      {authIsReady && cartIsReady && (
+        <>
           <header>
             <Nav />
           </header>
@@ -38,7 +39,7 @@ const App = () => {
               <Route path="/carrito" element={<Cart />} />
             </Routes>
           </main>
-        </CartProvider>
+        </>
       )}
     </>
   );

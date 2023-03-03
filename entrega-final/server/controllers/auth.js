@@ -29,6 +29,8 @@ exports.postLogin = async (req, res, next) => {
 
     const user = await fetchUser({ email });
 
+    console.log('ERRRRRRRRRRRRRRRRRRRRRRRRRRRRRORRRRRRRRRRRRRRRRRR');
+
     res.json({
       email: user.username,
       id: user.id,

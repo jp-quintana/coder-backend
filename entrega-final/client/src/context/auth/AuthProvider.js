@@ -2,7 +2,7 @@ import { useReducer, useEffect } from 'react';
 
 import AuthContext from './auth-context';
 
-const initialState = { user: null, authIsReady: false, isAdmin: false };
+const initialState = { user: null, authIsReady: false };
 
 const authReducer = (state, action) => {
   switch (action.type) {

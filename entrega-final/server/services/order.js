@@ -17,38 +17,38 @@ exports.createOrder = async ({ cartId, userId, username, address }) => {
 
   for (const product of productsInCart) {
     const { productId } = product;
-    const productDetails = await ProductDAO.fetchById(productId);
+    const productDetails = await ProductDAO.fetchProduct(productId);
     products.push({
-      ...productDetails._doc,
+      ...productDetails,
       id: productDetails.id,
       quantity: product.quantity,
     });
   }
 
-  // const contentHTML = `
-  //     <h1>Informacion del usuario</h1>
-  //     <ul>
-  //       <li>
-  //         Nombre de usuario: ${req.user.username}
-  //       </li>
-  //     </ul>
-  //     <h1>Informacion de compra</h1>
-  //       ${products.map(
-  //         (product) =>
-  //           `<ul>
-  //           <li>Producto: ${product.title}</li>
-  //           <li>Precio: ${product.price}</li>
-  //           <li>SKU: ${product.sku}</li>
-  //         </ul>`
-  //       )}
-  //   `;
+  const contentHTML = `
+      <h1>Informacion del usuario</h1>
+      <ul>
+        <li>
+          Nombre de usuario: ${username}
+        </li>
+      </ul>
+      <h1>Informacion de compra</h1>
+        ${products.map(
+          (product) =>
+            `<ul>
+            <li>Producto: ${product.title}</li>
+            <li>Precio: ${product.price}</li>
+            <li>SKU: ${product.sku}</li>
+          </ul>`
+        )}
+    `;
 
-  // let info = await transporter.sendMail({
-  //   from: '"CODER API" <process.env.EMAIL_ADMIN>', // sender address
-  //   to: process.env.EMAIL_ADMIN, // list of receivers
-  //   subject: `Orden Creada por ${req.user.username}`, // Subject line
-  //   html: contentHTML, // html body
-  // });
+  let info = await transporter.sendMail({
+    from: '"CODER API" <process.env.EMAIL_ADMIN>', // sender address
+    to: process.env.EMAIL_ADMIN, // list of receivers
+    subject: `Orden Creada por ${username}`, // Subject line
+    html: contentHTML, // html body
+  });
 
   await OrderDAO.create({
     products,

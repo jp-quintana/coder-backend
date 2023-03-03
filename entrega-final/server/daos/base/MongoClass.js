@@ -12,6 +12,7 @@ class MongoClass {
   }
 
   async create(obj) {
+    console.log(obj);
     return await this.collection.create(obj);
   }
 

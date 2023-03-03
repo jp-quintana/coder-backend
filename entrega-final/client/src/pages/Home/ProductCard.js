@@ -14,10 +14,8 @@ const ProductCard = ({
   // timestamp,
   title,
   description,
-  sku,
   thumbnail,
   price,
-  stock,
 }) => {
   const navigate = useNavigate();
 
@@ -32,7 +30,7 @@ const ProductCard = ({
       return;
     }
 
-    await addItem(id);
+    await addItem({ id, title, description, thumbnail, price });
   };
 
   useEffect(() => {

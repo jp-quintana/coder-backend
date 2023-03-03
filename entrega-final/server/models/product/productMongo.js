@@ -29,11 +29,15 @@ const Product = new Schema(
       required: true,
     },
   },
-  { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
+  { timestamps: true }
 );
 
 Product.virtual('id').get(function () {
-  return this._id;
+  return this._id.toHexString();
+});
+
+Product.set('toJSON', {
+  virtuals: true,
 });
 
 module.exports = mongoose.model('Product', Product);

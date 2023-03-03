@@ -23,15 +23,15 @@ const {
 
 const { fetchProduct } = require('../services/product');
 
-exports.postAddCart = async (req, res, next) => {
-  try {
-    const cartId = await createCart();
+// exports.postAddCart = async (req, res, next) => {
+//   try {
+//     const cartId = await createCart();
 
-    res.json(cartId);
-  } catch (error) {
-    console.log(error);
-  }
-};
+//     res.json(cartId);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 
 exports.deleteCart = async (req, res, next) => {
   const cartId = req.params.id;
@@ -47,9 +47,9 @@ exports.deleteCart = async (req, res, next) => {
 
 exports.getCartItems = async (req, res, next) => {
   try {
-    const cartId = req.params.id;
+    const userId = req.params.id;
 
-    const items = await fetchCart(cartId);
+    const items = await fetchCart(userId);
 
     res.json(items);
   } catch (error) {
@@ -69,18 +69,18 @@ exports.getCartItems = async (req, res, next) => {
 
 exports.postAddItemToCart = async (req, res, next) => {
   try {
-    const cartId = req.params.id;
-    const prodId = req.body.id;
+    const userId = req.params.id;
+    const { productId } = req.body;
 
-    const product = await fetchProduct(prodId);
+    const product = await fetchProduct(productId);
 
     if (!product) {
       return Error({ message: 'Producto no existe' });
     }
 
-    const cartItems = await addItemToCart({ cartId, prodId, product });
+    await addItemToCart({ userId, productId, product });
 
-    res.json(cartItems);
+    res.json('Success');
   } catch (error) {
     console.log(error);
   }
@@ -101,7 +101,7 @@ exports.deleteCartItem = async (req, res, next) => {
   }
 
   // // fs && Firebase
-  // await cartDb.deleteProduct(cartId, prodId);
+  // await .deleteProduct(cartId, prodId);
 };
 
 // exports.createOrder = async (req, res, next) => {
