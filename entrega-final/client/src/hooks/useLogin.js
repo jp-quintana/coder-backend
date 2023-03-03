@@ -24,8 +24,6 @@ export const useLogin = () => {
 
       const data = await response.json();
 
-      console.log(response);
-
       if (data.error) {
         throw new Error(data.error);
       }

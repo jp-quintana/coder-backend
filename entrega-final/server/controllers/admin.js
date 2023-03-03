@@ -1,15 +1,3 @@
-const ProductFileDAO = require('../daos/product/productFileDAO');
-const CartFileDAO = require('../daos/cart/cartFileDAO');
-
-const ProductFirebaseDAO = require('../daos/product/productFirebaseDAO');
-const CartFirebaseDAO = require('../daos/cart/cartFirebaseDAO');
-
-// const productDb = new ProductFileDAO();
-// const cartDb = new CartFileDAO();
-
-// const productDb = new ProductFirebaseDAO();
-// const cartDb = new CartFirebaseDAO();
-
 const {
   createProduct,
   editProduct,

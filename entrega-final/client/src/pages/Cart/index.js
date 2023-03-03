@@ -2,9 +2,10 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useCartContext } from '../../hooks/useCartContext';
-import { useAuthContext } from '../../hooks/useAuthContext';
 import { useCart } from '../../hooks/useCart';
 import { useOrder } from '../../hooks/useOrder';
+
+import { addAllItemsPrice } from '../../utils/calc';
 
 import CartItem from './CartItem';
 
@@ -13,12 +14,12 @@ import styles from './index.module.css';
 const Cart = () => {
   const navigate = useNavigate();
 
-  const { user } = useAuthContext();
-  const { id: cartId, items, dispatch } = useCartContext();
+  const { items } = useCartContext();
   const { updateCart, deleteCart, isLoading, error } = useCart();
   const { createOrder } = useOrder();
 
-  const [navigation, setNavigation] = useState(false);
+  const [navigationHome, setNavigationHome] = useState(false);
+  const [navigationUser, setNavigationUser] = useState(false);
 
   useEffect(() => {
     updateCart();
@@ -27,22 +28,25 @@ const Cart = () => {
   const handleDeleteCart = async () => {
     await deleteCart();
 
-    setNavigation(true);
+    setNavigationHome(true);
   };
 
   const handleCreateOrder = async () => {
     await createOrder();
 
-    setNavigation(true);
+    setNavigationUser(true);
   };
 
   useEffect(() => {
-    if (navigation && !error) {
+    if (navigationHome && !error) {
+      navigate('/');
+    } else if (navigationUser && !error) {
       navigate('/usuario');
     } else {
-      setNavigation(false);
+      setNavigationHome(false);
+      setNavigationUser(false);
     }
-  }, [navigation]);
+  }, [navigationHome, navigationUser]);
 
   return (
     <>
@@ -53,11 +57,14 @@ const Cart = () => {
       )}
       {!isLoading && items.length > 0 && (
         <div className={styles.cart_container}>
+          <div className={styles.total_price_wrapper}>
+            Precio Total: $ {addAllItemsPrice(items)}
+          </div>
           {items.map((product) => {
             return (
               <CartItem
                 //TODO: FIX VIRTUAL
-                key={product.id || product.productId}
+                key={product.id}
                 id={product.id}
                 // timestamp={product.timestamp}
                 title={product.title}

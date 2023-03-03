@@ -10,6 +10,8 @@ const EditProduct = () => {
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState(null);
 
+  const [navigation, setNavigation] = useState(false);
+
   const [userInput, setUserInput] = useState({
     title: '',
     description: '',
@@ -29,7 +31,7 @@ const EditProduct = () => {
     };
 
     fetchProduct();
-  }, [urlId]);
+  }, []);
 
   const handleTitleChange = (e) => {
     setUserInput((prevState) => {
@@ -66,20 +68,28 @@ const EditProduct = () => {
     e.preventDefault();
     setIsPending(true);
     setError(null);
+
     try {
       await fetch(`/api/productos/${urlId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...userInput }),
       });
-      //   const data = await response.json();
 
-      navigate('/');
+      setNavigation(true);
     } catch (err) {
       setIsPending(false);
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    if (navigation && !error) {
+      navigate('/');
+    } else {
+      setNavigation(false);
+    }
+  }, [navigation]);
 
   return (
     <div>

@@ -42,7 +42,7 @@ exports.editProduct = async (
 };
 
 exports.deleteProduct = async (id) => {
-  await cartDAO.deleteProductInAllCarts(id);
+  await CartDAO.deleteProductInAllCarts(id);
 
   await ProductDAO.delete(id);
 };

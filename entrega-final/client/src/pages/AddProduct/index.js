@@ -1,13 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import { useAdmin } from '../../hooks/useAdmin';
 
 import styles from './index.module.css';
 
 const AddProduct = () => {
   const navigate = useNavigate();
+  const { addProduct, isLoading, error } = useAdmin();
 
-  const [isPending, setIsPending] = useState(false);
-  const [error, setError] = useState(null);
+  const [navigation, setNavigation] = useState(false);
 
   const [userInput, setUserInput] = useState({
     title: '',
@@ -51,21 +53,18 @@ const AddProduct = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsPending(true);
-    setError(null);
-    try {
-      await fetch('/api/productos', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(userInput),
-      });
+    await addProduct(userInput);
 
-      navigate('/');
-    } catch (err) {
-      setIsPending(false);
-      console.log(err);
-    }
+    setNavigation(true);
   };
+
+  useEffect(() => {
+    if (navigation && !error) {
+      navigate('/');
+    } else {
+      setNavigation(false);
+    }
+  }, [navigation]);
 
   return (
     <div>
@@ -120,8 +119,8 @@ const AddProduct = () => {
             value={userInput.stock}
           />
         </label>
-        {!isPending && <button className="btn">Agregar producto</button>}
-        {isPending && (
+        {!isLoading && <button className="btn">Agregar producto</button>}
+        {isLoading && (
           <button className="btn" disabled>
             Cargando...
           </button>

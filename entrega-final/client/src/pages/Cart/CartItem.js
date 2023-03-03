@@ -23,6 +23,8 @@ const CartItem = ({
       <div className={styles.info}>
         <p className={styles.title}>{title}</p>
         <p className={styles.quantity}>Cantidad: {quantity}</p>
+        <p className={styles.quantity}>Precio Individual: ${+price}</p>
+        {/* <p className={styles.quantity}>Precio Total: ${+price * +quantity}</p> */}
       </div>
       <button className="btn" onClick={handleDeleteItem}>
         Eliminar

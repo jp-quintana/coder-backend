@@ -3,7 +3,6 @@
 import { useAuthContext } from './useAuthContext';
 
 export const useLogout = () => {
-  // const [isLoading, setIsLoading] = useState('false');
   const { dispatch } = useAuthContext();
 
   const logout = async () => {

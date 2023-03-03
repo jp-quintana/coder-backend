@@ -7,6 +7,10 @@ class CartFirebaseDAO extends FirebaseClass {
     super('carts');
   }
 
+  async addItemToCart({ userId, productId, product }) {}
+  async removeItemFromCart({ userId, productId }) {}
+  async deleteProductInAllCarts(id) {}
+
   async addProduct(cartId, prodId) {
     const cartRef = this.collection.doc(cartId);
 

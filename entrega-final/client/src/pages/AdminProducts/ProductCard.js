@@ -1,6 +1,8 @@
+import { useState, useEffect } from 'react';
+
 import { Link, useNavigate } from 'react-router-dom';
 
-import { useCartContext } from '../../hooks/useCartContext';
+import { useAdmin } from '../../hooks/useAdmin';
 
 import Card from '../../components/Card';
 
@@ -17,20 +19,23 @@ const ProductCard = ({
   stock,
 }) => {
   const navigate = useNavigate();
-  const { id: cartId, dispatch } = useCartContext();
+  const { deleteProduct, isLoading, error } = useAdmin();
+
+  const [navigation, setNavigation] = useState(false);
 
   const handleDelete = async () => {
-    await fetch(`/api/productos/${id}`, { method: 'DELETE' });
+    await deleteProduct(id);
 
-    const response = await fetch(`/api/carrito/${cartId}/productos`);
-    const updatedItems = await response.json();
-
-    console.log(updatedItems);
-
-    dispatch({ type: 'UPDATE_CART', payload: updatedItems });
-
-    navigate('/');
+    setNavigation(true);
   };
+
+  useEffect(() => {
+    if (navigation && !error) {
+      navigate('/');
+    } else {
+      setNavigation(false);
+    }
+  }, [navigation]);
 
   return (
     <Card>

@@ -30,6 +30,7 @@ export const useCart = () => {
         updatedItems[existingItemIndex].quantity += 1;
       } else {
         updatedItems = [
+          ...updatedItems,
           {
             ...product,
             quantity: 1,
@@ -45,15 +46,15 @@ export const useCart = () => {
     }
   };
 
-  const removeItem = async (id) => {
+  const removeItem = async (productId) => {
     setError(null);
     setIsLoading(true);
     try {
-      await fetch(`/api/carrito/${user.id}/productos/${id}`, {
+      await fetch(`/api/carrito/${user.id}/productos/${productId}`, {
         method: 'DELETE',
       });
 
-      const updatedItems = items.filter((item) => item.id !== id);
+      const updatedItems = items.filter((item) => item.id !== productId);
 
       dispatch({ type: 'UPDATE_CART', payload: updatedItems });
     } catch (err) {

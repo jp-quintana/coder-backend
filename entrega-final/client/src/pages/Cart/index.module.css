@@ -8,6 +8,12 @@
   padding: 3rem;
 }
 
+.total_price_wrapper {
+  color: var(--primary-color);
+  margin-left: auto;
+  padding-bottom: 1rem;
+}
+
 .card {
   display: grid;
   grid-template-columns: 1fr 4fr 1fr;

@@ -35,11 +35,6 @@ exports.addItemToCart = async ({ userId, productId, product }) => {
   await CartDAO.addItemToCart({ userId, productId, product });
 };
 
-exports.deleteCartItem = async ({ cartId, prodId }) => {
-  const cart = await CartDAO.fetchById(cartId);
-  await cart.deleteProduct(prodId);
-
-  if (cart.products.length === 0) {
-    cart.delete(cartId);
-  }
+exports.deleteCartItem = async ({ userId, productId }) => {
+  await CartDAO.removeItemFromCart({ userId, productId });
 };
