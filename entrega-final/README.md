@@ -1,6 +1,7 @@
 # Coder Backend Shop
 
 Simple Shopping cart MERN app. Currently WIP.
+Link to app: https://coder-backend-shop.herokuapp.com/
 
 ## Installation
 
