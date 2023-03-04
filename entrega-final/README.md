@@ -17,12 +17,12 @@ Simple Shopping cart MERN app. Currently WIP.
   daoOption=(should be either MONGO or FIREBASE, based on which DAO you want to use)
   
 ```
- -  Step 4: Launch Node Server
+ -  Step 4: Launch Node Server in server directory.
  
 ```
 npm run dev
 ```
- - Step 5: Launch React App
+ - Step 5: Launch React App in client directory.
  
 ```
 npm start
